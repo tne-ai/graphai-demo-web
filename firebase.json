@@ -1,8 +1,4 @@
 {
-  "firestore": {
-    "rules": "firestore.rules",
-    "indexes": "firestore.indexes.json"
-  },
   "functions": {
     "ignore": ["tests", "*.sh", "*.md", "*.txt", "**/node_modules/**"],
     "predeploy": ["npm --prefix \"$RESOURCE_DIR\" run lint", "npm --prefix \"$RESOURCE_DIR\" run build"]
@@ -28,11 +24,6 @@
     ],
     "rewrites": [
       {
-        "source": "/hono_api/*",
-        "function": "hono_server",
-        "region": "asia-northeast1"
-      },
-      {
         "source": "/api/*",
         "function": "express_server",
         "region": "asia-northeast1"
@@ -42,8 +33,5 @@
         "destination": "/index.html"
       }
     ]
-  },
-  "storage": {
-    "rules": "storage.rules"
   }
 }
