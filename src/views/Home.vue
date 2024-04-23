@@ -1,15 +1,24 @@
 <template>
   <div class="home">
-    <div class="flex items-center justify-center space-x-8">
+    <div class="items-center justify-center space-x-8">
       <!-- Use Tailwind CSS h-40 (=10rem=160px) instead of .logo. -->
+      <div>Graph Data</div>
+      <div class="w-6/8">
+        <textarea class="border-8" rows="20" cols="100">{{ graph_data }}</textarea>
+      </div>
+      <button class="border-2" @click="run">Run</button>
+      <div>Result</div>
+      <div class="w-6/8">
+        <textarea class="border-8" rows="20" cols="100">{{ res }}</textarea>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 
-import { GraphAI } from "graphai";
+import { GraphAI, AgentFunction } from "graphai";
 
 export default defineComponent({
   name: "HomePage",
@@ -28,8 +37,7 @@ export default defineComponent({
         },
         body: JSON.stringify(postData),
       });
-      const result = await response.json();
-      return result;
+      return await response.json();
     };
 
     const graph_data = {
@@ -60,12 +68,17 @@ export default defineComponent({
       },
     };
 
-    (async () => {
+    const res = ref({});
+    const run = async () => {
       const graph = new GraphAI(graph_data, { httpAgent });
       const results = await graph.run();
-      console.log(results);
-    })();
-    return {};
+      res.value = results;
+    };
+    return {
+      run,
+      graph_data,
+      res,
+    };
   },
 });
 </script>
