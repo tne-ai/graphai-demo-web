@@ -10,8 +10,12 @@
       <div class="w-6/8">
         <textarea class="border-8" rows="20" cols="100">{{ graph_data }}</textarea>
       </div>
-      <button class="border-2" @click="run">Run</button>
-      <textarea class="border-8" rows="20" cols="100">{{ logs }}</textarea>
+      <div>
+        <button class="border-2" @click="run">Run</button>
+      </div>
+      <div>
+        <textarea class="border-8" rows="20" cols="100">{{ logs }}</textarea>
+      </div>
       <div>Result</div>
       <div class="w-6/8">
         <textarea class="border-8" rows="20" cols="100">{{ res }}</textarea>
@@ -70,7 +74,7 @@ export default defineComponent({
     };
 
     const res = ref({});
-    const logs = ref([]);
+    const logs = ref<unknown[]>([]);
     const run = async () => {
       const graph = new GraphAI(graph_data, { httpAgent });
       graph.onLogCallback = ({ nodeId, state, inputs, result, errorMessage }) => {
@@ -81,7 +85,7 @@ export default defineComponent({
       res.value = results;
     };
 
-    const agentList = ref({});
+    const agentList = ref<{ agents?: string[] }>({});
     const init = async () => {
       agentList.value = await agentListApi();
       console.log(agentList.value);
