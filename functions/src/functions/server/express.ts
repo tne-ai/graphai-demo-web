@@ -41,7 +41,7 @@ export const app = express();
 const allowedOrigins = ["http://localhost:8080", "https://graphai-demo.web.app"];
 
 const options: cors.CorsOptions = {
-  origin: allowedOrigins
+  origin: allowedOrigins,
 };
 
 app.use(express.json());

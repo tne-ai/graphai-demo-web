@@ -1,5 +1,11 @@
 import { AgentFunction, AgentFunctionDictonary } from "graphai";
+
+import { pushAgent, popAgent, shiftAgent } from "graphai/lib/experimental_agents/array_agents";
 import { dataObjectMergeTemplateAgent } from "graphai/lib/experimental_agents/data_agent";
+import { dotProductAgent, sortByValuesAgent } from "graphai/lib/experimental_agents/matrix_agent";
+import { nestedAgent } from "graphai/lib/experimental_agents/nested_agent";
+import { sleeperAgent } from "graphai/lib/experimental_agents/sleeper_agent";
+import { stringTemplateAgent, stringSplitterAgent } from "graphai/lib/experimental_agents/string_agent";
 
 export const bypassAgent: AgentFunction = async (context) => {
   if (context.inputs.length === 1) {
@@ -30,4 +36,14 @@ export const defaultTestAgents: AgentFunctionDictonary = {
   echoForkIndexAgent,
   mergeNodeIdAgent,
   dataObjectMergeTemplateAgent,
+
+  pushAgent,
+  popAgent,
+  shiftAgent,
+  dotProductAgent,
+  sortByValuesAgent,
+  nestedAgent,
+  sleeperAgent,
+  stringTemplateAgent,
+  stringSplitterAgent,
 };

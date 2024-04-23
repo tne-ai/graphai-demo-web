@@ -2,11 +2,16 @@
   <div class="home">
     <div class="items-center justify-center space-x-8">
       <!-- Use Tailwind CSS h-40 (=10rem=160px) instead of .logo. -->
+      <div>List</div>
+      <div>
+        {{ agentList["agents"] }}
+      </div>
       <div>Graph Data</div>
       <div class="w-6/8">
         <textarea class="border-8" rows="20" cols="100">{{ graph_data }}</textarea>
       </div>
       <button class="border-2" @click="run">Run</button>
+      <textarea class="border-8" rows="20" cols="100">{{ logs }}</textarea>
       <div>Result</div>
       <div class="w-6/8">
         <textarea class="border-8" rows="20" cols="100">{{ res }}</textarea>
@@ -18,28 +23,14 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 
-import { GraphAI, AgentFunction } from "graphai";
+import { GraphAI } from "graphai";
+
+import { agentListApi, httpAgent } from "./utils";
 
 export default defineComponent({
   name: "HomePage",
   components: {},
   setup() {
-    const httpAgent: AgentFunction = async ({ inputs, params }) => {
-      const { agentId, params: postParams } = params;
-      const url = "https://graphai-demo.web.app/api/agents/" + agentId;
-
-      const postData = { inputs, params: postParams };
-
-      const response = await fetch(url, {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(postData),
-      });
-      return await response.json();
-    };
-
     const graph_data = {
       nodes: {
         echo: {
@@ -58,6 +49,16 @@ export default defineComponent({
             agentId: "bypassAgent",
           },
         },
+        sleepAgent: {
+          agentId: "httpAgent",
+          inputs: ["echo"],
+          params: {
+            agentId: "sleeperAgent",
+            params: {
+              duration: 1000,
+            },
+          },
+        },
         bypassAgent2: {
           agentId: "httpAgent",
           inputs: ["bypassAgent"],
@@ -69,15 +70,30 @@ export default defineComponent({
     };
 
     const res = ref({});
+    const logs = ref([]);
     const run = async () => {
       const graph = new GraphAI(graph_data, { httpAgent });
+      graph.onLogCallback = ({ nodeId, state, inputs, result, errorMessage }) => {
+        logs.value.push({ nodeId, state, inputs, result, errorMessage });
+        console.log();
+      };
       const results = await graph.run();
       res.value = results;
     };
+
+    const agentList = ref({});
+    const init = async () => {
+      agentList.value = await agentListApi();
+      console.log(agentList.value);
+    };
+    init();
+
     return {
       run,
+      logs,
       graph_data,
       res,
+      agentList,
     };
   },
 });
