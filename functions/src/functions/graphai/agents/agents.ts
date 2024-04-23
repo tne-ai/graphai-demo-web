@@ -7,6 +7,8 @@ import { nestedAgent } from "graphai/lib/experimental_agents/nested_agent";
 import { sleeperAgent } from "graphai/lib/experimental_agents/sleeper_agent";
 import { stringTemplateAgent, stringSplitterAgent } from "graphai/lib/experimental_agents/string_agent";
 
+import { slashGPTFuncitons2TextAgent } from "./slashgpt_agent";
+
 export const bypassAgent: AgentFunction = async (context) => {
   if (context.inputs.length === 1) {
     return context.inputs[0];
@@ -46,4 +48,6 @@ export const defaultTestAgents: AgentFunctionDictonary = {
   sleeperAgent,
   stringTemplateAgent,
   stringSplitterAgent,
+
+  slashGPTFuncitons2TextAgent,
 };
