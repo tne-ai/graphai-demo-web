@@ -1,4 +1,5 @@
 import * as express from "express";
+import * as cors from "cors";
 
 // import { GraphAI, AgentFunction } from "graphai";
 import { defaultTestAgents } from "../graphai/agents/agents";
@@ -37,7 +38,14 @@ const agentsList = async (req: express.Request, res: express.Response) => {
 
 export const app = express();
 
+const allowedOrigins = ["http://localhost:8080", "https://graphai-demo.web.app"];
+
+const options: cors.CorsOptions = {
+  origin: allowedOrigins
+};
+
 app.use(express.json());
+app.use(cors(options));
 app.post("/api/agents/:agentId", agentDispatcher);
 app.get("/api/agents", agentsList);
 app.get("/api/hello", hello_response);
