@@ -69,6 +69,7 @@ export default defineComponent({
           params: {
             agentId: "bypassAgent",
           },
+          isResult: true,
         },
       },
     };
