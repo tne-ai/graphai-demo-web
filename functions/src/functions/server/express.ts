@@ -5,6 +5,8 @@ import cors from "cors";
 import { defaultTestAgents } from "../graphai/agents/agents";
 import { agentDocs } from "../graphai/agents/agentDocs";
 
+const hostName = "https://graphai-demo.web.app";
+
 export const hello_response = async (req: express.Request, res: express.Response) => {
   res.json({ message: "hello" });
 };
@@ -12,7 +14,7 @@ export const hello_response = async (req: express.Request, res: express.Response
 const agentDispatcher = async (req: express.Request, res: express.Response) => {
   const { params } = req;
   const { agentId } = params;
-  const { nodeId, retry, params: agentParams, inputs, forkIndex } = req.body;
+  const { nodeId, retry, params: agentParams, inputs } = req.body;
   const agent = defaultTestAgents[agentId];
   if (agent === undefined) {
     res.status(404).send("Not found");
@@ -24,7 +26,6 @@ const agentDispatcher = async (req: express.Request, res: express.Response) => {
     debugInfo: {
       nodeId,
       retry,
-      forkIndex,
       verbose: false,
     },
     agents: defaultTestAgents,
@@ -33,7 +34,16 @@ const agentDispatcher = async (req: express.Request, res: express.Response) => {
 };
 
 const agentsList = async (req: express.Request, res: express.Response) => {
-  const agents = Object.keys(defaultTestAgents);
+  const agents = Object.keys(defaultTestAgents).map((agent) => {
+    return {
+      agentId: agent,
+      url: hostName + "/api/agents/" + agent,
+      apiDoc: hostName + "/api/agents/" + agent + "/docs",
+      description: "foo bar",
+      author: "satoshi isamu",
+      repository: "https://github.com/snakajima/graphai/",
+    };
+  });
   res.json({ agents });
 };
 
@@ -48,7 +58,7 @@ const agentDocsReq = async (req: express.Request, res: express.Response) => {
 
 export const app = express();
 
-const allowedOrigins = ["http://localhost:8080", "https://graphai-demo.web.app"];
+const allowedOrigins = ["http://localhost:8080", hostName];
 
 const options: cors.CorsOptions = {
   origin: allowedOrigins,

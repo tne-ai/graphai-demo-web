@@ -1739,7 +1739,7 @@ gopd@^1.0.1:
 
 "graphai@https://github.com/snakajima/graphai.git":
   version "0.1.0"
-  resolved "https://github.com/snakajima/graphai.git#71f9477794b4f5bace21e6fddd193ce92e51c365"
+  resolved "https://github.com/snakajima/graphai.git#a74cac772b030dc3bb7f15c1c17b6f6055d8d245"
   dependencies:
     yaml "^2.3.3"
 

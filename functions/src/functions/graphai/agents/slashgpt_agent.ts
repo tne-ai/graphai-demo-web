@@ -11,7 +11,7 @@ export const slashGPTFuncitons2TextAgent: AgentFunction<
     return ["title:", title, "description:", description].join("\n");
   });
 
-  return { content: result[context.debugInfo?.forkIndex ?? 0] };
+  return { content: result[0] };
 };
 
 /*
@@ -56,5 +56,8 @@ export const slashGPTFuncitons2TextAgentInfo = {
   mock: slashGPTAgentMock,
   doc: apiDoc,
   // validateRule,
+  description: "Format the result of slashgpt's function calling",
+  author: "isamu arimoto",
+  repository: "https://github.com/isamu/graphai/",
 };
 export default slashGPTFuncitons2TextAgentInfo;
