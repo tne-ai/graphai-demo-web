@@ -40,38 +40,39 @@ import fcose from "cytoscape-fcose";
 
 cytoscape.use(fcose);
 
+const graph_data = {
+  loop: {
+    while: "source",
+  },
+  nodes: {
+    source: {
+      value: ["orange", "banana", "lemon"],
+      update: "popper.array",
+    },
+    result: {
+      value: [],
+      update: "reducer",
+      isResult: true,
+    },
+    popper: {
+      inputs: ["source"],
+      agentId: "popAgent", // returns { array, item }
+    },
+    reducer: {
+      agentId: "pushAgent",
+      inputs: ["result", "popper.item"],
+    },
+  },
+};
+
 export default defineComponent({
   name: "HomePage",
   components: {},
   setup() {
     const cyRef = ref();
-    const graph_data = {
-      loop: {
-        while: "source",
-      },
-      nodes: {
-        source: {
-          value: ["orange", "banana", "lemon"],
-          update: "popper.array",
-        },
-        result: {
-          value: [],
-          update: "reducer",
-          isResult: true,
-        },
-        popper: {
-          inputs: ["source"],
-          agentId: "popAgent", // returns { array, item }
-        },
-        reducer: {
-          agentId: "pushAgent",
-          inputs: ["result", "popper.item"],
-        },
-      },
-    };
-
     const res = ref({});
     const logs = ref<unknown[]>([]);
+    
     const run = async () => {
       const graph = new GraphAI(graph_data, { pushAgent, popAgent });
       graph.onLogCallback = ({ nodeId, state, inputs, result, errorMessage }) => {
