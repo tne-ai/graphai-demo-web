@@ -205,14 +205,14 @@ export default defineComponent({
             {
               selector: "node",
               style: {
-                "background-color": "#fff",
+                "background-color": "#f00",
                 label: "data(label)",
                 "text-valign": "center",
                 "text-halign": "center",
                 shape: "rectangle",
                 height: "50px",
                 width: (ele: NodeSingular) => calcNodeWidth(ele.data("label")),
-                color: (ele: NodeSingular) => getTextColor(ele.data("color")),
+                color: "#fff", // (ele: NodeSingular) => getTextColor(ele.data("color")),
                 "font-size": "12px",
               },
             },
