@@ -188,6 +188,11 @@ export default defineComponent({
       graph.onLogCallback = ({ nodeId, state, inputs, result, errorMessage }) => {
         logs.value.push({ nodeId, state, inputs, result, errorMessage });
         console.log();
+
+        console.log(nodeId, state);
+        const elements = cytoData.value.elements;
+        elements.map[nodeId].data.color = "#f00";
+        cytoData.value = { elements };
       };
       const results = await graph.run();
       res.value = results;
