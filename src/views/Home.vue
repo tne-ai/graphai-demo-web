@@ -110,11 +110,13 @@ const nodes = [{
  {
   data: {
    id: 6,
+   isStatic: true,
   },
  },
  {
   data: {
    id: 7,
+   isStatic: true,
   },
  },
 ];
@@ -122,11 +124,11 @@ const nodes = [{
 const edges = [
   { data: { source: "id0", target: 1 } },
   { data: { source: "id0", target: 2 } },
-  { data: { source: 1, target: 3, label: "Sub" } },
-  { data: { source: 1, target: 4, label: "Sub" } },
-  { data: { source: 1, target: 5, label: "Sub" } },
-  { data: { source: 4, target: 6, label: "Sub" } },
-  { data: { source: 4, target: 7, label: "Sub" } },
+  { data: { source: 1, target: 3, propId: "Sub" } },
+  { data: { source: 1, target: 4, propId: "Sub" } },
+  { data: { source: 1, target: 5, propId: "Sub" } },
+  { data: { source: 4, target: 6, propId: "Sub" } },
+  { data: { source: 4, target: 7, propId: "Sub" } },
 ];
 
 const cygraph = {
@@ -171,10 +173,10 @@ export default defineComponent({
                 label: "data(id)",
                 "text-valign": "center",
                 "text-halign": "center",
-                shape: "rectangle",
+                shape: (ele: NodeSingular) => (ele.data("isStatic") ? "roundrectangle" : "rectangle"),
                 height: "50px",
                 width: (ele: NodeSingular) => calcNodeWidth(ele.data("id")),
-                color: "#fff", // (ele: NodeSingular) => getTextColor(ele.data("color")),
+                color: "#fff", 
                 "font-size": "12px",
               },
             },
@@ -185,7 +187,7 @@ export default defineComponent({
                 "line-color": "#888",
                 "target-arrow-color": "#888",
                 "target-arrow-shape": "triangle",
-                label: "data(label)",
+                label: "data(propId)",
                 "curve-style": "unbundled-bezier",
                 "line-dash-pattern": [4, 4],
                 "text-background-color": "#ffffff",
