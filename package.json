@@ -11,6 +11,8 @@
   "dependencies": {
     "@vueuse/head": "^1.0.16",
     "core-js": "^3.25.2",
+    "cytoscape": "^3.29.2",
+    "cytoscape-fcose": "^2.2.0",
     "firebase": "^10.7.1",
     "graphai": "^0.2.1",
     "pinia": "^2.1.7",

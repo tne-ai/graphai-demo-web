@@ -2,6 +2,7 @@
   <div class="home">
     <div class="items-center justify-center space-x-8">
       <!-- Use Tailwind CSS h-40 (=10rem=160px) instead of .logo. -->
+      <div ref="cyRef" class="w-full h-full" />
       <div>Graph Data</div>
       <div class="w-6/8">
         <textarea class="border-8" rows="20" cols="100">{{ graph_data }}</textarea>
@@ -27,10 +28,23 @@ import { defineComponent, ref } from "vue";
 import { GraphAI } from "graphai";
 import { pushAgent, popAgent } from "graphai/lib/experimental_agents/array_agents";
 
+import cytoscape, {
+  //  ElementDefinition,
+  //  ElementsDefinition,
+  // Position,
+  // EventObject,
+  // Core,
+  // NodeSingular,
+} from "cytoscape";
+import fcose from "cytoscape-fcose";
+
+cytoscape.use(fcose);
+
 export default defineComponent({
   name: "HomePage",
   components: {},
   setup() {
+    const cyRef = ref();
     const graph_data = {
       loop: {
         while: "source",
@@ -73,6 +87,7 @@ export default defineComponent({
       logs,
       graph_data,
       res,
+      cyRef,
     };
   },
 });
