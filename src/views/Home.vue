@@ -194,7 +194,13 @@ export default defineComponent({
     };
 
     const storePositions = () => {
-      console.log("storePotitions");
+      console.log("storePositions");
+      cy.nodes().forEach((cynode:any) => {
+        const id = cynode.id();
+        const pos = cynode.position();
+        const node = cytoData.value.elements.map[id];
+        node.position = pos;
+      });
     };
 
     const createCytoscope = () => {
@@ -229,6 +235,7 @@ export default defineComponent({
         }
         return name;
       }, "cose");
+      console.log("layout", name);
       cy.layout({ name }).run();
       cy.fit();
       if (name == "cose") {
@@ -238,6 +245,7 @@ export default defineComponent({
     };
     watch(cytoData, (newData) => {
       console.log("updated");
+      updateGraphData();
     });
 
     onMounted(() => {
