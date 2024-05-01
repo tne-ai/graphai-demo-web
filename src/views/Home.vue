@@ -138,8 +138,8 @@ export default defineComponent({
               selector: "edge",
               style: {
                 width: 3,
-                "line-color": "#666",
-                "target-arrow-color": "#666",
+                "line-color": "#888",
+                "target-arrow-color": "#888",
                 "target-arrow-shape": "triangle",
                 label: "data(propId)",
                 "curve-style": "unbundled-bezier",
@@ -176,11 +176,22 @@ export default defineComponent({
             id: nodeId,
             color: "#0ff",
           }
+        });
+        console.log(node.inputs);
+        (node.inputs ?? []).forEach((input:string) => {
+          const ids = input.split('.')
+          tmp.edges.push({
+            data: {
+              source: ids[0],
+              target: nodeId,
+            }
+          })
         });      
         return tmp;
       }, 
       { nodes:[], edges:[]});
       console.log(elements.nodes);
+      console.log(elements.edges);
       const cydata = { elements };
 
       if (cydata && cy) {
