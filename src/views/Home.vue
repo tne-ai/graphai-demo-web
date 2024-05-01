@@ -11,7 +11,7 @@
         <textarea class="border-8" rows="20" cols="100">{{ graph_data }}</textarea>
       </div>
       <div>
-        <button class="border-2" @click="run">Run</button>
+        <button class="border-2" @click="run">Run!</button>
       </div>
       <div>
         <textarea class="border-8" rows="20" cols="100">{{ logs }}</textarea>
@@ -28,48 +28,35 @@
 import { defineComponent, ref } from "vue";
 
 import { GraphAI } from "graphai";
+import { pushAgent, popAgent } from "graphai/lib/experimental_agents/array_agents";
 
-import { agentListApi, httpAgent } from "./utils";
+import { agentListApi } from "./utils";
 
 export default defineComponent({
   name: "HomePage",
   components: {},
   setup() {
     const graph_data = {
+      version: 0.2,
+      loop: {
+        while: "source",
+      },
       nodes: {
-        echo: {
-          agentId: "httpAgent",
-          params: {
-            agentId: "echoAgent",
-            params: {
-              message: "hello",
-            },
-          },
+        source: {
+          value: ["orange", "banana", "lemon"],
+          update: "popper.array",
         },
-        bypassAgent: {
-          agentId: "httpAgent",
-          inputs: ["echo"],
-          params: {
-            agentId: "bypassAgent",
-          },
+        result: {
+          value: [],
+          update: "reducer",
         },
-        sleepAgent: {
-          agentId: "httpAgent",
-          inputs: ["echo"],
-          params: {
-            agentId: "sleeperAgent",
-            params: {
-              duration: 1000,
-            },
-          },
+        popper: {
+          inputs: ["source"],
+          agentId: "popAgent", // returns { array, item }
         },
-        bypassAgent2: {
-          agentId: "httpAgent",
-          inputs: ["bypassAgent"],
-          params: {
-            agentId: "bypassAgent",
-          },
-          isResult: true,
+        reducer: {
+          agentId: "pushAgent",
+          inputs: ["result", "popper.item"],
         },
       },
     };
@@ -77,7 +64,8 @@ export default defineComponent({
     const res = ref({});
     const logs = ref<unknown[]>([]);
     const run = async () => {
-      const graph = new GraphAI(graph_data, { httpAgent });
+      console.log("*** run");
+      const graph = new GraphAI(graph_data, { pushAgent, popAgent });
       graph.onLogCallback = ({ nodeId, state, inputs, result, errorMessage }) => {
         logs.value.push({ nodeId, state, inputs, result, errorMessage });
         console.log();
