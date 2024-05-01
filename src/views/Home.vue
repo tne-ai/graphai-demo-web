@@ -29,6 +29,7 @@
 import { defineComponent, ref, onMounted } from "vue";
 
 import { GraphAI } from "graphai";
+import { GraphData } from "graphai";
 import { pushAgent, popAgent } from "graphai/lib/experimental_agents/array_agents";
 
 import cytoscape, {
@@ -52,7 +53,7 @@ const calcNodeWidth = (label: string) => {
   return Math.max(50, label.length * 8) + "px";
 };
 
-const graph_data = {
+const graph_data: GraphData = {
   loop: {
     while: "source",
   },
@@ -77,58 +78,7 @@ const graph_data = {
   },
 };
 
-const nodes = [
-  {
-    data: {
-      id: "id0",
-      color: "#f00",
-    },
-  },
-  {
-    data: {
-      id: 1,
-      color: "#0f0",
-    },
-  },
-  {
-    data: {
-      id: 2,
-      color: "#00f",
-    },
-  },
-  {
-    data: {
-      id: 3,
-      color: "#333",
-    },
-  },
-  {
-    data: {
-      id: 4,
-      color: "#333",
-    },
-  },
-  {
-    data: {
-      id: 5,
-      color: "#333",
-    },
-  },
-  {
-    data: {
-      id: 6,
-      isStatic: true,
-      color: "#333",
-    },
-  },
-  {
-    data: {
-      id: 7,
-      isStatic: true,
-    },
-  },
-];
-
+/*
 const edges = [
   { data: { source: "id0", target: 1 } },
   { data: { source: "id0", target: 2 } },
@@ -138,10 +88,7 @@ const edges = [
   { data: { source: 4, target: 6, propId: "Sub" } },
   { data: { source: 4, target: 7, propId: "Sub" } },
 ];
-
-const cygraph = {
-  elements: { nodes, edges },
-};
+*/
 
 export default defineComponent({
   name: "HomePage",
@@ -149,7 +96,6 @@ export default defineComponent({
   setup() {
     const cyRef = ref();
     const layout_value = ref(layouts[0]);
-    const cydata = ref(cygraph);
 
     const res = ref({});
     const logs = ref<unknown[]>([]);
@@ -223,10 +169,21 @@ export default defineComponent({
       }
     };
     const updateGraphData = async () => {
-      if (cydata.value && cy) {
+      const elements = Object.keys(graph_data.nodes).reduce((tmp: Record<string, any>, nodeId) => {
+        const node: Record<string, any> = graph_data.nodes[nodeId];
+        tmp.nodes.push({
+          id: node.nodeId,
+          color: "#0ff",
+        });      
+        return tmp;
+      }, 
+      { nodes:[], edges:[]});
+      const cydata = { elements };
+
+      if (cydata && cy) {
         cy.elements().remove();
-        cy.add(cydata.value.elements);
-        const name = cydata.value.elements.nodes.reduce((name, node) => {
+        cy.add(cydata.elements);
+        const name = cydata.elements.nodes.reduce((name: string, node: Record<string, any>) => {
           if (node.position) {
             return "preset";
           }
