@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, onMounted } from "vue";
 
 import { GraphAI } from "graphai";
 import { pushAgent, popAgent } from "graphai/lib/experimental_agents/array_agents";
@@ -32,13 +32,28 @@ import cytoscape, {
   //  ElementDefinition,
   //  ElementsDefinition,
   // Position,
-  // EventObject,
-  // Core,
-  // NodeSingular,
+  EventObject,
+  Core,
+  NodeSingular,
 } from "cytoscape";
 import fcose from "cytoscape-fcose";
 
 cytoscape.use(fcose);
+
+const layouts = ["grid", "cose", "random", "circle", "concentric", "fcose", "breadthfirst"];
+
+const getTextColor = (bgColor = "#000000") => {
+  const [r, g, b] = [0, 2, 4].map((start) => parseInt(bgColor.replace("#", "").substr(start, 2), 16));
+  const brightness = r * 0.299 + g * 0.587 + b * 0.114;
+  return brightness < 40 ? "#ffffff" : "#000000";
+};
+
+const calcNodeWidth = (label: string) => {
+  if (label === null || label === undefined) {
+    return "50px";
+  }
+  return Math.max(50, label.length * 8) + "px";
+};
 
 const graph_data = {
   loop: {
@@ -70,9 +85,11 @@ export default defineComponent({
   components: {},
   setup() {
     const cyRef = ref();
+    const layout_value = ref(layouts[0]);
     const res = ref({});
     const logs = ref<unknown[]>([]);
-    
+    let cy: null | Core = null;
+
     const run = async () => {
       const graph = new GraphAI(graph_data, { pushAgent, popAgent });
       graph.onLogCallback = ({ nodeId, state, inputs, result, errorMessage }) => {
@@ -83,12 +100,87 @@ export default defineComponent({
       res.value = results;
     };
 
+    const callback = (e: EventObject) => {
+      console.log(e);
+    }
+
+    const dataColor = "data(color)";
+    const createGraph = () => {
+      try {
+        cy = cytoscape({
+          container: cyRef.value,
+          style: [
+            {
+              selector: "node",
+              style: {
+                "background-color": dataColor,
+                label: "data(label)",
+                "text-valign": "center",
+                "text-halign": "center",
+                shape: "rectangle",
+                height: "50px",
+                width: (ele: NodeSingular) => calcNodeWidth(ele.data("label")),
+                color: (ele: NodeSingular) => getTextColor(ele.data("color")),
+                "font-size": "12px",
+              },
+            },
+            {
+              selector: "edge",
+              style: {
+                width: 3,
+                "line-color": dataColor,
+                "target-arrow-color": dataColor,
+                "target-arrow-shape": "none",
+                label: "data(label)",
+                "curve-style": "unbundled-bezier",
+                "line-dash-pattern": [4, 4],
+                "text-background-color": "#ffffff",
+                "text-background-opacity": 1,
+                "text-background-shape": "rectangle",
+                "font-size": "10px",
+              },
+            },
+            {
+              selector: "edge[?directed]",
+              style: {
+                "target-arrow-shape": "triangle",
+              },
+            },
+          ],
+          layout: {
+            name: "cose",
+            fit: true,
+            padding: 30,
+            avoidOverlap: true,
+          },
+        });
+        cy.on("mouseup", callback);
+        cy.on("touchend", callback);
+        cy.on("select", "node", callback);
+        cy.on("select", "edge", callback);
+        //store.commit("setCytoscape", cy);
+      } catch (error) {
+        console.error(error);
+        // store.commit("setCytoscape", null);
+        // error_msg.value = `${error}`;
+      }
+    };
+    onMounted(() => {
+      createGraph();
+      /*
+      if (data.value) {
+        updateGraphData();
+      }
+      */
+    });
+
     return {
       run,
       logs,
       graph_data,
       res,
       cyRef,
+      layout_value,
     };
   },
 });
