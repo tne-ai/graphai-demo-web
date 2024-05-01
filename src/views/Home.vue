@@ -31,7 +31,7 @@ import { defineComponent, ref, onMounted, watch } from "vue";
 import { GraphAI, GraphData, AgentFunction } from "graphai";
 import { NodeState, NodeData } from "graphai/lib/type";
 import { pushAgent, popAgent } from "graphai/lib/experimental_agents/array_agents";
-import { sleep, sleepTestAgent } from "@/utils/utils";
+import { sleep } from "@/utils/utils";
 
 import cytoscape, {
   //  ElementDefinition,
