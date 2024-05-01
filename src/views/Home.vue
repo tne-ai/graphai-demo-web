@@ -78,18 +78,6 @@ const graph_data: GraphData = {
   },
 };
 
-/*
-const edges = [
-  { data: { source: "id0", target: 1 } },
-  { data: { source: "id0", target: 2 } },
-  { data: { source: 1, target: 3, propId: "Sub" } },
-  { data: { source: 1, target: 4, propId: "Sub" } },
-  { data: { source: 1, target: 5, propId: "Sub" } },
-  { data: { source: 4, target: 6, propId: "Sub" } },
-  { data: { source: 4, target: 7, propId: "Sub" } },
-];
-*/
-
 export default defineComponent({
   name: "HomePage",
   components: {},
@@ -125,7 +113,7 @@ export default defineComponent({
               style: {
                 "background-color": "data(color)",
                 label: "data(id)",
-                shape: (ele: NodeSingular) => (ele.data("isStatic") ? "roundrectangle" : "rectangle"),
+                shape: (ele: NodeSingular) => (ele.data("isStatic") ? "rectangle" : "roundrectangle"),
                 width: (ele: NodeSingular) => calcNodeWidth(ele.data("id")),
                 color: "#fff",
                 height: "30px",
@@ -174,22 +162,26 @@ export default defineComponent({
         tmp.nodes.push({
           data: {
             id: nodeId,
-            color: "#0ff",
+            color: "#888",
+            isStatic: "value" in node
           }
         });
         console.log(node.inputs);
         (node.inputs ?? []).forEach((input:string) => {
           const ids = input.split('.')
+          const source = ids.shift();
+          const propId = ids.length ? ids.join('.') : undefined;
           tmp.edges.push({
             data: {
-              source: ids[0],
+              source,
               target: nodeId,
+              propId
             }
           })
         });      
         return tmp;
       }, 
-      { nodes:[], edges:[]});
+      { nodes:[], edges:[]} );
       console.log(elements.nodes);
       console.log(elements.edges);
       const cydata = { elements };
