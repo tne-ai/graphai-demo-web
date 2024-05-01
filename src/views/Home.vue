@@ -60,6 +60,51 @@ const parseInput = (input:string) => {
   return { source, label };
 };
 
+const cyStyle = [{
+    selector: "node",
+    style: {
+      "background-color": "data(color)",
+      label: "data(id)",
+      shape: (ele: NodeSingular) => (ele.data("isStatic") ? "rectangle" : "roundrectangle"),
+      width: (ele: NodeSingular) => calcNodeWidth(ele.data("id")),
+      color: "#fff",
+      height: "30px",
+      "text-valign": "center",
+      "text-halign": "center",
+      "font-size": "12px",
+    },
+  },
+  {
+    selector: "edge",
+    style: {
+      width: 3,
+      "line-color": "#888",
+      "target-arrow-color": "#888",
+      "target-arrow-shape": "triangle",
+      "curve-style": "unbundled-bezier",
+      "text-background-color": "#ffffff",
+      "text-background-opacity": 0.8,
+      "text-background-shape": "rectangle",
+      "font-size": "10px",
+    },
+  },
+  {
+    selector: "edge[label]",
+    style: {
+      label: "data(label)",
+    }
+  },
+  {
+    selector: "edge[isUpdate]",
+    style: {
+      "color": "#ddd",
+      "line-color": "#ddd",
+      "line-style": "dashed",
+      "target-arrow-color": "#ddd",
+    }
+  },
+];
+
 const graph_data: GraphData = {
   loop: {
     while: "source",
@@ -88,13 +133,15 @@ const graph_data: GraphData = {
 const cytoscapeFromGraph = (graph_data: GraphData) => {
   const elements = Object.keys(graph_data.nodes).reduce((tmp: Record<string, any>, nodeId) => {
       const node: Record<string, any> = graph_data.nodes[nodeId];
-      tmp.nodes.push({
+      const cyNode = {
         data: {
           id: nodeId,
           color: "#888",
           isStatic: "value" in node
         }
-      });
+      };
+      tmp.nodes.push(cyNode);
+      tmp.map[nodeId] = cyNode;
       console.log(node.inputs);
       (node.inputs ?? []).forEach((input:string) => {
         const { source, label } = parseInput(input);
@@ -119,7 +166,7 @@ const cytoscapeFromGraph = (graph_data: GraphData) => {
       }
       return tmp;
     }, 
-    { nodes:[], edges:[]} 
+    { nodes:[], edges:[], map:{} } 
   );
   return { elements };
 }
@@ -130,6 +177,7 @@ export default defineComponent({
   setup() {
     const cyRef = ref();
     const layout_value = ref(layouts[0]);
+    const cydata = cytoscapeFromGraph(graph_data);
 
     const res = ref({});
     const logs = ref<unknown[]>([]);
@@ -149,55 +197,11 @@ export default defineComponent({
       console.log(e);
     };
 
-    const createGraph = () => {
+    const createCytoscope = () => {
       try {
         cy = cytoscape({
           container: cyRef.value,
-          style: [
-            {
-              selector: "node",
-              style: {
-                "background-color": "data(color)",
-                label: "data(id)",
-                shape: (ele: NodeSingular) => (ele.data("isStatic") ? "rectangle" : "roundrectangle"),
-                width: (ele: NodeSingular) => calcNodeWidth(ele.data("id")),
-                color: "#fff",
-                height: "30px",
-                "text-valign": "center",
-                "text-halign": "center",
-                "font-size": "12px",
-              },
-            },
-            {
-              selector: "edge",
-              style: {
-                width: 3,
-                "line-color": "#888",
-                "target-arrow-color": "#888",
-                "target-arrow-shape": "triangle",
-                "curve-style": "unbundled-bezier",
-                "text-background-color": "#ffffff",
-                "text-background-opacity": 0.8,
-                "text-background-shape": "rectangle",
-                "font-size": "10px",
-              },
-            },
-            {
-              selector: "edge[label]",
-              style: {
-                label: "data(label)",
-              }
-            },
-            {
-              selector: "edge[isUpdate]",
-              style: {
-                "color": "#ddd",
-                "line-color": "#ddd",
-                "line-style": "dashed",
-                "target-arrow-color": "#ddd",
-              }
-            },
-          ],
+          style: cyStyle,
           layout: {
             name: "cose",
             fit: true,
@@ -217,7 +221,6 @@ export default defineComponent({
       }
     };
     const updateGraphData = async () => {
-      const cydata = cytoscapeFromGraph(graph_data);
       cy.elements().remove();
       cy.add(cydata.elements);
       const name = cydata.elements.nodes.reduce((name: string, node: Record<string, any>) => {
@@ -235,7 +238,7 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      createGraph();
+      createCytoscope();
       updateGraphData();
     });
 
