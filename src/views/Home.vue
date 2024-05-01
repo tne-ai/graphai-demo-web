@@ -28,10 +28,10 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted, watch } from "vue";
 
-import { GraphAI, GraphData } from "graphai";
+import { GraphAI, GraphData, AgentFunction } from "graphai";
 import { NodeState, NodeData } from "graphai/lib/type";
 import { pushAgent, popAgent } from "graphai/lib/experimental_agents/array_agents";
-import { sleep } from "@/utils/utils";
+import { sleep, sleepTestAgent } from "@/utils/utils";
 
 import cytoscape, {
   //  ElementDefinition,
@@ -142,6 +142,22 @@ const graph_data: GraphData = {
   },
 };
 
+const graph_data2: GraphData = {
+  nodes: {
+    node1: {
+      value: { message: "Hello World" }
+    },
+    node2: {
+      agentId: "sleepTestAgent",
+      params: {
+        duration: 2000,
+      },
+      inputs: ["node1"],
+      isResult: true
+    }
+  }
+};
+
 const cytoscapeFromGraph = (graph_data: GraphData) => {
   const elements = Object.keys(graph_data.nodes).reduce((tmp: Record<string, any>, nodeId) => {
       const node: NodeData = graph_data.nodes[nodeId];
@@ -186,20 +202,26 @@ const cytoscapeFromGraph = (graph_data: GraphData) => {
   return { elements };
 }
 
+export const sleepTestAgent: AgentFunction<{ duration?: number; value?: Record<string, any> }> = async (context) => {
+  const { params, inputs } = context;
+  await sleep(params?.duration ?? 10);
+  return inputs[0];
+};
+
 export default defineComponent({
   name: "HomePage",
   components: {},
   setup() {
     const cyRef = ref();
     const layout_value = ref(layouts[0]);
-    const cytoData = ref(cytoscapeFromGraph(graph_data));
+    const cytoData = ref(cytoscapeFromGraph(graph_data2));
 
     const res = ref({});
     const logs = ref<unknown[]>([]);
     let cy: null | Core = null;
 
     const run = async () => {
-      const graph = new GraphAI(graph_data, { pushAgent, popAgent });
+      const graph = new GraphAI(graph_data2, { pushAgent, popAgent, sleepTestAgent });
       graph.onLogCallback = ({ nodeId, state, inputs, result, errorMessage }) => {
         logs.value.push({ nodeId, state, inputs, result, errorMessage });
         console.log();
