@@ -22,3 +22,6 @@ export const httpAgent: AgentFunction = async ({ inputs, params }) => {
   });
   return await response.json();
 };
+
+export const sleep = (milliseconds: number) => new Promise((resolve) => setTimeout(resolve, milliseconds));
+

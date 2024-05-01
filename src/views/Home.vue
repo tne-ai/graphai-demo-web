@@ -26,11 +26,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from "vue";
+import { defineComponent, ref, onMounted, watch } from "vue";
 
 import { GraphAI } from "graphai";
 import { GraphData } from "graphai";
 import { pushAgent, popAgent } from "graphai/lib/experimental_agents/array_agents";
+import { sleep } from "@/utils/utils";
 
 import cytoscape, {
   //  ElementDefinition,
@@ -142,7 +143,6 @@ const cytoscapeFromGraph = (graph_data: GraphData) => {
       };
       tmp.nodes.push(cyNode);
       tmp.map[nodeId] = cyNode;
-      console.log(node.inputs);
       (node.inputs ?? []).forEach((input:string) => {
         const { source, label } = parseInput(input);
         tmp.edges.push({
@@ -193,8 +193,8 @@ export default defineComponent({
       res.value = results;
     };
 
-    const callback = (e: EventObject) => {
-      console.log(e);
+    const storePositions = () => {
+      console.log("storePotitions");
     };
 
     const createCytoscope = () => {
@@ -209,10 +209,10 @@ export default defineComponent({
             avoidOverlap: true,
           },
         });
-        cy.on("mouseup", callback);
-        cy.on("touchend", callback);
-        cy.on("select", "node", callback);
-        cy.on("select", "edge", callback);
+        cy.on("mouseup", storePositions);
+        cy.on("touchend", storePositions);
+        // cy.on("select", "node", callback);
+        // cy.on("select", "edge", callback);
         //store.commit("setCytoscape", cy);
       } catch (error) {
         console.error(error);
@@ -232,10 +232,13 @@ export default defineComponent({
       cy.layout({ name }).run();
       cy.fit();
       if (name == "cose") {
-        // await sleep(400);
-        // emit_positions();
+        await sleep(400);
+        storePositions();
       }
     };
+    watch(cytoData, (newData) => {
+      console.log("updated");
+    });
 
     onMounted(() => {
       createCytoscope();
