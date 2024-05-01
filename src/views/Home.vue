@@ -29,6 +29,7 @@
 import { defineComponent, ref, onMounted, watch } from "vue";
 
 import { GraphAI, GraphData } from "graphai";
+import { NodeState, NodeData } from "graphai/lib/type";
 import { pushAgent, popAgent } from "graphai/lib/experimental_agents/array_agents";
 import { sleep } from "@/utils/utils";
 
@@ -105,6 +106,17 @@ const cyStyle = [{
   },
 ];
 
+const colorMap = {
+  [NodeState.Waiting]: "#888",
+  [NodeState.Completed]: "#000",
+  [NodeState.Executing]: "#0f0",
+  [NodeState.Queued]: '#ff0',
+  [NodeState.Injected]: "#ccc",
+  [NodeState.TimedOut]: "#f0f",
+  [NodeState.Failed]: "#f00",
+  [NodeState.Dispatched]: "#f00", // obsolete
+};
+
 const graph_data: GraphData = {
   loop: {
     while: "source",
@@ -136,7 +148,7 @@ const cytoscapeFromGraph = (graph_data: GraphData) => {
       const cyNode = {
         data: {
           id: nodeId,
-          color: "#888",
+          color: colorMap[NodeState.Waiting],
           isStatic: "value" in node
         }
       };
@@ -190,7 +202,7 @@ export default defineComponent({
 
         console.log(nodeId, state);
         const elements = cytoData.value.elements;
-        elements.map[nodeId].data.color = "#f00";
+        elements.map[nodeId].data.color = colorMap[state];
         cytoData.value = { elements };
       };
       const results = await graph.run();
