@@ -53,6 +53,13 @@ const calcNodeWidth = (label: string) => {
   return Math.max(50, label.length * 8) + "px";
 };
 
+const parseInput = (input:string) => {
+  const ids = input.split('.')
+  const source = ids.shift();
+  const label = ids.length ? ids.join('.') : undefined;
+  return { source, label };
+};
+
 const graph_data: GraphData = {
   loop: {
     while: "source",
@@ -90,9 +97,7 @@ const cytoscapeFromGraph = (graph_data: GraphData) => {
       });
       console.log(node.inputs);
       (node.inputs ?? []).forEach((input:string) => {
-        const ids = input.split('.')
-        const source = ids.shift();
-        const label = ids.length ? ids.join('.') : undefined;
+        const { source, label } = parseInput(input);
         tmp.edges.push({
           data: {
             source,
@@ -100,7 +105,18 @@ const cytoscapeFromGraph = (graph_data: GraphData) => {
             label
           }
         })
-      });      
+      });
+      if (node.update) {
+        const { source, label } = parseInput(node.update);        
+        tmp.edges.push({
+          data: {
+            source,
+            target: nodeId,
+            isUpdate: true,
+            label
+          }
+        })
+      }
       return tmp;
     }, 
     { nodes:[], edges:[]} 
@@ -170,6 +186,15 @@ export default defineComponent({
               selector: "edge[label]",
               style: {
                 label: "data(label)",
+              }
+            },
+            {
+              selector: "edge[isUpdate]",
+              style: {
+                "color": "#ddd",
+                "line-color": "#ddd",
+                "line-style": "dashed",
+                "target-arrow-color": "#ddd",
               }
             },
           ],
