@@ -37,7 +37,7 @@ import cytoscape, {
   //  ElementDefinition,
   //  ElementsDefinition,
   // Position,
-  EventObject,
+  // EventObject,
   Core,
   NodeSingular,
 } from "cytoscape";
@@ -248,7 +248,7 @@ export default defineComponent({
         storePositions();
       }
     };
-    watch(cytoData, (newData) => {
+    watch(cytoData, () => {
       console.log("updated");
       updateGraphData();
     });
