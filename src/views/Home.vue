@@ -2,7 +2,10 @@
   <div class="home">
     <div class="items-center justify-center space-x-8">
       <!-- Use Tailwind CSS h-40 (=10rem=160px) instead of .logo. -->
-      <div ref="cyRef" class="w-full h-full" />
+      <div class="w-full h-96 bg-white rounded-md mt-4 mx-auto">
+        <div ref="cyRef" class="w-full h-full" />
+      </div>
+      
       <div>Graph Data</div>
       <div class="w-6/8">
         <textarea class="border-8" rows="20" cols="100">{{ graph_data }}</textarea>
