@@ -6,6 +6,7 @@
       <div class="hidden">
         {{ agentList["agents"]?.map((a) => a.agentId) }}
       </div>
+      <div ref="cyRef" class="w-full h-full" />
       <div>Graph Data</div>
       <div class="w-6/8">
         <textarea class="border-8" rows="20" cols="100">{{ graph_data }}</textarea>
@@ -31,10 +32,23 @@ import { GraphAI } from "graphai";
 
 import { agentListApi, httpAgent } from "./utils";
 
+import cytoscape, {
+  //  ElementDefinition,
+  //  ElementsDefinition,
+  // Position,
+  // EventObject,
+  // Core,
+  // NodeSingular,
+} from "cytoscape";
+import fcose from "cytoscape-fcose";
+
+cytoscape.use(fcose);
+
 export default defineComponent({
   name: "HomePage",
   components: {},
   setup() {
+    const cyRef = ref();
     const graph_data = {
       nodes: {
         echo: {
@@ -98,6 +112,7 @@ export default defineComponent({
       logs,
       graph_data,
       res,
+      cyRef,
       agentList,
     };
   },
