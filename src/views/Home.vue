@@ -78,6 +78,36 @@ const graph_data: GraphData = {
   },
 };
 
+const cytoscapeFromGraph = (graph_data: GraphData) => {
+  const elements = Object.keys(graph_data.nodes).reduce((tmp: Record<string, any>, nodeId) => {
+      const node: Record<string, any> = graph_data.nodes[nodeId];
+      tmp.nodes.push({
+        data: {
+          id: nodeId,
+          color: "#888",
+          isStatic: "value" in node
+        }
+      });
+      console.log(node.inputs);
+      (node.inputs ?? []).forEach((input:string) => {
+        const ids = input.split('.')
+        const source = ids.shift();
+        const propId = ids.length ? ids.join('.') : undefined;
+        tmp.edges.push({
+          data: {
+            source,
+            target: nodeId,
+            propId
+          }
+        })
+      });      
+      return tmp;
+    }, 
+    { nodes:[], edges:[]} 
+  );
+  return { elements };
+}
+
 export default defineComponent({
   name: "HomePage",
   components: {},
@@ -157,50 +187,20 @@ export default defineComponent({
       }
     };
     const updateGraphData = async () => {
-      const elements = Object.keys(graph_data.nodes).reduce((tmp: Record<string, any>, nodeId) => {
-        const node: Record<string, any> = graph_data.nodes[nodeId];
-        tmp.nodes.push({
-          data: {
-            id: nodeId,
-            color: "#888",
-            isStatic: "value" in node
-          }
-        });
-        console.log(node.inputs);
-        (node.inputs ?? []).forEach((input:string) => {
-          const ids = input.split('.')
-          const source = ids.shift();
-          const propId = ids.length ? ids.join('.') : undefined;
-          tmp.edges.push({
-            data: {
-              source,
-              target: nodeId,
-              propId
-            }
-          })
-        });      
-        return tmp;
-      }, 
-      { nodes:[], edges:[]} );
-      console.log(elements.nodes);
-      console.log(elements.edges);
-      const cydata = { elements };
-
-      if (cydata && cy) {
-        cy.elements().remove();
-        cy.add(cydata.elements);
-        const name = cydata.elements.nodes.reduce((name: string, node: Record<string, any>) => {
-          if (node.position) {
-            return "preset";
-          }
-          return name;
-        }, "cose");
-        cy.layout({ name }).run();
-        cy.fit();
-        if (name == "cose") {
-          // await sleep(400);
-          // emit_positions();
+      const cydata = cytoscapeFromGraph(graph_data);
+      cy.elements().remove();
+      cy.add(cydata.elements);
+      const name = cydata.elements.nodes.reduce((name: string, node: Record<string, any>) => {
+        if (node.position) {
+          return "preset";
         }
+        return name;
+      }, "cose");
+      cy.layout({ name }).run();
+      cy.fit();
+      if (name == "cose") {
+        // await sleep(400);
+        // emit_positions();
       }
     };
 
