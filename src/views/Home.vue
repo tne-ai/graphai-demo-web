@@ -5,13 +5,13 @@
       <div class="w-full h-96 bg-white rounded-md mt-4 mx-auto">
         <div ref="cyRef" class="w-full h-full" />
       </div>
+      <div>
+        <button class="border-2" @click="run">Run</button>
+      </div>
 
       <div>Graph Data</div>
       <div class="w-6/8">
         <textarea class="border-8" rows="20" cols="100">{{ graph_data }}</textarea>
-      </div>
-      <div>
-        <button class="border-2" @click="run">Run</button>
       </div>
       <div>Result</div>
       <div class="w-6/8">
