@@ -5,7 +5,7 @@
       <div class="w-full h-96 bg-white rounded-md mt-4 mx-auto">
         <div ref="cyRef" class="w-full h-full" />
       </div>
-      
+
       <div>Graph Data</div>
       <div class="w-6/8">
         <textarea class="border-8" rows="20" cols="100">{{ graph_data }}</textarea>
@@ -77,48 +77,56 @@ const graph_data = {
   },
 };
 
-const nodes = [{
-  data: {
-   id: "id0",
+const nodes = [
+  {
+    data: {
+      id: "id0",
+      color: "#f00",
+    },
   },
- },
- {
-  data: {
-   id: 1,
+  {
+    data: {
+      id: 1,
+      color: "#0f0",
+    },
   },
- },
- {
-  data: {
-   id: 2,
+  {
+    data: {
+      id: 2,
+      color: "#00f",
+    },
   },
- },
- {
-  data: {
-   id: 3,
+  {
+    data: {
+      id: 3,
+      color: "#333",
+    },
   },
- },
- {
-  data: {
-   id: 4,
+  {
+    data: {
+      id: 4,
+      color: "#333",
+    },
   },
- },
- {
-  data: {
-   id: 5,
+  {
+    data: {
+      id: 5,
+      color: "#333",
+    },
   },
- },
- {
-  data: {
-   id: 6,
-   isStatic: true,
+  {
+    data: {
+      id: 6,
+      isStatic: true,
+      color: "#333",
+    },
   },
- },
- {
-  data: {
-   id: 7,
-   isStatic: true,
+  {
+    data: {
+      id: 7,
+      isStatic: true,
+    },
   },
- },
 ];
 
 const edges = [
@@ -132,7 +140,7 @@ const edges = [
 ];
 
 const cygraph = {
-  elements: { nodes, edges }
+  elements: { nodes, edges },
 };
 
 export default defineComponent({
@@ -159,7 +167,7 @@ export default defineComponent({
 
     const callback = (e: EventObject) => {
       console.log(e);
-    }
+    };
 
     const createGraph = () => {
       try {
@@ -169,14 +177,14 @@ export default defineComponent({
             {
               selector: "node",
               style: {
-                "background-color": "#f00",
+                "background-color": "data(color)",
                 label: "data(id)",
+                shape: (ele: NodeSingular) => (ele.data("isStatic") ? "roundrectangle" : "rectangle"),
+                width: (ele: NodeSingular) => calcNodeWidth(ele.data("id")),
+                color: "#fff",
+                height: "30px",
                 "text-valign": "center",
                 "text-halign": "center",
-                shape: (ele: NodeSingular) => (ele.data("isStatic") ? "roundrectangle" : "rectangle"),
-                height: "50px",
-                width: (ele: NodeSingular) => calcNodeWidth(ele.data("id")),
-                color: "#fff", 
                 "font-size": "12px",
               },
             },
@@ -184,14 +192,13 @@ export default defineComponent({
               selector: "edge",
               style: {
                 width: 3,
-                "line-color": "#888",
-                "target-arrow-color": "#888",
+                "line-color": "#666",
+                "target-arrow-color": "#666",
                 "target-arrow-shape": "triangle",
                 label: "data(propId)",
                 "curve-style": "unbundled-bezier",
-                "line-dash-pattern": [4, 4],
                 "text-background-color": "#ffffff",
-                "text-background-opacity": 1,
+                "text-background-opacity": 0.8,
                 "text-background-shape": "rectangle",
                 "font-size": "10px",
               },
