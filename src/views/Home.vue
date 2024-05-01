@@ -28,8 +28,7 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted, watch } from "vue";
 
-import { GraphAI } from "graphai";
-import { GraphData } from "graphai";
+import { GraphAI, GraphData } from "graphai";
 import { pushAgent, popAgent } from "graphai/lib/experimental_agents/array_agents";
 import { sleep } from "@/utils/utils";
 
