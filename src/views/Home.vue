@@ -177,7 +177,7 @@ export default defineComponent({
   setup() {
     const cyRef = ref();
     const layout_value = ref(layouts[0]);
-    const cydata = cytoscapeFromGraph(graph_data);
+    const cytoData = ref(cytoscapeFromGraph(graph_data));
 
     const res = ref({});
     const logs = ref<unknown[]>([]);
@@ -222,8 +222,8 @@ export default defineComponent({
     };
     const updateGraphData = async () => {
       cy.elements().remove();
-      cy.add(cydata.elements);
-      const name = cydata.elements.nodes.reduce((name: string, node: Record<string, any>) => {
+      cy.add(cytoData.value.elements);
+      const name = cytoData.value.elements.nodes.reduce((name: string, node: Record<string, any>) => {
         if (node.position) {
           return "preset";
         }
