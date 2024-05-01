@@ -80,12 +80,102 @@ const graph_data = {
   },
 };
 
+const nodes = [{
+  data: {
+   id: 0,
+   label: "Animal",
+   description: "",
+   active: true,
+   width: 140,
+  },
+ },
+ {
+  data: {
+   id: 1,
+   label: "Mammal",
+   description: "",
+   active: false,
+   width: 140,
+  },
+ },
+ {
+  data: {
+   id: 2,
+   label: "Reptile",
+   description: "",
+   active: false,
+   width: 140,
+  },
+ },
+ {
+  data: {
+   id: 3,
+   label: "Horse",
+   description: "",
+   active: false,
+   width: 140,
+  },
+ },
+ {
+  data: {
+   id: 4,
+   label: "Dog",
+   description: "Join",
+   active: false,
+   width: 140,
+  },
+ },
+ {
+  data: {
+   id: 5,
+   label: "Goat",
+   description: "Branch Out",
+   active: false,
+   width: 140,
+  },
+ },
+ {
+  data: {
+   id: 6,
+   label: "Hound",
+   description: "",
+   active: false,
+   width: 140,
+  },
+ },
+ {
+  data: {
+   id: 7,
+   label: "German Shephard",
+   description: "",
+   active: false,
+   width: 140,
+  },
+ },
+];
+
+const edges = [
+  { data: { source: 0, target: 1, label: "Sub" } },
+  { data: { source: 0, target: 2, label: "Sub" } },
+  { data: { source: 1, target: 3, label: "Sub" } },
+  { data: { source: 1, target: 4, label: "Sub" } },
+  { data: { source: 1, target: 5, label: "Sub" } },
+  { data: { source: 4, target: 6, label: "Sub" } },
+  { data: { source: 4, target: 7, label: "Sub" } },
+];
+
+const cygraph = {
+  elements: { nodes, edges }
+};
+
 export default defineComponent({
   name: "HomePage",
   components: {},
   setup() {
     const cyRef = ref();
     const layout_value = ref(layouts[0]);
+    const cydata = ref(cygraph);
+
     const res = ref({});
     const logs = ref<unknown[]>([]);
     let cy: null | Core = null;
@@ -104,7 +194,6 @@ export default defineComponent({
       console.log(e);
     }
 
-    const dataColor = "data(color)";
     const createGraph = () => {
       try {
         cy = cytoscape({
@@ -113,7 +202,7 @@ export default defineComponent({
             {
               selector: "node",
               style: {
-                "background-color": dataColor,
+                "background-color": "#fff",
                 label: "data(label)",
                 "text-valign": "center",
                 "text-halign": "center",
@@ -128,8 +217,8 @@ export default defineComponent({
               selector: "edge",
               style: {
                 width: 3,
-                "line-color": dataColor,
-                "target-arrow-color": dataColor,
+                "line-color": "#888",
+                "target-arrow-color": "#888",
                 "target-arrow-shape": "none",
                 label: "data(label)",
                 "curve-style": "unbundled-bezier",
@@ -165,13 +254,28 @@ export default defineComponent({
         // error_msg.value = `${error}`;
       }
     };
+    const updateGraphData = async () => {
+      if (cydata.value && cy) {
+        cy.elements().remove();
+        cy.add(cydata.value.elements);
+        const name = cydata.value.elements.nodes.reduce((name, node) => {
+          if (node.position) {
+            return "preset";
+          }
+          return name;
+        }, "cose");
+        cy.layout({ name }).run();
+        cy.fit();
+        if (name == "cose") {
+          // await sleep(400);
+          // emit_positions();
+        }
+      }
+    };
+
     onMounted(() => {
       createGraph();
-      /*
-      if (data.value) {
-        updateGraphData();
-      }
-      */
+      updateGraphData();
     });
 
     return {
