@@ -92,12 +92,12 @@ const cytoscapeFromGraph = (graph_data: GraphData) => {
       (node.inputs ?? []).forEach((input:string) => {
         const ids = input.split('.')
         const source = ids.shift();
-        const propId = ids.length ? ids.join('.') : undefined;
+        const label = ids.length ? ids.join('.') : undefined;
         tmp.edges.push({
           data: {
             source,
             target: nodeId,
-            propId
+            label
           }
         })
       });      
@@ -159,13 +159,18 @@ export default defineComponent({
                 "line-color": "#888",
                 "target-arrow-color": "#888",
                 "target-arrow-shape": "triangle",
-                label: "data(propId)",
                 "curve-style": "unbundled-bezier",
                 "text-background-color": "#ffffff",
                 "text-background-opacity": 0.8,
                 "text-background-shape": "rectangle",
                 "font-size": "10px",
               },
+            },
+            {
+              selector: "edge[label]",
+              style: {
+                label: "data(label)",
+              }
             },
           ],
           layout: {
