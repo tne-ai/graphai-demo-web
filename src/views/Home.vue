@@ -3,8 +3,8 @@
     <div class="items-center justify-center space-x-8">
       <!-- Use Tailwind CSS h-40 (=10rem=160px) instead of .logo. -->
       <div>List</div>
-      <div>
-        {{ agentList["agents"] }}
+      <div class="hidden">
+        {{ agentList["agents"]?.map((a) => a.agentId) }}
       </div>
       <div>Graph Data</div>
       <div class="w-6/8">

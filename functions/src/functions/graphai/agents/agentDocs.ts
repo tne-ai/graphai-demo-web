@@ -1,4 +1,4 @@
-import { AgentFunction } from "graphai";
+import { AgentFunction } from "graphai/lib/type";
 import toJsonSchema from "to-json-schema";
 
 import slashGPTFuncitons2TextAgentInfo from "./slashgpt_agent";

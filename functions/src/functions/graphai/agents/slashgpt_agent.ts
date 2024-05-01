@@ -1,4 +1,4 @@
-import { AgentFunction } from "graphai";
+import { AgentFunction } from "graphai/lib/type";
 
 export const slashGPTFuncitons2TextAgent: AgentFunction<
   { function_data_key: string },

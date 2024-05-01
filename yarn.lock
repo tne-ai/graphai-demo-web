@@ -1839,9 +1839,8 @@ graceful-fs@^4.1.6, graceful-fs@^4.2.0:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.11.tgz#4183e4e8bf08bb6e05bbb2f7d2e0c8f712ca40e3"
   integrity sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==
 
-"graphai@https://github.com/snakajima/graphai.git":
-  version "0.1.0"
-  resolved "https://github.com/snakajima/graphai.git#5ffc8154d735aca4926086e58cac4e2fdaf0a068"
+graphai@../graphai:
+  version "0.1.1"
   dependencies:
     yaml "^2.3.3"
 
