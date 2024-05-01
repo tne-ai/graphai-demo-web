@@ -149,12 +149,48 @@ const graph_data2: GraphData = {
     },
     node2: {
       agentId: "sleepTestAgent",
-      params: {
-        duration: 2000,
-      },
       inputs: ["node1"],
-      isResult: true
-    }
+    },
+    node3: {
+      agentId: "sleepTestAgent",
+      inputs: ["node2"],
+    },
+    node4: {
+      agentId: "sleepTestAgent",
+      inputs: ["node2", "node3"],
+    },
+    node5: {
+      agentId: "sleepTestAgent",
+      inputs: ["node3", "node4"],
+    },
+    node6: {
+      agentId: "sleepTestAgent",
+      inputs: ["node1", "node5"],
+    },
+    node7: {
+      agentId: "sleepTestAgent",
+      inputs: ["node3", "node5"],
+    },
+    node8: {
+      agentId: "sleepTestAgent",
+      inputs: ["node2", "node5", "node3"],
+    },
+    node9: {
+      agentId: "sleepTestAgent",
+      inputs: ["node4", "node8", "node6"],
+    },
+    node10: {
+      agentId: "sleepTestAgent",
+      inputs: ["node5", "node6", "node7"],
+    },
+    node11: {
+      agentId: "sleepTestAgent",
+      inputs: ["node3", "node6", "node7"],
+    },
+    node12: {
+      agentId: "sleepTestAgent",
+      inputs: ["node10", "node11", "node9"],
+    },
   }
 };
 
@@ -204,7 +240,7 @@ const cytoscapeFromGraph = (graph_data: GraphData) => {
 
 export const sleepTestAgent: AgentFunction<{ duration?: number; value?: Record<string, any> }> = async (context) => {
   const { params, inputs } = context;
-  await sleep(params?.duration ?? 10);
+  await sleep(params?.duration ?? 500);
   return inputs[0];
 };
 
