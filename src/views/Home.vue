@@ -123,7 +123,7 @@ export default defineComponent({
             {
               selector: "node",
               style: {
-                "background-color": "data(color)",
+                "background-color": "#f00",
                 label: "data(id)",
                 shape: (ele: NodeSingular) => (ele.data("isStatic") ? "roundrectangle" : "rectangle"),
                 width: (ele: NodeSingular) => calcNodeWidth(ele.data("id")),
@@ -172,12 +172,13 @@ export default defineComponent({
       const elements = Object.keys(graph_data.nodes).reduce((tmp: Record<string, any>, nodeId) => {
         const node: Record<string, any> = graph_data.nodes[nodeId];
         tmp.nodes.push({
-          id: node.nodeId,
+          id: nodeId,
           color: "#0ff",
         });      
         return tmp;
       }, 
       { nodes:[], edges:[]});
+      console.log(elements.nodes);
       const cydata = { elements };
 
       if (cydata && cy) {
