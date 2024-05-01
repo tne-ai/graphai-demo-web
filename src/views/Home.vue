@@ -144,7 +144,7 @@ const graph_data: GraphData = {
 
 const cytoscapeFromGraph = (graph_data: GraphData) => {
   const elements = Object.keys(graph_data.nodes).reduce((tmp: Record<string, any>, nodeId) => {
-      const node: Record<string, any> = graph_data.nodes[nodeId];
+      const node: NodeData = graph_data.nodes[nodeId];
       const cyNode = {
         data: {
           id: nodeId,
@@ -154,17 +154,21 @@ const cytoscapeFromGraph = (graph_data: GraphData) => {
       };
       tmp.nodes.push(cyNode);
       tmp.map[nodeId] = cyNode;
-      (node.inputs ?? []).forEach((input:string) => {
-        const { source, label } = parseInput(input);
-        tmp.edges.push({
-          data: {
-            source,
-            target: nodeId,
-            label
-          }
-        })
-      });
-      if (node.update) {
+      if ("inputs" in node) {
+        // computed node
+        (node.inputs ?? []).forEach((input:string) => {
+          const { source, label } = parseInput(input);
+          tmp.edges.push({
+            data: {
+              source,
+              target: nodeId,
+              label
+            }
+          })
+        });
+      } 
+      if ("update" in node && node.update) {
+        // static node
         const { source, label } = parseInput(node.update);        
         tmp.edges.push({
           data: {
