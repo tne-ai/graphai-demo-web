@@ -45,12 +45,6 @@ cytoscape.use(fcose);
 
 const layouts = ["grid", "cose", "random", "circle", "concentric", "fcose", "breadthfirst"];
 
-const getTextColor = (bgColor = "#000000") => {
-  const [r, g, b] = [0, 2, 4].map((start) => parseInt(bgColor.replace("#", "").substr(start, 2), 16));
-  const brightness = r * 0.299 + g * 0.587 + b * 0.114;
-  return brightness < 40 ? "#ffffff" : "#000000";
-};
-
 const calcNodeWidth = (label: string) => {
   if (label === null || label === undefined) {
     return "50px";
@@ -85,81 +79,49 @@ const graph_data = {
 
 const nodes = [{
   data: {
-   id: 0,
-   label: "Animal",
-   description: "",
-   active: true,
-   width: 140,
+   id: "id0",
   },
  },
  {
   data: {
    id: 1,
-   label: "Mammal",
-   description: "",
-   active: false,
-   width: 140,
   },
  },
  {
   data: {
    id: 2,
-   label: "Reptile",
-   description: "",
-   active: false,
-   width: 140,
   },
  },
  {
   data: {
    id: 3,
-   label: "Horse",
-   description: "",
-   active: false,
-   width: 140,
   },
  },
  {
   data: {
    id: 4,
-   label: "Dog",
-   description: "Join",
-   active: false,
-   width: 140,
   },
  },
  {
   data: {
    id: 5,
-   label: "Goat",
-   description: "Branch Out",
-   active: false,
-   width: 140,
   },
  },
  {
   data: {
    id: 6,
-   label: "Hound",
-   description: "",
-   active: false,
-   width: 140,
   },
  },
  {
   data: {
    id: 7,
-   label: "German Shephard",
-   description: "",
-   active: false,
-   width: 140,
   },
  },
 ];
 
 const edges = [
-  { data: { source: 0, target: 1, label: "Sub" } },
-  { data: { source: 0, target: 2, label: "Sub" } },
+  { data: { source: "id0", target: 1 } },
+  { data: { source: "id0", target: 2 } },
   { data: { source: 1, target: 3, label: "Sub" } },
   { data: { source: 1, target: 4, label: "Sub" } },
   { data: { source: 1, target: 5, label: "Sub" } },
@@ -206,12 +168,12 @@ export default defineComponent({
               selector: "node",
               style: {
                 "background-color": "#f00",
-                label: "data(label)",
+                label: "data(id)",
                 "text-valign": "center",
                 "text-halign": "center",
                 shape: "rectangle",
                 height: "50px",
-                width: (ele: NodeSingular) => calcNodeWidth(ele.data("label")),
+                width: (ele: NodeSingular) => calcNodeWidth(ele.data("id")),
                 color: "#fff", // (ele: NodeSingular) => getTextColor(ele.data("color")),
                 "font-size": "12px",
               },
@@ -222,7 +184,7 @@ export default defineComponent({
                 width: 3,
                 "line-color": "#888",
                 "target-arrow-color": "#888",
-                "target-arrow-shape": "none",
+                "target-arrow-shape": "triangle",
                 label: "data(label)",
                 "curve-style": "unbundled-bezier",
                 "line-dash-pattern": [4, 4],
@@ -230,12 +192,6 @@ export default defineComponent({
                 "text-background-opacity": 1,
                 "text-background-shape": "rectangle",
                 "font-size": "10px",
-              },
-            },
-            {
-              selector: "edge[?directed]",
-              style: {
-                "target-arrow-shape": "triangle",
               },
             },
           ],
