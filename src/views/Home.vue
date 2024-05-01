@@ -53,6 +53,13 @@ const calcNodeWidth = (label: string) => {
   return Math.max(50, label.length * 8) + "px";
 };
 
+const parseInput = (input:string) => {
+  const ids = input.split('.')
+  const source = ids.shift();
+  const label = ids.length ? ids.join('.') : undefined;
+  return { source, label };
+};
+
 const graph_data: GraphData = {
   loop: {
     while: "source",
@@ -77,6 +84,45 @@ const graph_data: GraphData = {
     },
   },
 };
+
+const cytoscapeFromGraph = (graph_data: GraphData) => {
+  const elements = Object.keys(graph_data.nodes).reduce((tmp: Record<string, any>, nodeId) => {
+      const node: Record<string, any> = graph_data.nodes[nodeId];
+      tmp.nodes.push({
+        data: {
+          id: nodeId,
+          color: "#888",
+          isStatic: "value" in node
+        }
+      });
+      console.log(node.inputs);
+      (node.inputs ?? []).forEach((input:string) => {
+        const { source, label } = parseInput(input);
+        tmp.edges.push({
+          data: {
+            source,
+            target: nodeId,
+            label
+          }
+        })
+      });
+      if (node.update) {
+        const { source, label } = parseInput(node.update);        
+        tmp.edges.push({
+          data: {
+            source,
+            target: nodeId,
+            isUpdate: true,
+            label
+          }
+        })
+      }
+      return tmp;
+    }, 
+    { nodes:[], edges:[]} 
+  );
+  return { elements };
+}
 
 export default defineComponent({
   name: "HomePage",
@@ -129,13 +175,27 @@ export default defineComponent({
                 "line-color": "#888",
                 "target-arrow-color": "#888",
                 "target-arrow-shape": "triangle",
-                label: "data(propId)",
                 "curve-style": "unbundled-bezier",
                 "text-background-color": "#ffffff",
                 "text-background-opacity": 0.8,
                 "text-background-shape": "rectangle",
                 "font-size": "10px",
               },
+            },
+            {
+              selector: "edge[label]",
+              style: {
+                label: "data(label)",
+              }
+            },
+            {
+              selector: "edge[isUpdate]",
+              style: {
+                "color": "#ddd",
+                "line-color": "#ddd",
+                "line-style": "dashed",
+                "target-arrow-color": "#ddd",
+              }
             },
           ],
           layout: {
@@ -157,50 +217,20 @@ export default defineComponent({
       }
     };
     const updateGraphData = async () => {
-      const elements = Object.keys(graph_data.nodes).reduce((tmp: Record<string, any>, nodeId) => {
-        const node: Record<string, any> = graph_data.nodes[nodeId];
-        tmp.nodes.push({
-          data: {
-            id: nodeId,
-            color: "#888",
-            isStatic: "value" in node
-          }
-        });
-        console.log(node.inputs);
-        (node.inputs ?? []).forEach((input:string) => {
-          const ids = input.split('.')
-          const source = ids.shift();
-          const propId = ids.length ? ids.join('.') : undefined;
-          tmp.edges.push({
-            data: {
-              source,
-              target: nodeId,
-              propId
-            }
-          })
-        });      
-        return tmp;
-      }, 
-      { nodes:[], edges:[]} );
-      console.log(elements.nodes);
-      console.log(elements.edges);
-      const cydata = { elements };
-
-      if (cydata && cy) {
-        cy.elements().remove();
-        cy.add(cydata.elements);
-        const name = cydata.elements.nodes.reduce((name: string, node: Record<string, any>) => {
-          if (node.position) {
-            return "preset";
-          }
-          return name;
-        }, "cose");
-        cy.layout({ name }).run();
-        cy.fit();
-        if (name == "cose") {
-          // await sleep(400);
-          // emit_positions();
+      const cydata = cytoscapeFromGraph(graph_data);
+      cy.elements().remove();
+      cy.add(cydata.elements);
+      const name = cydata.elements.nodes.reduce((name: string, node: Record<string, any>) => {
+        if (node.position) {
+          return "preset";
         }
+        return name;
+      }, "cose");
+      cy.layout({ name }).run();
+      cy.fit();
+      if (name == "cose") {
+        // await sleep(400);
+        // emit_positions();
       }
     };
 
