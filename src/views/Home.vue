@@ -39,9 +39,10 @@ import { GraphAI, GraphData, AgentFunction } from "graphai";
 import { NodeState, NodeData } from "graphai/lib/type";
 import { pushAgent, popAgent } from "graphai/lib/experimental_agents/array_agents";
 import { sleep } from "@/utils/utils";
+import { httpAgent } from "./utils";
 import { generateGraph } from "@/utils/graph";
 
-import { graph_data, graph_data2 } from "@/utils/graph_data";
+import { graph_data, graph_data2, graph_data_http } from "@/utils/graph_data";
 
 import cytoscape, {
   //  ElementDefinition,
@@ -193,6 +194,7 @@ export default defineComponent({
       { name: "sample2", data: graph_data2 },
       { name: "sample", data: graph_data },
       { name: "random", data: graph_random },
+      { name: "http", data: graph_data_http },
     ];
     const cytoData = ref(cytoscapeFromGraph(graphDataSet[0].data));
 
@@ -208,7 +210,7 @@ export default defineComponent({
     });
 
     const run = async () => {
-      const graph = new GraphAI(selectedGraph.value, { pushAgent, popAgent, sleepTestAgent });
+      const graph = new GraphAI(selectedGraph.value, { pushAgent, popAgent, sleepTestAgent, httpAgent });
       graph.onLogCallback = async ({ nodeId, state, inputs, result, errorMessage }) => {
         logs.value.push({ nodeId, state, inputs, result, errorMessage });
         console.log();

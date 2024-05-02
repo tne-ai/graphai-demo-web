@@ -105,9 +105,7 @@ export const graph_data2: GraphData = {
   },
 };
 
-
-
-const graph_data = {
+export const graph_data_http = {
   nodes: {
     echo: {
       agentId: "httpAgent",
