@@ -127,10 +127,10 @@ export const cytoscapeFromGraph = (graph_data: GraphData) => {
   return { elements };
 };
 
-export const useCy = (initGraph: GraphData, selectedGraph: ComputedRef<GraphData>) => {
+export const useCy = (selectedGraph: ComputedRef<GraphData>) => {
   let cy: null | Core = null;
 
-  const cytoData = ref(cytoscapeFromGraph(initGraph));
+  const cytoData = ref(cytoscapeFromGraph(selectedGraph.value));
   const cyRef = ref();
 
   const updateCy = async (nodeId: string, state: NodeState) => {

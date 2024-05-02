@@ -68,7 +68,7 @@ export default defineComponent({
       return graphDataSet[selectedGraphIndex.value].data;
     });
 
-    const { cytoData, updateCy, cyRef, cytoscapeFromGraph, resetNode } = useCy(graphDataSet[0].data, selectedGraph);
+    const { cytoData, updateCy, cyRef, cytoscapeFromGraph, resetNode } = useCy(selectedGraph);
 
     const res = ref({});
     const logs = ref<unknown[]>([]);
