@@ -273,7 +273,11 @@ export default defineComponent({
     };
     const logClear = () => {
       logs.value = [];
-      cytoData.value = cytoscapeFromGraph(graph_data2);
+      const elements = cytoData.value.elements;
+      Object.keys(elements.map).forEach((nodeId) => {
+        elements.map[nodeId].data.color = colorMap[NodeState.Waiting];
+      });
+      cytoData.value = { elements };
     };
 
     const storePositions = () => {
