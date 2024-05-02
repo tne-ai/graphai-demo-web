@@ -133,7 +133,7 @@ const graph_data: GraphData = {
   },
   nodes: {
     source: {
-      value: ["orange", "banana", "lemon"],
+      value: ["orange", "banana", "lemon", "orange", "banana", "lemon", "orange", "banana", "lemon", "orange", "banana", "lemon"],
       update: "popper.array",
     },
     result: {
@@ -141,8 +141,36 @@ const graph_data: GraphData = {
       update: "reducer",
       isResult: true,
     },
+    sleeper1: {
+      agentId: "sleepTestAgent",
+      params: {
+        duration: 200,
+      },
+      inputs: ["source"]
+    },
+    sleeper2: {
+      agentId: "sleepTestAgent",
+      params: {
+        duration: 200,
+      },
+      inputs: ["sleeper1"]
+    },
+    sleeper3: {
+      agentId: "sleepTestAgent",
+      params: {
+        duration: 200,
+      },
+      inputs: ["sleeper2"]
+    },
+    sleeper4: {
+      agentId: "sleepTestAgent",
+      params: {
+        duration: 200,
+      },
+      inputs: ["sleeper3"]
+    },
     popper: {
-      inputs: ["source"],
+      inputs: ["sleeper4"],
       agentId: "popAgent", // returns { array, item }
     },
     reducer: {
