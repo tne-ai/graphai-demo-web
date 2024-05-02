@@ -18,7 +18,7 @@
 
       <div class="mt-2">Graph Data</div>
       <div class="w-6/8">
-        <textarea class="border-8" rows="20" cols="100">{{ graph_data }}</textarea>
+        <textarea class="border-8" rows="20" cols="100">{{ selectedGraph }}</textarea>
       </div>
       <div>Result</div>
       <div class="w-6/8">
@@ -411,6 +411,7 @@ export default defineComponent({
       res,
       cyRef,
       selectedGraphIndex,
+      selectedGraph,
       graphDataSet,
     };
   },
