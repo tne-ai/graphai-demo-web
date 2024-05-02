@@ -1,4 +1,6 @@
+import { AgentFunction } from "graphai";
 import { NodeData } from "graphai/lib/type";
+
 const arrays = (num: number) => {
   return new Array(num).fill(undefined);
 };
@@ -38,4 +40,27 @@ export const generateGraph = () => {
   return {
     nodes,
   };
+};
+
+export const agentListApi = async () => {
+  const url = "https://graphai-demo.web.app/api/agents";
+
+  const response = await fetch(url);
+  return await response.json();
+};
+
+export const httpAgent: AgentFunction = async ({ inputs, params }) => {
+  const { agentId, params: postParams } = params;
+  const url = "https://graphai-demo.web.app/api/agents/" + agentId;
+
+  const postData = { inputs, params: postParams };
+
+  const response = await fetch(url, {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(postData),
+  });
+  return await response.json();
 };

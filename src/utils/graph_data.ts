@@ -104,3 +104,42 @@ export const graph_data2: GraphData = {
     },
   },
 };
+
+export const graph_data_http = {
+  nodes: {
+    echo: {
+      agentId: "httpAgent",
+      params: {
+        agentId: "echoAgent",
+        params: {
+          message: "hello",
+        },
+      },
+    },
+    bypassAgent: {
+      agentId: "httpAgent",
+      inputs: ["echo"],
+      params: {
+        agentId: "bypassAgent",
+      },
+    },
+    sleepAgent: {
+      agentId: "httpAgent",
+      inputs: ["echo"],
+      params: {
+        agentId: "sleeperAgent",
+        params: {
+          duration: 1000,
+        },
+      },
+    },
+    bypassAgent2: {
+      agentId: "httpAgent",
+      inputs: ["bypassAgent"],
+      params: {
+        agentId: "bypassAgent",
+      },
+      isResult: true,
+    },
+  },
+};
