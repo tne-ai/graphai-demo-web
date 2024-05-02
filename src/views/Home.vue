@@ -44,11 +44,6 @@ import { graph_data, graph_data2, graph_data_http } from "@/utils/graph_data";
 
 import { useCy } from "@/composables/cytoscope";
 
-import cytoscape from "cytoscape";
-import fcose from "cytoscape-fcose";
-
-cytoscape.use(fcose);
-
 // const layouts = ["grid", "cose", "random", "circle", "concentric", "fcose", "breadthfirst"];
 
 export const sleepTestAgent: AgentFunction<{ duration?: number }> = async (context) => {

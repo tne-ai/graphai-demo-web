@@ -3,6 +3,8 @@ import { NodeState, NodeData } from "graphai/lib/type";
 import { GraphData } from "graphai";
 
 import cytoscape, { Core, NodeSingular, NodeDefinition, EdgeDefinition, EdgeSingular } from "cytoscape";
+import fcose from "cytoscape-fcose";
+cytoscape.use(fcose);
 
 import { sleep } from "@/utils/utils";
 
