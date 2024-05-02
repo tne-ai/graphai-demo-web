@@ -268,7 +268,6 @@ export default defineComponent({
       {name: "sample", data: graph_data},
       {name: "random", data: graph_random},
     ];
-    console.log(graphDataSet)
     const cytoData = ref(cytoscapeFromGraph(graphDataSet[0].data));
 
     const res = ref({});
