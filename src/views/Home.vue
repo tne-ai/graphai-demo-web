@@ -15,7 +15,7 @@
           {{ option.name }}
         </option>
       </select>
-      
+
       <div class="mt-2">Graph Data</div>
       <div class="w-6/8">
         <textarea class="border-8" rows="20" cols="100">{{ graph_data }}</textarea>
@@ -64,14 +64,15 @@ const calcNodeWidth = (label: string) => {
   return Math.max(50, label.length * 8) + "px";
 };
 
-const parseInput = (input:string) => {
-  const ids = input.split('.')
-  const source = ids.shift() || '';
-  const label = ids.length ? ids.join('.') : undefined;
+const parseInput = (input: string) => {
+  const ids = input.split(".");
+  const source = ids.shift() || "";
+  const label = ids.length ? ids.join(".") : undefined;
   return { source, label };
 };
 
-const cyStyle = [{
+const cyStyle = [
+  {
     selector: "node",
     style: {
       "background-color": "data(color)",
@@ -103,16 +104,16 @@ const cyStyle = [{
     selector: "edge[label]",
     style: {
       label: "data(label)",
-    }
+    },
   },
   {
     selector: "edge[isUpdate]",
     style: {
-      "color": "#ddd",
+      color: "#ddd",
       "line-color": "#ddd",
       "line-style": "dashed",
       "target-arrow-color": "#ddd",
-    }
+    },
   },
 ];
 
@@ -120,7 +121,7 @@ const colorMap = {
   [NodeState.Waiting]: "#888",
   [NodeState.Completed]: "#000",
   [NodeState.Executing]: "#0f0",
-  [NodeState.Queued]: '#ff0',
+  [NodeState.Queued]: "#ff0",
   [NodeState.Injected]: "#ccc",
   [NodeState.TimedOut]: "#f0f",
   [NodeState.Failed]: "#f00",
@@ -146,28 +147,28 @@ const graph_data: GraphData = {
       params: {
         duration: 200,
       },
-      inputs: ["source"]
+      inputs: ["source"],
     },
     sleeper2: {
       agentId: "sleepTestAgent",
       params: {
         duration: 200,
       },
-      inputs: ["sleeper1"]
+      inputs: ["sleeper1"],
     },
     sleeper3: {
       agentId: "sleepTestAgent",
       params: {
         duration: 200,
       },
-      inputs: ["sleeper2"]
+      inputs: ["sleeper2"],
     },
     sleeper4: {
       agentId: "sleepTestAgent",
       params: {
         duration: 200,
       },
-      inputs: ["sleeper3"]
+      inputs: ["sleeper3"],
     },
     popper: {
       inputs: ["sleeper4"],
@@ -183,7 +184,7 @@ const graph_data: GraphData = {
 const graph_data2: GraphData = {
   nodes: {
     node1: {
-      value: { message: "Hello World" }
+      value: { message: "Hello World" },
     },
     node2: {
       agentId: "sleepTestAgent",
@@ -229,54 +230,55 @@ const graph_data2: GraphData = {
       agentId: "sleepTestAgent",
       inputs: ["node10", "node11", "node9"],
     },
-  }
+  },
 };
 
 const cytoscapeFromGraph = (graph_data: GraphData) => {
-  const elements = Object.keys(graph_data.nodes).reduce((tmp: { nodes: NodeDefinition[], edges: EdgeDefinition[], map: Record<string, NodeDefinition>}, nodeId) => {
+  const elements = Object.keys(graph_data.nodes).reduce(
+    (tmp: { nodes: NodeDefinition[]; edges: EdgeDefinition[]; map: Record<string, NodeDefinition> }, nodeId) => {
       const node: NodeData = graph_data.nodes[nodeId];
       const cyNode = {
         data: {
           id: nodeId,
           color: colorMap[NodeState.Waiting],
-          isStatic: "value" in node
-        }
+          isStatic: "value" in node,
+        },
       };
       tmp.nodes.push(cyNode);
       tmp.map[nodeId] = cyNode;
       if ("inputs" in node) {
         // computed node
-        (node.inputs ?? []).forEach((input:string) => {
+        (node.inputs ?? []).forEach((input: string) => {
           const { source, label } = parseInput(input);
           tmp.edges.push({
             data: {
               source,
               target: nodeId,
-              label
-            }
-          })
+              label,
+            },
+          });
         });
-      } 
+      }
       if ("update" in node && node.update) {
         // static node
-        const { source, label } = parseInput(node.update);        
+        const { source, label } = parseInput(node.update);
         tmp.edges.push({
           data: {
             source,
             target: nodeId,
             isUpdate: true,
-            label
-          }
-        })
+            label,
+          },
+        });
       }
       return tmp;
-    }, 
-    { nodes:[], edges:[], map:{} } 
+    },
+    { nodes: [], edges: [], map: {} },
   );
   return { elements };
-}
+};
 
-export const sleepTestAgent: AgentFunction<{ duration?: number}> = async (context) => {
+export const sleepTestAgent: AgentFunction<{ duration?: number }> = async (context) => {
   const { params, inputs } = context;
   await sleep(params?.duration ?? 500);
   return inputs[0];
@@ -296,8 +298,8 @@ export default defineComponent({
 
     const selectedGraphIndex = ref(0);
     const graphDataSet = [
-      {name: "sample2", data: graph_data2},
-      {name: "sample", data: graph_data},
+      { name: "sample2", data: graph_data2 },
+      { name: "sample", data: graph_data },
     ];
     const selectedGraph = computed(() => {
       return graphDataSet[selectedGraphIndex.value].data;
@@ -305,7 +307,7 @@ export default defineComponent({
     watch(selectedGraph, () => {
       cytoData.value = cytoscapeFromGraph(selectedGraph.value);
     });
-    
+
     const run = async () => {
       const graph = new GraphAI(selectedGraph.value, { pushAgent, popAgent, sleepTestAgent });
       graph.onLogCallback = async ({ nodeId, state, inputs, result, errorMessage }) => {
