@@ -2,15 +2,21 @@
   <div class="home">
     <div class="items-center justify-center space-x-8">
       <!-- Use Tailwind CSS h-40 (=10rem=160px) instead of .logo. -->
-      <div class="w-full h-96 bg-white rounded-md mt-4 mx-auto">
+      <div class="w-full h-96 bg-white rounded-md mt-4 mx-auto border-2">
         <div ref="cyRef" class="w-full h-full" />
       </div>
-      <div>
+      <div class="mt-2">
         <button class="border-2" @click="run">Run</button>
         <button class="border-2" @click="logClear">Clear</button>
       </div>
 
-      <div>Graph Data</div>
+      <select v-model="selectedGraphIndex" class="border rounded-md p-2 m-2">
+        <option v-for="(option, index) in graphDataSet" :value="index" :key="index">
+          {{ option.name }}
+        </option>
+      </select>
+      
+      <div class="mt-2">Graph Data</div>
       <div class="w-6/8">
         <textarea class="border-8" rows="20" cols="100">{{ graph_data }}</textarea>
       </div>
@@ -27,7 +33,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, watch } from "vue";
+import { defineComponent, ref, onMounted, watch, computed } from "vue";
 
 import { GraphAI, GraphData, AgentFunction } from "graphai";
 import { NodeState, NodeData } from "graphai/lib/type";
@@ -257,8 +263,20 @@ export default defineComponent({
     const logs = ref<unknown[]>([]);
     let cy: null | Core = null;
 
+    const selectedGraphIndex = ref(0);
+    const graphDataSet = [
+      {name: "sample2", data: graph_data2},
+      {name: "sample", data: graph_data},
+    ];
+    const selectedGraph = computed(() => {
+      return graphDataSet[selectedGraphIndex.value].data;
+    });
+    watch(selectedGraph, () => {
+      cytoData.value = cytoscapeFromGraph(selectedGraph.value);
+    });
+    
     const run = async () => {
-      const graph = new GraphAI(graph_data2, { pushAgent, popAgent, sleepTestAgent });
+      const graph = new GraphAI(selectedGraph.value, { pushAgent, popAgent, sleepTestAgent });
       graph.onLogCallback = ({ nodeId, state, inputs, result, errorMessage }) => {
         logs.value.push({ nodeId, state, inputs, result, errorMessage });
         console.log();
@@ -273,7 +291,11 @@ export default defineComponent({
     };
     const logClear = () => {
       logs.value = [];
-      cytoData.value = cytoscapeFromGraph(graph_data2);
+      const elements = cytoData.value.elements;
+      Object.keys(elements.map).forEach((nodeId) => {
+        elements.map[nodeId].data.color = colorMap[NodeState.Waiting];
+      });
+      cytoData.value = { elements };
     };
 
     const storePositions = () => {
@@ -348,6 +370,8 @@ export default defineComponent({
       res,
       cyRef,
       layout_value,
+      selectedGraphIndex,
+      graphDataSet,
     };
   },
 });
