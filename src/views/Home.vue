@@ -272,7 +272,7 @@ export default defineComponent({
       res.value = results;
     };
     const logClear = () => {
-      logs.ref = [];
+      logs.value = [];
       cytoData.value = cytoscapeFromGraph(graph_data2);
     };
 
