@@ -39,8 +39,7 @@ import { GraphAI, GraphData, AgentFunction } from "graphai";
 import { NodeState, NodeData, ComputedNodeData } from "graphai/lib/type";
 import { pushAgent, popAgent } from "graphai/lib/experimental_agents/array_agents";
 import { sleep } from "@/utils/utils";
-import { httpAgent } from "./utils";
-import { generateGraph } from "@/utils/graph";
+import { generateGraph, httpAgent } from "@/utils/graph";
 
 import { graph_data, graph_data2, graph_data_http } from "@/utils/graph_data";
 
