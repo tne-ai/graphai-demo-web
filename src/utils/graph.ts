@@ -19,10 +19,12 @@ export const generateGraph = () => {
   arrays(50).forEach((__i, k) => {
     const name = "node_" + k;
 
-    const inputs = arrays(randomInt(4)).map(() => {
+    const inputs = arrays(randomInt(3) + 1).map(() => {
       const rand = randomInt(inputsNode.length);
-      return inputsNode[rand];
+      const node = inputsNode[rand];
+      return node;
     });
+
     nodes[name] = {
       agentId: "sleepTestAgent",
       params: {
