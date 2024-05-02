@@ -36,14 +36,13 @@
 import { defineComponent, ref, computed, watch } from "vue";
 
 import { GraphAI, GraphData, AgentFunction } from "graphai";
-import { NodeState } from "graphai/lib/type";
 import { pushAgent, popAgent } from "graphai/lib/experimental_agents/array_agents";
 import { sleep } from "@/utils/utils";
 import { generateGraph, httpAgent } from "@/utils/graph";
 
 import { graph_data, graph_data2, graph_data_http } from "@/utils/graph_data";
 
-import { useCy, colorMap } from "@/composables/cytoscope";
+import { useCy } from "@/composables/cytoscope";
 
 import cytoscape from "cytoscape";
 import fcose from "cytoscape-fcose";
@@ -74,7 +73,7 @@ export default defineComponent({
       return graphDataSet[selectedGraphIndex.value].data;
     });
 
-    const { cytoData, updateCy, cyRef, cytoscapeFromGraph } = useCy(graphDataSet[0].data, selectedGraph);
+    const { cytoData, updateCy, cyRef, cytoscapeFromGraph, resetNode } = useCy(graphDataSet[0].data, selectedGraph);
 
     const res = ref({});
     const logs = ref<unknown[]>([]);
@@ -95,11 +94,7 @@ export default defineComponent({
     };
     const logClear = () => {
       logs.value = [];
-      const elements = cytoData.value.elements;
-      Object.keys(elements.map).forEach((nodeId) => {
-        elements.map[nodeId].data.color = colorMap[NodeState.Waiting];
-      });
-      cytoData.value = { elements };
+      resetNode();
     };
 
     return {

@@ -212,6 +212,14 @@ export const useCy = (initGraph: GraphData, selectedGraph: ComputedRef<GraphData
     }
   };
 
+  const resetNode = () => {
+    const elements = cytoData.value.elements;
+    Object.keys(elements.map).forEach((nodeId) => {
+      elements.map[nodeId].data.color = colorMap[NodeState.Waiting];
+    });
+    cytoData.value = { elements };
+  };
+
   watch(cytoData, () => {
     console.log("updated");
     updateGraphData();
@@ -226,6 +234,8 @@ export const useCy = (initGraph: GraphData, selectedGraph: ComputedRef<GraphData
     cyRef,
     cytoData,
     updateCy,
+
+    resetNode,
 
     storePositions,
     cytoscapeFromGraph,
