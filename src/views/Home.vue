@@ -7,6 +7,7 @@
       </div>
       <div>
         <button class="border-2" @click="run">Run</button>
+        <button class="border-2" @click="logClear">Clear</button>
       </div>
 
       <div>Graph Data</div>
@@ -270,6 +271,10 @@ export default defineComponent({
       const results = await graph.run();
       res.value = results;
     };
+    const logClear = () => {
+      logs.ref = [];
+      cytoData.value = cytoscapeFromGraph(graph_data2);
+    };
 
     const storePositions = () => {
       console.log("storePositions");
@@ -338,6 +343,7 @@ export default defineComponent({
     return {
       run,
       logs,
+      logClear,
       graph_data,
       res,
       cyRef,
