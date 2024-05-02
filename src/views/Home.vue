@@ -308,12 +308,15 @@ export default defineComponent({
     
     const run = async () => {
       const graph = new GraphAI(selectedGraph.value, { pushAgent, popAgent, sleepTestAgent });
-      graph.onLogCallback = ({ nodeId, state, inputs, result, errorMessage }) => {
+      graph.onLogCallback = async ({ nodeId, state, inputs, result, errorMessage }) => {
         logs.value.push({ nodeId, state, inputs, result, errorMessage });
         console.log();
 
         console.log(nodeId, state);
         const elements = cytoData.value.elements;
+        if (state === NodeState.Completed) {
+          await sleep(100);
+        }
         elements.map[nodeId].data.color = colorMap[state];
         cytoData.value = { elements };
       };
