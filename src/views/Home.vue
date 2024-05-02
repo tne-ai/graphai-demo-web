@@ -292,11 +292,13 @@ export default defineComponent({
     const cyRef = ref();
 
     const selectedGraphIndex = ref(0);
-    const graph_random = generateGraph();
+    const graph_random = generateGraph() as GraphData;
+    // Add this after we add notification for queued case
+    // graph_random.concurrency = 4;
     const graphDataSet = [
-      {name: "sample2", data: graph_data2},
-      {name: "sample", data: graph_data},
-      {name: "random", data: graph_random},
+      { name: "sample2", data: graph_data2 },
+      { name: "sample", data: graph_data },
+      { name: "random", data: graph_random },
     ];
     const cytoData = ref(cytoscapeFromGraph(graphDataSet[0].data));
 
