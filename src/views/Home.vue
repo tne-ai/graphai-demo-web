@@ -43,7 +43,7 @@ import { generateGraph, httpAgent } from "@/utils/graph";
 
 import { graph_data, graph_data2, graph_data_http } from "@/utils/graph_data";
 
-import { useCy } from "@/composables/cytoscope";
+import { useCy, colorMap } from "@/composables/cytoscope";
 
 import cytoscape from "cytoscape";
 import fcose from "cytoscape-fcose";

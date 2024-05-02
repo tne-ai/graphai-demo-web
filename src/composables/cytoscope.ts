@@ -62,7 +62,7 @@ const cyStyle = [
   },
 ];
 
-const colorMap = {
+export const colorMap = {
   [NodeState.Waiting]: "#888",
   [NodeState.Completed]: "#000",
   [NodeState.Executing]: "#0f0",
