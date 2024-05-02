@@ -29,6 +29,7 @@ export const generateGraph = () => {
       params: {
         duration: randomInt(10) * 400,
       },
+      priority: Math.random() > 0.5 ? 1 : 0, // 50% will have priority = 1
       inputs,
     };
     inputsNode.push(name);

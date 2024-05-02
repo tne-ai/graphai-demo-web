@@ -130,7 +130,6 @@ const colorMap = {
   [NodeState.Failed]: "#f00",
 };
 
-
 const cytoscapeFromGraph = (graph_data: GraphData) => {
   const elements = Object.keys(graph_data.nodes).reduce(
     (tmp: { nodes: NodeDefinition[]; edges: EdgeDefinition[]; map: Record<string, NodeDefinition> }, nodeId) => {
@@ -220,6 +219,14 @@ export default defineComponent({
           await sleep(100);
         }
         elements.map[nodeId].data.color = colorMap[state];
+        if (state === NodeState.Queued) {
+          const graph = selectedGraph.value;
+          const nodeData = graph.nodes[nodeId] as any; // REVIEW: ComputedNodeData
+          if ((nodeData.priority ?? 0) > 0) {
+            elements.map[nodeId].data.color = "#f80";
+          }
+        }
+
         cytoData.value = { elements };
         if (state === NodeState.Injected) {
           await sleep(100);
