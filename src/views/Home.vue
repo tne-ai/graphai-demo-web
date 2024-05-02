@@ -273,19 +273,21 @@ export default defineComponent({
 
     const storePositions = () => {
       console.log("storePositions");
-      cy.nodes().forEach((cynode:any) => {
-        const id = cynode.id();
-        const pos = cynode.position();
-        const node = cytoData.value.elements.map[id];
-        node.position = pos;
-      });
+      if (cy) {
+        cy.nodes().forEach((cynode:any) => {
+          const id = cynode.id();
+          const pos = cynode.position();
+          const node = cytoData.value.elements.map[id];
+          node.position = pos;
+        });
+      }
     };
 
     const createCytoscope = () => {
       try {
         cy = cytoscape({
           container: cyRef.value,
-          style: cyStyle,
+          style: cyStyle as any,
           layout: {
             name: "cose",
             fit: true,
@@ -305,20 +307,22 @@ export default defineComponent({
       }
     };
     const updateGraphData = async () => {
-      cy.elements().remove();
-      cy.add(cytoData.value.elements);
-      const name = cytoData.value.elements.nodes.reduce((name: string, node: Record<string, any>) => {
-        if (node.position) {
-          return "preset";
+      if (cy) {
+        cy.elements().remove();
+        cy.add(cytoData.value.elements as any);
+        const name = cytoData.value.elements.nodes.reduce((name: string, node: Record<string, any>) => {
+          if (node.position) {
+            return "preset";
+          }
+          return name;
+        }, "cose");
+        console.log("layout", name);
+        cy.layout({ name }).run();
+        cy.fit();
+        if (name == "cose") {
+          await sleep(400);
+          storePositions();
         }
-        return name;
-      }, "cose");
-      console.log("layout", name);
-      cy.layout({ name }).run();
-      cy.fit();
-      if (name == "cose") {
-        await sleep(400);
-        storePositions();
       }
     };
     watch(cytoData, () => {
