@@ -21,8 +21,7 @@ export const generateGraph = () => {
 
     const inputs = arrays(randomInt(3) + 1).map(() => {
       const rand = randomInt(inputsNode.length);
-      const node = inputsNode[rand];
-      return node;
+      return inputsNode[rand];
     });
 
     nodes[name] = {
