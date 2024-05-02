@@ -289,7 +289,7 @@ export default defineComponent({
       try {
         cy = cytoscape({
           container: cyRef.value,
-          style: cyStyle as any,
+          style: cyStyle,
           layout: {
             name: "cose",
             fit: true,
@@ -311,8 +311,8 @@ export default defineComponent({
     const updateGraphData = async () => {
       if (cy) {
         cy.elements().remove();
-        cy.add(cytoData.value.elements as any);
-        const name = cytoData.value.elements.nodes.reduce((name: string, node: Record<string, any>) => {
+        cy.add(cytoData.value.elements);
+        const name = cytoData.value.elements.nodes.reduce((name: string, node: Record<string, NodeDefinition>) => {
           if (node.position) {
             return "preset";
           }
