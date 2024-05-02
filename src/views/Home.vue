@@ -56,7 +56,7 @@ import fcose from "cytoscape-fcose";
 
 cytoscape.use(fcose);
 
-const layouts = ["grid", "cose", "random", "circle", "concentric", "fcose", "breadthfirst"];
+// const layouts = ["grid", "cose", "random", "circle", "concentric", "fcose", "breadthfirst"];
 
 const calcNodeWidth = (label: string) => {
   if (label === null || label === undefined) {
