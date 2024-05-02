@@ -36,7 +36,7 @@
 import { defineComponent, ref, onMounted, watch, computed } from "vue";
 
 import { GraphAI, GraphData, AgentFunction } from "graphai";
-import { NodeState, NodeData } from "graphai/lib/type";
+import { NodeState, NodeData, ComputedNodeData } from "graphai/lib/type";
 import { pushAgent, popAgent } from "graphai/lib/experimental_agents/array_agents";
 import { sleep } from "@/utils/utils";
 import { generateGraph } from "@/utils/graph";
@@ -130,15 +130,19 @@ const colorMap = {
   [NodeState.Failed]: "#f00",
 };
 
+const colorPriority = "#f80";
+const colorStatic = "#88f";
+
 const cytoscapeFromGraph = (graph_data: GraphData) => {
   const elements = Object.keys(graph_data.nodes).reduce(
     (tmp: { nodes: NodeDefinition[]; edges: EdgeDefinition[]; map: Record<string, NodeDefinition> }, nodeId) => {
       const node: NodeData = graph_data.nodes[nodeId];
+      const isStatic = "value" in node;
       const cyNode = {
         data: {
           id: nodeId,
-          color: colorMap[NodeState.Waiting],
-          isStatic: "value" in node,
+          color: isStatic ? colorStatic : colorMap[NodeState.Waiting],
+          isStatic,
         },
       };
       tmp.nodes.push(cyNode);
@@ -219,18 +223,26 @@ export default defineComponent({
           await sleep(100);
         }
         elements.map[nodeId].data.color = colorMap[state];
-        if (state === NodeState.Queued) {
-          const graph = selectedGraph.value;
-          const nodeData = graph.nodes[nodeId] as any; // REVIEW: ComputedNodeData
-          if ((nodeData.priority ?? 0) > 0) {
-            elements.map[nodeId].data.color = "#f80";
+        const graph = selectedGraph.value;
+        const nodeData = graph.nodes[nodeId];
+        if ("agentId" in nodeData) {
+          // computed node
+          if (state === NodeState.Queued) {
+            if ((nodeData.priority ?? 0) > 0) {
+              elements.map[nodeId].data.color = colorPriority;
+            }
+          }
+        } else if ("value" in nodeData) {
+          // static node
+          if (state === NodeState.Waiting) {
+            elements.map[nodeId].data.color = colorStatic;
           }
         }
 
         cytoData.value = { elements };
         if (state === NodeState.Injected) {
           await sleep(100);
-          elements.map[nodeId].data.color = colorMap[NodeState.Waiting];
+          elements.map[nodeId].data.color = colorStatic;
           cytoData.value = { elements };
         }
       };
