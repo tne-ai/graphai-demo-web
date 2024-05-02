@@ -123,7 +123,7 @@ const colorMap = {
   [NodeState.Completed]: "#000",
   [NodeState.Executing]: "#0f0",
   [NodeState.Queued]: "#ff0",
-  [NodeState.Injected]: "#ccc",
+  [NodeState.Injected]: "#00f",
   [NodeState.TimedOut]: "#f0f",
   [NodeState.Failed]: "#f00",
   [NodeState.Dispatched]: "#f00", // obsolete
@@ -326,6 +326,11 @@ export default defineComponent({
         }
         elements.map[nodeId].data.color = colorMap[state];
         cytoData.value = { elements };
+        if (state === NodeState.Injected) {
+          await sleep(100);
+          elements.map[nodeId].data.color = colorMap[NodeState.Waiting];
+          cytoData.value = { elements };
+        }
       };
       const results = await graph.run();
       res.value = results;
