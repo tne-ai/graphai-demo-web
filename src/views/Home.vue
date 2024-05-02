@@ -6,8 +6,8 @@
         <div ref="cyRef" class="w-full h-full" />
       </div>
       <div class="mt-2">
-        <button class="border-2" @click="run">Run</button>
-        <button class="border-2" @click="logClear">Clear</button>
+        <button class="text-white font-bold items-center rounded-full px-4 py-2 m-1 bg-sky-500 hover:bg-sky-700" @click="run">Run</button>
+        <button class="text-white font-bold items-center rounded-full px-4 py-2 m-1 bg-sky-500 hover:bg-sky-700" @click="logClear">Clear</button>
       </div>
 
       <select v-model="selectedGraphIndex" class="border rounded-md p-2 m-2">
