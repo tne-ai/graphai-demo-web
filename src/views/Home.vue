@@ -126,7 +126,6 @@ const colorMap = {
   [NodeState.Injected]: "#00f",
   [NodeState.TimedOut]: "#f0f",
   [NodeState.Failed]: "#f00",
-  [NodeState.Dispatched]: "#f00", // obsolete
 };
 
 const graph_data: GraphData = {
@@ -293,8 +292,6 @@ export default defineComponent({
 
     const selectedGraphIndex = ref(0);
     const graph_random = generateGraph() as GraphData;
-    // Add this after we add notification for queued case
-    // graph_random.concurrency = 4;
     const graphDataSet = [
       { name: "sample2", data: graph_data2 },
       { name: "sample", data: graph_data },

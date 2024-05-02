@@ -1871,9 +1871,9 @@ graceful-fs@^4.1.6, graceful-fs@^4.2.0:
   integrity sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==
 
 graphai@^0.2.1:
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/graphai/-/graphai-0.2.3.tgz#2bf03a2e806fe9efe2802c8b487d6be1631720b6"
-  integrity sha512-30kKQV1T4v1Vo4lyFWy0pbHrfenMp1O4l5RENzJLd6hA4AraBU6rrEmvD+nbQ/YkdFBIIZaQ7dgcu56l8o8vag==
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/graphai/-/graphai-0.2.4.tgz#d7bd697db684a1b238c98b2103ed0adcbc0d702f"
+  integrity sha512-2Ph6npXqPpUdmlaMYQVUEejc9BvBDLau0wFBenwJ4KfEObXKL3p8FKhaOEI6Lnxnnf1LTCXrX/OYlZ7EiAiOaw==
 
 graphemer@^1.4.0:
   version "1.4.0"
