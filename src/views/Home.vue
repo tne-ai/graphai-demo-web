@@ -36,7 +36,7 @@
 import { defineComponent, ref, onMounted, watch, computed } from "vue";
 
 import { GraphAI, GraphData, AgentFunction } from "graphai";
-import { NodeState, NodeData, ComputedNodeData } from "graphai/lib/type";
+import { NodeState, NodeData } from "graphai/lib/type";
 import { pushAgent, popAgent } from "graphai/lib/experimental_agents/array_agents";
 import { sleep } from "@/utils/utils";
 import { generateGraph, httpAgent } from "@/utils/graph";
@@ -216,39 +216,36 @@ export default defineComponent({
       const graph = new GraphAI(selectedGraph.value, { pushAgent, popAgent, sleepTestAgent, httpAgent });
       graph.onLogCallback = async ({ nodeId, state, inputs, result, errorMessage }) => {
         logs.value.push({ nodeId, state, inputs, result, errorMessage });
-        console.log();
-
+        updateCy(nodeId, state);
         console.log(nodeId, state);
-        const elements = cytoData.value.elements;
-        if (state === NodeState.Completed) {
-          await sleep(100);
-        }
-        elements.map[nodeId].data.color = colorMap[state];
-        const graph = selectedGraph.value;
-        const nodeData = graph.nodes[nodeId];
-        if ("agentId" in nodeData) {
-          // computed node
-          if (state === NodeState.Queued) {
-            if ((nodeData.priority ?? 0) > 0) {
-              elements.map[nodeId].data.color = colorPriority;
-            }
-          }
-        } else if ("value" in nodeData) {
-          // static node
-          if (state === NodeState.Waiting) {
-            elements.map[nodeId].data.color = colorStatic;
-          }
-        }
-
-        cytoData.value = { elements };
-        if (state === NodeState.Injected) {
-          await sleep(100);
-          elements.map[nodeId].data.color = colorStatic;
-          cytoData.value = { elements };
-        }
       };
       const results = await graph.run();
       res.value = results;
+    };
+    const updateCy = async (nodeId: string, state: NodeState) => {
+      if (state === NodeState.Completed) {
+        await sleep(100);
+      }
+      const elements = cytoData.value.elements;
+      elements.map[nodeId].data.color = colorMap[state];
+      const graph = selectedGraph.value;
+      const nodeData = graph.nodes[nodeId];
+      if ("agentId" in nodeData && state === NodeState.Queued && (nodeData.priority ?? 0) > 0) {
+        // computed node
+        elements.map[nodeId].data.color = colorPriority;
+      } else {
+        if ("value" in nodeData && state === NodeState.Waiting) {
+          // static node
+          elements.map[nodeId].data.color = colorStatic;
+        }
+      }
+
+      cytoData.value = { elements };
+      if (state === NodeState.Injected) {
+        await sleep(100);
+        elements.map[nodeId].data.color = colorStatic;
+        cytoData.value = { elements };
+      }
     };
     const logClear = () => {
       logs.value = [];
