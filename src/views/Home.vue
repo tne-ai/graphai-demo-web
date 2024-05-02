@@ -47,6 +47,8 @@ import cytoscape, {
   // EventObject,
   Core,
   NodeSingular,
+  NodeDefinition,
+  EdgeDefinition,
 } from "cytoscape";
 import fcose from "cytoscape-fcose";
 
@@ -202,7 +204,7 @@ const graph_data2: GraphData = {
 };
 
 const cytoscapeFromGraph = (graph_data: GraphData) => {
-  const elements = Object.keys(graph_data.nodes).reduce((tmp: Record<string, any>, nodeId) => {
+  const elements = Object.keys(graph_data.nodes).reduce((tmp: { nodes: NodeDefinition[], edges: EdgeDefinition[], map: Record<string, NodeDefinition>}, nodeId) => {
       const node: NodeData = graph_data.nodes[nodeId];
       const cyNode = {
         data: {
@@ -245,7 +247,7 @@ const cytoscapeFromGraph = (graph_data: GraphData) => {
   return { elements };
 }
 
-export const sleepTestAgent: AgentFunction<{ duration?: number; value?: Record<string, any> }> = async (context) => {
+export const sleepTestAgent: AgentFunction<{ duration?: number}> = async (context) => {
   const { params, inputs } = context;
   await sleep(params?.duration ?? 500);
   return inputs[0];
@@ -301,7 +303,7 @@ export default defineComponent({
     const storePositions = () => {
       console.log("storePositions");
       if (cy) {
-        cy.nodes().forEach((cynode:any) => {
+        cy.nodes().forEach((cynode: NodeDefinition) => {
           const id = cynode.id();
           const pos = cynode.position();
           const node = cytoData.value.elements.map[id];
@@ -314,7 +316,7 @@ export default defineComponent({
       try {
         cy = cytoscape({
           container: cyRef.value,
-          style: cyStyle as any,
+          style: cyStyle,
           layout: {
             name: "cose",
             fit: true,
@@ -336,8 +338,8 @@ export default defineComponent({
     const updateGraphData = async () => {
       if (cy) {
         cy.elements().remove();
-        cy.add(cytoData.value.elements as any);
-        const name = cytoData.value.elements.nodes.reduce((name: string, node: Record<string, any>) => {
+        cy.add(cytoData.value.elements);
+        const name = cytoData.value.elements.nodes.reduce((name: string, node: Record<string, NodeDefinition>) => {
           if (node.position) {
             return "preset";
           }
