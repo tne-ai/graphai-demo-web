@@ -40,6 +40,8 @@ import cytoscape, {
   // EventObject,
   Core,
   NodeSingular,
+  NodeDefinition,
+  EdgeDefinition,
 } from "cytoscape";
 import fcose from "cytoscape-fcose";
 
@@ -195,7 +197,7 @@ const graph_data2: GraphData = {
 };
 
 const cytoscapeFromGraph = (graph_data: GraphData) => {
-  const elements = Object.keys(graph_data.nodes).reduce((tmp: Record<string, any>, nodeId) => {
+  const elements = Object.keys(graph_data.nodes).reduce((tmp: { nodes: NodeDefinition[], edges: EdgeDefinition[], map: Record<string, NodeDefinition>}, nodeId) => {
       const node: NodeData = graph_data.nodes[nodeId];
       const cyNode = {
         data: {
@@ -238,7 +240,7 @@ const cytoscapeFromGraph = (graph_data: GraphData) => {
   return { elements };
 }
 
-export const sleepTestAgent: AgentFunction<{ duration?: number; value?: Record<string, any> }> = async (context) => {
+export const sleepTestAgent: AgentFunction<{ duration?: number}> = async (context) => {
   const { params, inputs } = context;
   await sleep(params?.duration ?? 500);
   return inputs[0];
@@ -274,7 +276,7 @@ export default defineComponent({
     const storePositions = () => {
       console.log("storePositions");
       if (cy) {
-        cy.nodes().forEach((cynode:any) => {
+        cy.nodes().forEach((cynode: NodeDefinition) => {
           const id = cynode.id();
           const pos = cynode.position();
           const node = cytoData.value.elements.map[id];
