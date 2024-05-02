@@ -39,6 +39,7 @@ import { GraphAI, GraphData, AgentFunction } from "graphai";
 import { NodeState, NodeData } from "graphai/lib/type";
 import { pushAgent, popAgent } from "graphai/lib/experimental_agents/array_agents";
 import { sleep } from "@/utils/utils";
+import { generateGraph } from "@/utils/graph";
 
 import cytoscape, {
   //  ElementDefinition,
@@ -259,18 +260,21 @@ export default defineComponent({
   components: {},
   setup() {
     const cyRef = ref();
-    const layout_value = ref(layouts[0]);
-    const cytoData = ref(cytoscapeFromGraph(graph_data2));
+
+    const selectedGraphIndex = ref(0);
+    const graph_random = generateGraph();
+    const graphDataSet = [
+      {name: "sample2", data: graph_data2},
+      {name: "sample", data: graph_data},
+      {name: "random", data: graph_random},
+    ];
+    console.log(graphDataSet)
+    const cytoData = ref(cytoscapeFromGraph(graphDataSet[0].data));
 
     const res = ref({});
     const logs = ref<unknown[]>([]);
     let cy: null | Core = null;
 
-    const selectedGraphIndex = ref(0);
-    const graphDataSet = [
-      {name: "sample2", data: graph_data2},
-      {name: "sample", data: graph_data},
-    ];
     const selectedGraph = computed(() => {
       return graphDataSet[selectedGraphIndex.value].data;
     });
@@ -372,7 +376,6 @@ export default defineComponent({
       graph_data,
       res,
       cyRef,
-      layout_value,
       selectedGraphIndex,
       graphDataSet,
     };
