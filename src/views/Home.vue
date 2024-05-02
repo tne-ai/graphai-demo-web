@@ -49,6 +49,7 @@ import cytoscape, {
   NodeSingular,
   NodeDefinition,
   EdgeDefinition,
+  EdgeSingular,
 } from "cytoscape";
 import fcose from "cytoscape-fcose";
 
@@ -65,7 +66,7 @@ const calcNodeWidth = (label: string) => {
 
 const parseInput = (input:string) => {
   const ids = input.split('.')
-  const source = ids.shift();
+  const source = ids.shift() || '';
   const label = ids.length ? ids.join('.') : undefined;
   return { source, label };
 };
@@ -76,11 +77,11 @@ const cyStyle = [{
       "background-color": "data(color)",
       label: "data(id)",
       shape: (ele: NodeSingular) => (ele.data("isStatic") ? "rectangle" : "roundrectangle"),
-      width: (ele: NodeSingular) => calcNodeWidth(ele.data("id")),
+      width: (ele: EdgeSingular) => calcNodeWidth(ele.data("id")),
       color: "#fff",
       height: "30px",
-      "text-valign": "center",
-      "text-halign": "center",
+      "text-valign": "center" as const,
+      "text-halign": "center" as const,
       "font-size": "12px",
     },
   },
@@ -91,10 +92,10 @@ const cyStyle = [{
       "line-color": "#888",
       "target-arrow-color": "#888",
       "target-arrow-shape": "triangle",
-      "curve-style": "unbundled-bezier",
+      "curve-style": "unbundled-bezier" as const,
       "text-background-color": "#ffffff",
       "text-background-opacity": 0.8,
-      "text-background-shape": "rectangle",
+      "text-background-shape": "rectangle" as const,
       "font-size": "10px",
     },
   },
@@ -303,7 +304,7 @@ export default defineComponent({
     const storePositions = () => {
       console.log("storePositions");
       if (cy) {
-        cy.nodes().forEach((cynode: NodeDefinition) => {
+        cy.nodes().forEach((cynode: NodeSingular) => {
           const id = cynode.id();
           const pos = cynode.position();
           const node = cytoData.value.elements.map[id];
@@ -339,16 +340,16 @@ export default defineComponent({
       if (cy) {
         cy.elements().remove();
         cy.add(cytoData.value.elements);
-        const name = cytoData.value.elements.nodes.reduce((name: string, node: Record<string, NodeDefinition>) => {
+        const name = cytoData.value.elements.nodes.reduce((prevName: string, node: NodeDefinition) => {
           if (node.position) {
             return "preset";
           }
-          return name;
+          return prevName;
         }, "cose");
         console.log("layout", name);
         cy.layout({ name }).run();
         cy.fit();
-        if (name == "cose") {
+        if (name === "cose") {
           await sleep(400);
           storePositions();
         }
