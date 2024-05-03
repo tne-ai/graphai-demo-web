@@ -42,7 +42,7 @@ import { GraphAI } from "graphai";
 import { pushAgent, popAgent } from "graphai/lib/experimental_agents/array_agents";
 import { mapAgent } from "graphai/lib/experimental_agents/graph_agents";
 
-import { sleepTestAgent, httpAgent,slashGPTFuncitons2TextAgent } from "@/utils/agents";
+import { sleepTestAgent, httpAgent, slashGPTFuncitons2TextAgent } from "@/utils/agents";
 import { generateGraph } from "@/utils/graph";
 import { graph_data, graph_data2, graph_data_co2, graph_data_http } from "@/utils/graph_data";
 
