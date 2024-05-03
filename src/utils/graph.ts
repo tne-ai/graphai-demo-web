@@ -1,4 +1,4 @@
-import { AgentFunction } from "graphai";
+import { GraphData } from "graphai";
 import { NodeData } from "graphai/lib/type";
 
 const arrays = (num: number) => {
@@ -7,10 +7,10 @@ const arrays = (num: number) => {
 const randomInt = (num: number) => {
   return Math.floor(Math.random() * num);
 };
-export const generateGraph = () => {
+export const generateGraph = (staticNode: number = 10, computedNode: number = 50, concurrency: number = 8): GraphData => {
   const nodes: Record<string, NodeData> = {};
   const inputsNode: string[] = [];
-  arrays(10).forEach((__i, k) => {
+  arrays(staticNode).forEach((__i, k) => {
     const name = "static_" + k;
     inputsNode.push(name);
     nodes[name] = {
@@ -18,7 +18,7 @@ export const generateGraph = () => {
     };
   });
 
-  arrays(50).forEach((__i, k) => {
+  arrays(computedNode).forEach((__i, k) => {
     const name = "node_" + k;
 
     const inputs = arrays(randomInt(3) + 1).map(() => {
@@ -39,6 +39,7 @@ export const generateGraph = () => {
 
   return {
     nodes,
+    concurrency,
   };
 };
 
@@ -46,21 +47,5 @@ export const agentListApi = async () => {
   const url = "https://graphai-demo.web.app/api/agents";
 
   const response = await fetch(url);
-  return await response.json();
-};
-
-export const httpAgent: AgentFunction = async ({ inputs, params }) => {
-  const { agentId, params: postParams } = params;
-  const url = "https://graphai-demo.web.app/api/agents/" + agentId;
-
-  const postData = { inputs, params: postParams };
-
-  const response = await fetch(url, {
-    method: "post",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(postData),
-  });
   return await response.json();
 };
