@@ -5,9 +5,9 @@ import { GraphData } from "graphai";
 import cytoscape, { Core, NodeSingular, NodeDefinition, EdgeDefinition, EdgeSingular } from "cytoscape";
 // import fcose from "cytoscape-fcose";
 // cytoscape.use(fcose);
-import dagre from 'cytoscape-dagre';
-cytoscape.use( dagre );
-const layout = "dagre";
+import klay from "cytoscape-klay";
+cytoscape.use(klay);
+const layout = "klay";
 
 import { sleep } from "@/utils/utils";
 
