@@ -111,9 +111,7 @@ export const graph_data_http = {
       agentId: "httpAgent",
       params: {
         agentId: "echoAgent",
-        params: {
-          message: "hello",
-        },
+        message: "hello",
       },
     },
     bypassAgent: {
@@ -128,9 +126,7 @@ export const graph_data_http = {
       inputs: ["echo"],
       params: {
         agentId: "sleeperAgent",
-        params: {
-          duration: 1000,
-        },
+        duration: 1000,
       },
     },
     bypassAgent2: {
