@@ -216,8 +216,12 @@ export const graph_data_co2 = {
                 prompt: "ユーザの問い合わせにある文章の専門家です。専門家として、ユーザのアイデアに対して実現可能なシナリオを100文字で書いてください。",
               },
             },
-            isResult: true,
             inputs: ["memory"],
+          },
+          bypassAgent: {
+            agentId: "bypassAgent",
+            inputs: ["slashGPTAgent0.$last.content"],
+            isResult: true,
           },
         },
       },
