@@ -12,15 +12,11 @@
       </div>
 
       <div class="mt-2">
-        <div>
-          Static Node: <input type="number" class="border-2  rounded-md p-2" v-model="staticNode" />
-        </div>
-        <div>
-          Dynamic Node: <input type="number" class="border-2  rounded-md p-2" v-model="computedNode" />
-        </div>
+        <div>Static Node: <input type="number" class="border-2 rounded-md p-2" v-model="staticNode" /></div>
+        <div>Dynamic Node: <input type="number" class="border-2 rounded-md p-2" v-model="computedNode" /></div>
+        <div>Concurrency: <input type="number" class="border-2 rounded-md p-2" v-model="concurrency" /></div>
         <button class="text-white font-bold items-center rounded-full px-4 py-2 m-1 bg-sky-500 hover:bg-sky-700" @click="update">Update</button>
       </div>
-      
     </div>
   </div>
 </template>
@@ -44,6 +40,7 @@ export default defineComponent({
   setup() {
     const staticNode = ref(20);
     const computedNode = ref(30);
+    const concurrency = ref(8);
 
     const selectedGraph = ref(generateGraph(staticNode.value, computedNode.value));
 
@@ -68,8 +65,7 @@ export default defineComponent({
     };
     const update = () => {
       console.log("update");
-
-      selectedGraph.value = generateGraph(staticNode.value, computedNode.value);
+      selectedGraph.value = generateGraph(staticNode.value, computedNode.value, concurrency.value);
     };
     return {
       run,
@@ -83,6 +79,7 @@ export default defineComponent({
 
       staticNode,
       computedNode,
+      concurrency,
     };
   },
 });
