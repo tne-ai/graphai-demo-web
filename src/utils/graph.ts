@@ -1,4 +1,4 @@
-import { AgentFunction } from "graphai";
+import { GraphData } from "graphai";
 import { NodeData } from "graphai/lib/type";
 
 const arrays = (num: number) => {
@@ -7,7 +7,7 @@ const arrays = (num: number) => {
 const randomInt = (num: number) => {
   return Math.floor(Math.random() * num);
 };
-export const generateGraph = () => {
+export const generateGraph = (): GraphData => {
   const nodes: Record<string, NodeData> = {};
   const inputsNode: string[] = [];
   arrays(10).forEach((__i, k) => {
@@ -46,21 +46,5 @@ export const agentListApi = async () => {
   const url = "https://graphai-demo.web.app/api/agents";
 
   const response = await fetch(url);
-  return await response.json();
-};
-
-export const httpAgent: AgentFunction = async ({ inputs, params }) => {
-  const { agentId, params: postParams } = params;
-  const url = "https://graphai-demo.web.app/api/agents/" + agentId;
-
-  const postData = { inputs, params: postParams };
-
-  const response = await fetch(url, {
-    method: "post",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(postData),
-  });
   return await response.json();
 };
