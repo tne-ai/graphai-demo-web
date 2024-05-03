@@ -192,12 +192,38 @@ export const graph_data_co2 = {
         },
       },
     },
-    bypassAgent: {
-      agentId: "httpAgent",
-      inputs: ["slashGPTAgent"],
-      isResult: true,
+    function2prompt0: {
       params: {
-        agentId: "bypassAgent",
+        function_data_key: "methods",
+        result_key: 0,
+      },
+      inputs: ["slashGPTAgent"],
+      agentId: "slashGPTFuncitons2TextAgent",
+    },
+    mapNode: {
+      agentId: "mapAgent",
+      inputs: ["function2prompt0.$0", "function2prompt0.$1", "function2prompt0.$2", "function2prompt0.$3", "function2prompt0.$4", "function2prompt0.$5"],
+      params: {
+        injectionTo: ["memory"],
+      },
+      isResult: true,
+      graph: {
+        nodes: {
+          memory: {
+            value: {},
+          },
+          slashGPTAgent0: {
+            agentId: "httpAgent",
+            params: {
+              agentId: "slashGPTAgent",
+              manifest: {
+                prompt: "ユーザの問い合わせにある文章の専門家です。専門家として、ユーザのアイデアに対して実現可能なシナリオを100文字で書いてください。",
+              },
+            },
+            isResult: true,
+            inputs: ["memory"],
+          },
+        },
       },
     },
   },
