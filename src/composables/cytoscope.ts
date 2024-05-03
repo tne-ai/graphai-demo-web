@@ -3,8 +3,11 @@ import { NodeState, NodeData } from "graphai/lib/type";
 import { GraphData } from "graphai";
 
 import cytoscape, { Core, NodeSingular, NodeDefinition, EdgeDefinition, EdgeSingular } from "cytoscape";
-import fcose from "cytoscape-fcose";
-cytoscape.use(fcose);
+// import fcose from "cytoscape-fcose";
+// cytoscape.use(fcose);
+import klay from 'cytoscape-klay';
+cytoscape.use( klay );
+const layout = "klay";
 
 import { sleep } from "@/utils/utils";
 
@@ -165,10 +168,10 @@ export const useCytoscope = (selectedGraph: ComputedRef<GraphData> | Ref<GraphDa
         container: cytoscopeRef.value,
         style: cyStyle,
         layout: {
-          name: "cose",
-          fit: true,
-          padding: 30,
-          avoidOverlap: true,
+          name: layout,
+          // fit: true,
+          // padding: 30,
+          // avoidOverlap: true,
         },
       });
       cy.on("mouseup", storePositions);
@@ -191,7 +194,7 @@ export const useCytoscope = (selectedGraph: ComputedRef<GraphData> | Ref<GraphDa
           return "preset";
         }
         return prevName;
-      }, "cose");
+      }, layout);
       console.log("layout", name);
       cy.layout({ name }).run();
       cy.fit();
