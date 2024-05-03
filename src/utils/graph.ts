@@ -7,10 +7,10 @@ const arrays = (num: number) => {
 const randomInt = (num: number) => {
   return Math.floor(Math.random() * num);
 };
-export const generateGraph = (): GraphData => {
+export const generateGraph = (staticNode: number = 10, computedNode: number = 50): GraphData => {
   const nodes: Record<string, NodeData> = {};
   const inputsNode: string[] = [];
-  arrays(10).forEach((__i, k) => {
+  arrays(staticNode).forEach((__i, k) => {
     const name = "static_" + k;
     inputsNode.push(name);
     nodes[name] = {
@@ -18,7 +18,7 @@ export const generateGraph = (): GraphData => {
     };
   });
 
-  arrays(50).forEach((__i, k) => {
+  arrays(computedNode).forEach((__i, k) => {
     const name = "node_" + k;
 
     const inputs = arrays(randomInt(3) + 1).map(() => {
