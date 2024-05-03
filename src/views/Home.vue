@@ -40,10 +40,11 @@ import { defineComponent, ref, computed } from "vue";
 
 import { GraphAI } from "graphai";
 import { pushAgent, popAgent } from "graphai/lib/experimental_agents/array_agents";
+import { mapAgent } from "graphai/lib/experimental_agents/graph_agents";
 
 import { sleepTestAgent, httpAgent } from "@/utils/agents";
 import { generateGraph } from "@/utils/graph";
-import { graph_data, graph_data2, graph_data_http } from "@/utils/graph_data";
+import { graph_data, graph_data2, graph_data_co2, graph_data_http } from "@/utils/graph_data";
 
 import { useCytoscope } from "@/composables/cytoscope";
 
@@ -54,6 +55,7 @@ const graphDataSet = [
   { name: "sample", data: graph_data },
   { name: "random", data: graph_random },
   { name: "http", data: graph_data_http },
+  { name: "co2", data: graph_data_co2 },
 ];
 
 export default defineComponent({
@@ -71,7 +73,7 @@ export default defineComponent({
     const logs = ref<unknown[]>([]);
 
     const run = async () => {
-      const graphai = new GraphAI(selectedGraph.value, { pushAgent, popAgent, sleepTestAgent, httpAgent });
+      const graphai = new GraphAI(selectedGraph.value, { pushAgent, popAgent, mapAgent, sleepTestAgent, httpAgent });
       graphai.onLogCallback = async ({ nodeId, state, inputs, result, errorMessage }) => {
         logs.value.push({ nodeId, state, inputs, result, errorMessage });
         updateCytoscope(nodeId, state);

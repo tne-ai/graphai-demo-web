@@ -143,3 +143,62 @@ export const graph_data_http = {
     },
   },
 };
+
+export const graph_data_co2 = {
+  nodes: {
+    slashGPTAgent: {
+      agentId: "httpAgent",
+      params: {
+        agentId: "slashGPTAgent",
+        function_result: true,
+        query: "世界で協力してco2を減らす方法を教えて下さい",
+        manifest: {
+          prompt: "あなたは世界経済の専門家です。ユーザの問い合わせについて考え、10この結果をfunctionsの結果に返してください。",
+          skip_function_result: true,
+          actions: {
+            your_ideas: {
+              type: "message_template",
+              message: "dummy",
+            },
+          },
+          functions: [
+            {
+              name: "your_ideas",
+              description: "Your answer to a user's inquiry",
+              parameters: {
+                type: "object",
+                properties: {
+                  methods: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        title: {
+                          type: "string",
+                          description: "title",
+                        },
+                        description: {
+                          type: "string",
+                          description: "description",
+                        },
+                      },
+                      required: ["title", "description"],
+                    },
+                  },
+                },
+              },
+            },
+          ],
+        },
+      },
+    },
+    bypassAgent: {
+      agentId: "httpAgent",
+      inputs: ["slashGPTAgent"],
+      isResult: true,
+      params: {
+        agentId: "bypassAgent",
+      },
+    },
+  },
+};
