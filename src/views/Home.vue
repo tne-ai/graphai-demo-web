@@ -1,32 +1,35 @@
 <template>
   <div class="home">
-    <div class="items-center justify-center space-x-8">
-      <!-- Use Tailwind CSS h-40 (=10rem=160px) instead of .logo. -->
-      <div class="w-full h-96 bg-white rounded-md mt-4 mx-auto border-2">
-        <div ref="cytoscopeRef" class="w-full h-full" />
+    <div class="items-center justify-center">
+      <div>
+        <div class="w-10/12 h-96 bg-white rounded-md mt-4 mx-auto border-2">
+          <div ref="cytoscopeRef" class="w-full h-full" />
+        </div>
       </div>
       <div class="mt-2">
         <button class="text-white font-bold items-center rounded-full px-4 py-2 m-1 bg-sky-500 hover:bg-sky-700" @click="run">Run</button>
         <button class="text-white font-bold items-center rounded-full px-4 py-2 m-1 bg-sky-500 hover:bg-sky-700" @click="logClear">Clear</button>
       </div>
 
-      <select v-model="selectedGraphIndex" class="border rounded-md p-2 m-2">
-        <option v-for="(option, index) in graphDataSet" :value="index" :key="index">
-          {{ option.name }}
-        </option>
-      </select>
+      <div>
+        <select v-model="selectedGraphIndex" class="border rounded-md p-2 m-2">
+          <option v-for="(option, index) in graphDataSet" :value="index" :key="index">
+            {{ option.name }}
+          </option>
+        </select>
+      </div>
 
       <div class="mt-2">Graph Data</div>
-      <div class="w-6/8">
-        <textarea class="border-8" rows="20" cols="100">{{ selectedGraph }}</textarea>
+      <div class="w-10/12 m-auto">
+        <textarea class="border-2 p-2 w-full" rows="20">{{ selectedGraph }}</textarea>
       </div>
       <div>Result</div>
-      <div class="w-6/8">
-        <textarea class="border-8" rows="20" cols="100">{{ graphaiResponse }}</textarea>
+      <div class="w-10/12 m-auto">
+        <textarea class="border-2 p-2 w-full" rows="20">{{ graphaiResponse }}</textarea>
       </div>
       <div>Log</div>
-      <div>
-        <textarea class="border-8" rows="20" cols="100">{{ logs }}</textarea>
+      <div class="w-10/12 m-auto">
+        <textarea class="border-2 p-2 w-full" rows="20">{{ logs }}</textarea>
       </div>
     </div>
   </div>
