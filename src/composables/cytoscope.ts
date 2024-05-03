@@ -1,4 +1,4 @@
-import { ComputedRef, ref, onMounted, watch } from "vue";
+import { ComputedRef, Ref, ref, onMounted, watch } from "vue";
 import { NodeState, NodeData } from "graphai/lib/type";
 import { GraphData } from "graphai";
 
@@ -127,7 +127,7 @@ const cytoscapeFromGraph = (graph_data: GraphData) => {
   return { elements };
 };
 
-export const useCytoscope = (selectedGraph: ComputedRef<GraphData>) => {
+export const useCytoscope = (selectedGraph: ComputedRef<GraphData> | Ref<GraphData>) => {
   let cy: null | Core = null;
 
   const cytoscopeData = ref(cytoscapeFromGraph(selectedGraph.value));
