@@ -43,7 +43,7 @@ const cyStyle = [
       "line-color": "#888",
       "target-arrow-color": "#888",
       "target-arrow-shape": "triangle",
-      "curve-style": "unbundled-bezier" as const,
+      "curve-style": "straight" as const,
       "text-background-color": "#ffffff",
       "text-background-opacity": 0.8,
       "text-background-shape": "rectangle" as const,
