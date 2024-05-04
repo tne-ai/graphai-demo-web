@@ -62,6 +62,7 @@ const cyStyle = [
       color: "#ddd",
       "line-color": "#ddd",
       "line-style": "dashed",
+      "curve-style": "unbundled-bezier" as const,
       "target-arrow-color": "#ddd",
     },
   },
