@@ -198,7 +198,7 @@ export const useCytoscope = (selectedGraph: ComputedRef<GraphData> | Ref<GraphDa
       console.log("layout", name);
       cy.layout({ name }).run();
       cy.fit();
-      if (name === "cose") {
+      if (name === layout) {
         await sleep(400);
         storePositions();
       }
