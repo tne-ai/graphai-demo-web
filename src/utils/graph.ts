@@ -7,9 +7,14 @@ const arrays = (num: number) => {
 const randomInt = (num: number) => {
   return Math.floor(Math.random() * num);
 };
+const randomInt2 = (num: number) => {
+  return Math.floor((1 - Math.random() * Math.random()) * num);
+};
 export const generateGraph = (staticNode: number = 10, computedNode: number = 50, concurrency: number = 8): GraphData => {
   const nodes: Record<string, NodeData> = {};
   const inputsNode: string[] = [];
+  const outputNode: Record<number, string> = {};
+
   arrays(staticNode).forEach((__i, k) => {
     const name = "static_" + k;
     inputsNode.push(name);
@@ -22,9 +27,14 @@ export const generateGraph = (staticNode: number = 10, computedNode: number = 50
     const name = "node_" + k;
 
     const inputs = arrays(randomInt(3) + 1).map(() => {
-      const rand = randomInt(inputsNode.length);
+      const rand = randomInt2(inputsNode.length);
       return inputsNode[rand];
     });
+
+    // Ensure that all static nodes are used by other nodes
+    if (k < staticNode) {
+      inputs.push(inputsNode[k]);
+    }
 
     nodes[name] = {
       agentId: "sleepTestAgent",
