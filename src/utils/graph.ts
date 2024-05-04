@@ -13,7 +13,7 @@ const randomInt2 = (num: number) => {
 export const generateGraph = (staticNode: number = 10, computedNode: number = 50, concurrency: number = 8): GraphData => {
   const nodes: Record<string, NodeData> = {};
   const inputsNode: string[] = [];
-  const outputNode: Record<number, string> = {};
+  // const outputNode: Record<number, string> = {};
 
   arrays(staticNode).forEach((__i, k) => {
     const name = "static_" + k;
