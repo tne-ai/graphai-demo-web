@@ -31,6 +31,10 @@
       <div class="w-10/12 m-auto">
         <textarea class="border-2 p-2 w-full" rows="20">{{ logs }}</textarea>
       </div>
+      <div>streamData</div>
+      <div class="w-10/12 m-auto">
+        <textarea class="border-2 p-2 w-full" rows="20">{{ streamData }}</textarea>
+      </div>
     </div>
   </div>
 </template>
@@ -42,10 +46,13 @@ import { GraphAI } from "graphai";
 import { pushAgent, popAgent } from "graphai/lib/experimental_agents/array_agents";
 import { mapAgent } from "graphai/lib/experimental_agents/graph_agents";
 import { bypassAgent } from "graphai/lib/experimental_agents/test_agents";
+import { streamMockAgent, echoAgent } from "graphai/lib/experimental_agents/test_agents";
 
 import { sleepTestAgent, httpAgent, slashGPTFuncitons2TextAgent } from "@/utils/agents";
 import { generateGraph } from "@/utils/graph";
-import { graph_data, graph_data2, graph_data_co2, graph_data_http } from "@/utils/graph_data";
+import { graph_data, graph_data2, graph_data_co2, graph_data_http, graph_data_stream } from "@/utils/graph_data";
+
+import { useStreamData } from "@/utils/stream";
 
 import { useCytoscope } from "@/composables/cytoscope";
 
@@ -57,6 +64,7 @@ const graphDataSet = [
   { name: "random", data: graph_random },
   { name: "http", data: graph_data_http },
   { name: "co2", data: graph_data_co2 },
+  { name: "stream", data: graph_data_stream },
 ];
 
 export default defineComponent({
@@ -70,11 +78,24 @@ export default defineComponent({
 
     const { updateCytoscope, cytoscopeRef, resetCytoscope } = useCytoscope(selectedGraph);
 
+    const { streamData, streamAgentFilter } = useStreamData();
+
+    const agentFilters = [
+      {
+        name: "streamAgentFilter",
+        agent: streamAgentFilter,
+      },
+    ];
+
     const graphaiResponse = ref({});
     const logs = ref<unknown[]>([]);
 
     const run = async () => {
-      const graphai = new GraphAI(selectedGraph.value, { pushAgent, popAgent, sleepTestAgent, httpAgent, slashGPTFuncitons2TextAgent, mapAgent, bypassAgent });
+      const graphai = new GraphAI(
+        selectedGraph.value,
+        { pushAgent, popAgent, sleepTestAgent, httpAgent, slashGPTFuncitons2TextAgent, mapAgent, bypassAgent, streamMockAgent, echoAgent },
+        { agentFilters },
+      );
       graphai.onLogCallback = async ({ nodeId, state, inputs, result, errorMessage }) => {
         logs.value.push({ nodeId, state, inputs, result, errorMessage });
         updateCytoscope(nodeId, state);
@@ -97,6 +118,7 @@ export default defineComponent({
       selectedGraphIndex,
       selectedGraph,
       graphDataSet,
+      streamData,
     };
   },
 });
