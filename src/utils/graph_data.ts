@@ -230,7 +230,7 @@ export const graph_data_co2 = {
   },
 };
 
-export const graph_data_stream = {
+export const graph_data_stream: GraphData = {
   version: 0.2,
   nodes: {
     echo: {
@@ -242,7 +242,7 @@ export const graph_data_stream = {
   },
 };
 
-[
+const messages = [
   "French: Bonjour. Ceci est un test de diffusion en continu.",
   "German: Hallo. Dies ist ein Streaming-Test.",
   "Italian: Ciao. Questo è un test di streaming.",
@@ -257,17 +257,17 @@ export const graph_data_stream = {
   "Turkish: Merhaba. Bu bir akış testidir.",
   "Polish: Cześć. To test przesyłania strumieniowego.",
   "Vietnamese: Xin chào. Đây là một bài kiểm tra phát sóng.",
-]
-  .entries()
-  .forEach((v) => {
-    const [k, message] = v;
-    const inputs = k > 2 ? ["streamMockAgent" + (k - 3)] : ["echo"];
-    graph_data_stream["nodes"]["streamMockAgent" + k] = {
-      agentId: "streamMockAgent",
-      inputs,
-      params: {
-        message: message,
-        sleep: randomInt(800),
-      },
-    };
-  });
+];
+
+Array.from(messages.keys()).forEach((k) => {
+  const message = messages[k];
+  const inputs = k > 2 ? ["streamMockAgent" + (k - 3)] : ["echo"];
+  graph_data_stream["nodes"]["streamMockAgent" + k] = {
+    agentId: "streamMockAgent",
+    inputs,
+    params: {
+      message: message,
+      sleep: randomInt(800),
+    },
+  };
+});
