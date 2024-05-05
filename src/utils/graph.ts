@@ -4,10 +4,10 @@ import { NodeData } from "graphai/lib/type";
 const arrays = (num: number) => {
   return new Array(num).fill(undefined);
 };
-const randomInt = (num: number) => {
+export const randomInt = (num: number) => {
   return Math.floor(Math.random() * num);
 };
-const randomInt2 = (num: number) => {
+export const randomInt2 = (num: number) => {
   return Math.floor((1 - Math.random() * Math.random()) * num);
 };
 export const generateGraph = (staticNode: number = 10, computedNode: number = 50, concurrency: number = 8): GraphData => {

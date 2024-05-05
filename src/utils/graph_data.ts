@@ -1,4 +1,5 @@
 import { GraphData } from "graphai";
+import { randomInt } from "./graph";
 
 export const graph_data: GraphData = {
   loop: {
@@ -229,7 +230,6 @@ export const graph_data_co2 = {
   },
 };
 
-
 export const graph_data_stream = {
   version: 0.2,
   nodes: {
@@ -239,22 +239,35 @@ export const graph_data_stream = {
         message: "hello",
       },
     },
-    streamMockAgent: {
-      agentId: "streamMockAgent",
-      params: {
-        message: "this is streaming test1",
-        sleep: 500,
-      },
-      //inputs: [],
-      isResult: true,
-    },
-    streamMockAgent2: {
-      agentId: "streamMockAgent",
-      params: {
-        message: "こんにちは。こちらはstreamingのテストです",
-        sleep: 800,
-      },
-      isResult: true,
-    },
   },
 };
+
+[
+  "French: Bonjour. Ceci est un test de diffusion en continu.",
+  "German: Hallo. Dies ist ein Streaming-Test.",
+  "Italian: Ciao. Questo è un test di streaming.",
+  "Portuguese: Olá. Este é um teste de streaming.",
+  "Chinese (Simplified): 你好。这是一个流媒体测试。",
+  "Japanese: こんにちは。これはストリーミングのテストです。",
+  "Korean: 안녕하세요. 이것은 스트리밍 테스트입니다.",
+  "Hindi: नमस्ते। यह एक स्ट्रीमिंग परीक्षण है।",
+  "Dutch: Hallo. Dit is een streamingtest.",
+  "Greek: Γεια σας. Αυτό είναι ένα τεστ ροής.",
+  "Swedish: Hej. Det här är ett streamingtest.",
+  "Turkish: Merhaba. Bu bir akış testidir.",
+  "Polish: Cześć. To test przesyłania strumieniowego.",
+  "Vietnamese: Xin chào. Đây là một bài kiểm tra phát sóng.",
+]
+  .entries()
+  .forEach((v) => {
+    const [k, message] = v;
+    const inputs = k > 2 ? ["streamMockAgent" + (k - 3)] : ["echo"];
+    graph_data_stream["nodes"]["streamMockAgent" + k] = {
+      agentId: "streamMockAgent",
+      inputs,
+      params: {
+        message: message,
+        sleep: randomInt(800),
+      },
+    };
+  });
