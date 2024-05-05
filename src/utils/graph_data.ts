@@ -228,3 +228,33 @@ export const graph_data_co2 = {
     },
   },
 };
+
+
+export const graph_data_stream = {
+  version: 0.2,
+  nodes: {
+    echo: {
+      agentId: "echoAgent",
+      params: {
+        message: "hello",
+      },
+    },
+    streamMockAgent: {
+      agentId: "streamMockAgent",
+      params: {
+        message: "this is streaming test1",
+        sleep: 500,
+      },
+      //inputs: [],
+      isResult: true,
+    },
+    streamMockAgent2: {
+      agentId: "streamMockAgent",
+      params: {
+        message: "こんにちは。こちらはstreamingのテストです",
+        sleep: 800,
+      },
+      isResult: true,
+    },
+  },
+};
