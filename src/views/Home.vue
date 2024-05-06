@@ -19,6 +19,19 @@
         </select>
       </div>
 
+      <div v-if="selectedGraphName === 'stream'">
+        <div>streamData</div>
+        <div class="w-10/12 m-auto">
+          <textarea class="border-2 p-2 w-full" rows="20">{{ streamData }}</textarea>
+        </div>
+      </div>
+      <div v-if="selectedGraphName === 'stream2'">
+        <div>streamData</div>
+        <div class="w-10/12 m-auto">
+          <textarea class="border-2 p-2 w-full" rows="20">{{ words.join(" ") }}</textarea>
+        </div>
+      </div>
+
       <div class="mt-2">Graph Data</div>
       <div class="w-10/12 m-auto">
         <textarea class="border-2 p-2 w-full" rows="20">{{ selectedGraph }}</textarea>
@@ -30,10 +43,6 @@
       <div>Log</div>
       <div class="w-10/12 m-auto">
         <textarea class="border-2 p-2 w-full" rows="20">{{ logs }}</textarea>
-      </div>
-      <div>streamData</div>
-      <div class="w-10/12 m-auto">
-        <textarea class="border-2 p-2 w-full" rows="20">{{ streamData }}</textarea>
       </div>
     </div>
   </div>
@@ -47,33 +56,38 @@ import { pushAgent, popAgent } from "graphai/lib/experimental_agents/array_agent
 import { mapAgent } from "graphai/lib/experimental_agents/graph_agents";
 import { bypassAgent } from "graphai/lib/experimental_agents/test_agents";
 import { streamMockAgent, echoAgent } from "graphai/lib/experimental_agents/test_agents";
+import { functionAgent } from "graphai/lib/experimental_agents/function_agent";
 
 import { sleepTestAgent, httpAgent, slashGPTFuncitons2TextAgent } from "@/utils/agents";
 import { generateGraph } from "@/utils/graph";
 import { graph_data, graph_data2, graph_data_co2, graph_data_http, graph_data_stream } from "@/utils/graph_data";
 
-import { useStreamData } from "@/utils/stream";
+import { useStreamData, useGraphData } from "@/utils/stream";
 
 import { useCytoscope } from "@/composables/cytoscope";
-
-// const layouts = ["grid", "cose", "random", "circle", "concentric", "fcose", "breadthfirst"];
-const graph_random = generateGraph();
-const graphDataSet = [
-  { name: "sample2", data: graph_data2 },
-  { name: "sample", data: graph_data },
-  { name: "random", data: graph_random },
-  { name: "http", data: graph_data_http },
-  { name: "co2", data: graph_data_co2 },
-  { name: "stream", data: graph_data_stream },
-];
 
 export default defineComponent({
   name: "HomePage",
   components: {},
   setup() {
+    const { graphdata_any, words } = useGraphData("May the force be with you.");
+    const graph_random = generateGraph();
+    const graphDataSet = [
+      { name: "sample2", data: graph_data2 },
+      { name: "sample", data: graph_data },
+      { name: "random", data: graph_random },
+      { name: "http", data: graph_data_http },
+      { name: "co2", data: graph_data_co2 },
+      { name: "stream", data: graph_data_stream },
+      { name: "stream2", data: graphdata_any },
+    ];
+
     const selectedGraphIndex = ref(0);
     const selectedGraph = computed(() => {
       return graphDataSet[selectedGraphIndex.value].data;
+    });
+    const selectedGraphName = computed(() => {
+      return graphDataSet[selectedGraphIndex.value].name;
     });
 
     const { updateCytoscope, cytoscopeRef, resetCytoscope } = useCytoscope(selectedGraph);
@@ -93,7 +107,7 @@ export default defineComponent({
     const run = async () => {
       const graphai = new GraphAI(
         selectedGraph.value,
-        { pushAgent, popAgent, sleepTestAgent, httpAgent, slashGPTFuncitons2TextAgent, mapAgent, bypassAgent, streamMockAgent, echoAgent },
+        { pushAgent, popAgent, sleepTestAgent, httpAgent, slashGPTFuncitons2TextAgent, mapAgent, bypassAgent, streamMockAgent, echoAgent, functionAgent },
         { agentFilters },
       );
       graphai.onLogCallback = async ({ nodeId, state, inputs, result, errorMessage }) => {
@@ -116,9 +130,11 @@ export default defineComponent({
       graphaiResponse,
       cytoscopeRef,
       selectedGraphIndex,
+      selectedGraphName,
       selectedGraph,
       graphDataSet,
       streamData,
+      words,
     };
   },
 });
