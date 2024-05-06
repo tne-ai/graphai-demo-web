@@ -12,7 +12,13 @@ module.exports = {
     "vue/no-unused-vars": "error",
     "vue/no-reserved-component-names": "error",
     "@typescript-eslint/no-explicit-any": "warn",
-    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        argsIgnorePattern: "^__",
+        varsIgnorePattern: "^__",
+      },
+    ],
     "no-unreachable": "error",
     "vue/multi-word-component-names": "off",
     "vue/no-textarea-mustache": "off",
