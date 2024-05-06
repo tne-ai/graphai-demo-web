@@ -28,7 +28,7 @@
       <div v-if="selectedGraphName === 'stream2'">
         <div>streamData</div>
         <div class="w-10/12 m-auto">
-          <textarea class="border-2 p-2 w-full" rows="20">{{ words.join(" ") }}</textarea>
+          <textarea class="border-2 p-2 w-full" rows="20">{{ Object.values(words).map((a) => a.join(" ")) }}</textarea>
         </div>
       </div>
 
@@ -70,7 +70,7 @@ export default defineComponent({
   name: "HomePage",
   components: {},
   setup() {
-    const { graphdata_any, words } = useGraphData("May the force be with you.");
+    const { graphdata_any, words } = useGraphData();
     const graph_random = generateGraph();
     const graphDataSet = [
       { name: "sample2", data: graph_data2 },
