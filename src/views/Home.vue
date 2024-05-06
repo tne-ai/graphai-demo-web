@@ -70,7 +70,7 @@ export default defineComponent({
   name: "HomePage",
   components: {},
   setup() {
-    const { graphdata_any, words } = useGraphData();
+    const { graphdata_any, words } = useGraphData("May the force be with you.");
     const graph_random = generateGraph();
     const graphDataSet = [
       { name: "sample2", data: graph_data2 },

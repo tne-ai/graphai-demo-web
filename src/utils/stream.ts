@@ -41,6 +41,9 @@ class WordStreamer {
 }
 
 export const useFaucet = () => {
+};
+
+export const useGraphData = (theMessage: string) => {
   const words = ref(new Array<string>());
 
   const faucat = (streamer: WordStreamer) => {
@@ -54,15 +57,6 @@ export const useFaucet = () => {
       };
     });
   };
-  return {
-    words,
-    faucat,
-  };
-};
-
-export const useGraphData = () => {
-  const { words, faucat } = useFaucet();
-  const theMessage = "May the force be with you.";
 
   const graphdata_any = {
     version: 0.2,
@@ -71,19 +65,13 @@ export const useGraphData = () => {
         value: theMessage,
       },
       source: {
-        agent: "functionAgent",
-        params: {
-          function: (message: string) => {
-            return new WordStreamer(message);
-          },
+        agent: (message: string) => {
+          return new WordStreamer(message);
         },
         inputs: ["message"],
       },
       destination: {
-        agent: "functionAgent",
-        params: {
-          function: faucat,
-        },
+        agent: faucat,
         isResult: true,
         inputs: ["source"],
       },
