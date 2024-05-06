@@ -40,9 +40,6 @@ class WordStreamer {
   }
 }
 
-export const useFaucet = () => {
-};
-
 export const useGraphData = (theMessage: string) => {
   const words = ref(new Array<string>());
 
