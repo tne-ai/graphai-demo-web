@@ -8,8 +8,8 @@ export const sleepTestAgent: AgentFunction<{ duration?: number }> = async (conte
 };
 
 export const httpAgent: AgentFunction = async ({ inputs, params }) => {
-  const { agentId } = params;
-  const url = "https://graphai-demo.web.app/api/agents/" + agentId;
+  const { agent } = params;
+  const url = "https://graphai-demo.web.app/api/agents/" + agent;
 
   const postData = { inputs, params };
 

@@ -37,7 +37,7 @@ export const generateGraph = (staticNode: number = 10, computedNode: number = 50
     }
 
     nodes[name] = {
-      agentId: "sleepTestAgent",
+      agent: "sleepTestAgent",
       params: {
         duration: randomInt(10) * 400,
       },
