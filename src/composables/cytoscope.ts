@@ -221,7 +221,9 @@ export const useCytoscope = (selectedGraph: ComputedRef<GraphData> | Ref<GraphDa
   const resetCytoscope = () => {
     const elements = cytoscopeData.value.elements;
     Object.keys(elements.map).forEach((nodeId) => {
-      elements.map[nodeId].data.color = colorMap[NodeState.Waiting];
+      const graph = selectedGraph.value;
+      const nodeData = graph.nodes[nodeId];
+        elements.map[nodeId].data.color = "value" in nodeData ? colorStatic : colorMap[NodeState.Waiting];
     });
     cytoscopeData.value = { elements };
   };
