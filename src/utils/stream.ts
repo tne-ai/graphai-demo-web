@@ -1,3 +1,5 @@
+import { GraphData } from "graphai";
+
 import { ref, Ref } from "vue";
 import { AgentFilterFunction } from "graphai/lib/type";
 import { randomInt } from "./graph";
@@ -38,7 +40,7 @@ class WordStreamer {
         if (word) {
           next();
         }
-      }, 100);
+      }, randomInt(800));
     };
     next();
   }
@@ -82,7 +84,7 @@ export const useGraphData = () => {
     "Hmm. In the end, cowards are those who follow the dark side.",
   ];
 
-  const graphdata_any = {
+  const graphdata_any: GraphData = {
     version: 0.2,
     concurrency: 3,
     nodes: {
@@ -93,7 +95,7 @@ export const useGraphData = () => {
   };
 
   Array.from(messages.keys()).forEach((k) => {
-    const message = messages[k];
+    // const message = messages[k];
     graphdata_any.nodes["source" + k] = {
       agent: (message: string) => {
         return new WordStreamer(message);
