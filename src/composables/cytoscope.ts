@@ -145,7 +145,7 @@ export const useCytoscope = (selectedGraph: ComputedRef<GraphData> | Ref<GraphDa
     elements.map[nodeId].data.color = colorMap[state];
     const graph = selectedGraph.value;
     const nodeData = graph.nodes[nodeId];
-    if ("agentId" in nodeData && state === NodeState.Queued && (nodeData.priority ?? 0) > 0) {
+    if ("agent" in nodeData && state === NodeState.Queued && (nodeData.priority ?? 0) > 0) {
       // computed node
       elements.map[nodeId].data.color = colorPriority;
     } else {
