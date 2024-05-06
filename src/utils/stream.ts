@@ -25,9 +25,12 @@ export const useStreamData = () => {
 
 class WordStreamer {
   public onWord = (__word: string | undefined) => {};
-
+  private message: string;
   constructor(message: string) {
-    const words = message.split(" ");
+    this.message = message;
+  }
+  public run() {
+    const words = this.message.split(" ");
     const next = () => {
       setTimeout(() => {
         const word = words.shift();
@@ -35,7 +38,7 @@ class WordStreamer {
         if (word) {
           next();
         }
-      }, randomInt(800));
+      }, 100);
     };
     next();
   }
@@ -48,6 +51,7 @@ export const useGraphData = () => {
     words.value[key] = [];
     return (streamer: WordStreamer) => {
       return new Promise((resolve) => {
+        streamer.run();
         streamer.onWord = (word: string | undefined) => {
           if (word) {
             words.value[key].push(word);
@@ -80,6 +84,7 @@ export const useGraphData = () => {
 
   const graphdata_any = {
     version: 0.2,
+    concurrency: 3,
     nodes: {
       message: {
         value: messages,
@@ -97,7 +102,6 @@ export const useGraphData = () => {
     };
     graphdata_any.nodes["destination" + k] = {
       agent: faucatGenerator("message" + k),
-      isResult: true,
       inputs: ["source" + k],
     };
   });
