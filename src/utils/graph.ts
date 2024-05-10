@@ -48,6 +48,7 @@ export const generateGraph = (staticNode: number = 10, computedNode: number = 50
   });
 
   return {
+    version: 0.3,
     nodes,
     concurrency,
   };
