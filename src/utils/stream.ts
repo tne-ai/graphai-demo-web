@@ -85,7 +85,7 @@ export const useGraphData = () => {
   ];
 
   const graphdata_any: GraphData = {
-    version: 0.2,
+    version: 0.3,
     concurrency: 3,
     nodes: {
       message: {
@@ -100,11 +100,11 @@ export const useGraphData = () => {
       agent: (message: string) => {
         return new WordStreamer(message);
       },
-      inputs: ["message.$" + k],
+      inputs: [":message.$" + k],
     };
     graphdata_any.nodes["destination" + k] = {
       agent: faucatGenerator("message" + k),
-      inputs: ["source" + k],
+      inputs: [":source" + k],
     };
   });
 
