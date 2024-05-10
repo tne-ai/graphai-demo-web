@@ -4,7 +4,7 @@ import { randomInt } from "./graph";
 export const graph_data: GraphData = {
   version: 0.3,
   loop: {
-    while: "source",
+    while: ":source",
   },
   nodes: {
     source: {
