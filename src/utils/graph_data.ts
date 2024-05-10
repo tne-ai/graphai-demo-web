@@ -2,17 +2,18 @@ import { GraphData } from "graphai";
 import { randomInt } from "./graph";
 
 export const graph_data: GraphData = {
+  version: 0.3,
   loop: {
-    while: "source",
+    while: ":source",
   },
   nodes: {
     source: {
       value: ["orange", "banana", "lemon", "orange", "banana", "lemon", "orange", "banana", "lemon", "orange", "banana", "lemon"],
-      update: "popper.array",
+      update: ":popper.array",
     },
     result: {
       value: [],
-      update: "reducer",
+      update: ":reducer",
       isResult: true,
     },
     sleeper1: {
@@ -20,93 +21,95 @@ export const graph_data: GraphData = {
       params: {
         duration: 200,
       },
-      inputs: ["source"],
+      inputs: [":source"],
     },
     sleeper2: {
       agent: "sleepTestAgent",
       params: {
         duration: 200,
       },
-      inputs: ["sleeper1"],
+      inputs: [":sleeper1"],
     },
     sleeper3: {
       agent: "sleepTestAgent",
       params: {
         duration: 200,
       },
-      inputs: ["sleeper2"],
+      inputs: [":sleeper2"],
     },
     sleeper4: {
       agent: "sleepTestAgent",
       params: {
         duration: 200,
       },
-      inputs: ["sleeper3"],
+      inputs: [":sleeper3"],
     },
     popper: {
-      inputs: ["sleeper4"],
+      inputs: [":sleeper4"],
       agent: "popAgent", // returns { array, item }
     },
     reducer: {
       agent: "pushAgent",
-      inputs: ["result", "popper.item"],
+      inputs: [":result", ":popper.item"],
     },
   },
 };
 
 export const graph_data2: GraphData = {
+  version: 0.3,
   nodes: {
     node1: {
       value: { message: "Hello World" },
     },
     node2: {
       agent: "sleepTestAgent",
-      inputs: ["node1"],
+      inputs: [":node1"],
     },
     node3: {
       agent: "sleepTestAgent",
-      inputs: ["node2"],
+      inputs: [":node2"],
     },
     node4: {
       agent: "sleepTestAgent",
-      inputs: ["node2", "node3"],
+      inputs: [":node2", ":node3"],
     },
     node5: {
       agent: "sleepTestAgent",
-      inputs: ["node3", "node4"],
+      inputs: [":node3", ":node4"],
     },
     node6: {
       agent: "sleepTestAgent",
-      inputs: ["node1", "node5"],
+      inputs: [":node1", ":node5"],
     },
     node7: {
       agent: "sleepTestAgent",
-      inputs: ["node3", "node5"],
+      inputs: [":node3", ":node5"],
     },
     node8: {
       agent: "sleepTestAgent",
-      inputs: ["node2", "node5", "node3"],
+      inputs: [":node2", ":node5", ":node3"],
     },
     node9: {
       agent: "sleepTestAgent",
-      inputs: ["node4", "node8", "node6"],
+      inputs: [":node4", ":node8", ":node6"],
     },
     node10: {
       agent: "sleepTestAgent",
-      inputs: ["node5", "node6", "node7"],
+      inputs: [":node5", ":node6", ":node7"],
     },
     node11: {
       agent: "sleepTestAgent",
-      inputs: ["node3", "node6", "node7"],
+      inputs: [":node3", ":node6", ":node7"],
     },
     node12: {
       agent: "sleepTestAgent",
-      inputs: ["node10", "node11", "node9"],
+      inputs: [":node10", ":node11", ":node9"],
     },
   },
 };
 
 export const graph_data_http = {
+  version: 0.3,
   nodes: {
     echo: {
       agent: "httpAgent",
@@ -117,14 +120,14 @@ export const graph_data_http = {
     },
     bypassAgent: {
       agent: "httpAgent",
-      inputs: ["echo"],
+      inputs: [":echo"],
       params: {
         agent: "bypassAgent",
       },
     },
     sleepAgent: {
       agent: "httpAgent",
-      inputs: ["echo"],
+      inputs: [":echo"],
       params: {
         agent: "sleeperAgent",
         duration: 1000,
@@ -132,7 +135,7 @@ export const graph_data_http = {
     },
     bypassAgent2: {
       agent: "httpAgent",
-      inputs: ["bypassAgent"],
+      inputs: [":bypassAgent"],
       params: {
         agent: "bypassAgent",
       },
@@ -142,6 +145,7 @@ export const graph_data_http = {
 };
 
 export const graph_data_co2 = {
+  version: 0.3,
   nodes: {
     slashGPTAgent: {
       agent: "httpAgent",
@@ -194,12 +198,12 @@ export const graph_data_co2 = {
         function_data_key: "methods",
         result_key: 0,
       },
-      inputs: ["slashGPTAgent"],
+      inputs: [":slashGPTAgent"],
       agent: "slashGPTFuncitons2TextAgent",
     },
     mapNode: {
       agent: "mapAgent",
-      inputs: ["function2prompt0.$0", "function2prompt0.$1", "function2prompt0.$2", "function2prompt0.$3", "function2prompt0.$4", "function2prompt0.$5"],
+      inputs: [":function2prompt0.$0", ":function2prompt0.$1", ":function2prompt0.$2", ":function2prompt0.$3", ":function2prompt0.$4", ":function2prompt0.$5"],
       params: {
         injectionTo: ["memory"],
       },
@@ -217,11 +221,11 @@ export const graph_data_co2 = {
                 prompt: "ユーザの問い合わせにある文章の専門家です。専門家として、ユーザのアイデアに対して実現可能なシナリオを100文字で書いてください。",
               },
             },
-            inputs: ["memory"],
+            inputs: [":memory"],
           },
           bypassAgent: {
             agent: "bypassAgent",
-            inputs: ["slashGPTAgent0.$last.content"],
+            inputs: [":slashGPTAgent0.$last.content"],
             isResult: true,
           },
         },
@@ -231,7 +235,7 @@ export const graph_data_co2 = {
 };
 
 export const graph_data_stream: GraphData = {
-  version: 0.2,
+  version: 0.3,
   nodes: {
     echo: {
       agent: "echoAgent",

@@ -79,7 +79,8 @@ const colorMap = {
 };
 
 const parseInput = (input: string) => {
-  const ids = input.split(".");
+  // WARNING: Assuming the first character is always ":"
+  const ids = input.slice(1).split(".");
   const source = ids.shift() || "";
   const label = ids.length ? ids.join(".") : undefined;
   return { source, label };

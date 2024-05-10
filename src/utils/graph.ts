@@ -28,12 +28,12 @@ export const generateGraph = (staticNode: number = 10, computedNode: number = 50
 
     const inputs = arrays(randomInt(3) + 1).map(() => {
       const rand = randomInt2(inputsNode.length);
-      return inputsNode[rand];
+      return ":" + inputsNode[rand];
     });
 
     // Ensure that all static nodes are used by other nodes
     if (k < staticNode) {
-      inputs.push(inputsNode[k]);
+      inputs.push(":" + inputsNode[k]);
     }
 
     nodes[name] = {
@@ -48,6 +48,7 @@ export const generateGraph = (staticNode: number = 10, computedNode: number = 50
   });
 
   return {
+    version: 0.3,
     nodes,
     concurrency,
   };
