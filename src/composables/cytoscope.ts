@@ -76,6 +76,7 @@ const colorMap = {
   [NodeState.Injected]: "#00f",
   [NodeState.TimedOut]: "#f0f",
   [NodeState.Failed]: "#f00",
+  [NodeState.Skipped]: "#0ff",
 };
 
 const parseInput = (input: string) => {
