@@ -11,7 +11,7 @@ export const useStreamData = () => {
     streamData.value[nodeId] = (streamData.value[nodeId] || "") + token;
   };
   const streamAgentFilter: AgentFilterFunction = async (context, next) => {
-    context.params.streamCallback = (token: string) => {
+    context.filterParams.streamTokenCallback = (token: string) => {
       outSideFunciton(context.debugInfo.nodeId, token);
     };
     return next(context);

@@ -265,7 +265,7 @@ const messages = [
 
 Array.from(messages.keys()).forEach((k) => {
   const message = messages[k];
-  const inputs = k > 2 ? ["streamMockAgent" + (k - 3)] : ["echo"];
+  const inputs = k > 2 ? [":streamMockAgent" + (k - 3)] : [":echo"];
   graph_data_stream["nodes"]["streamMockAgent" + k] = {
     agent: "streamMockAgent",
     inputs,
