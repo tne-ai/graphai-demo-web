@@ -52,11 +52,13 @@
 import { defineComponent, ref, computed } from "vue";
 
 import { GraphAI } from "graphai";
-import { pushAgent, popAgent } from "graphai/lib/experimental_agents/array_agents";
-import { mapAgent } from "graphai/lib/experimental_agents/graph_agents";
-import { bypassAgent } from "graphai/lib/experimental_agents/test_agents";
-import { streamMockAgent, echoAgent } from "graphai/lib/experimental_agents/test_agents";
-import { functionAgent } from "graphai/lib/experimental_agents/function_agent";
+// import { pushAgent, popAgent } from "graphai/lib/experimental_agents/array_agents";
+// import { mapAgent } from "graphai/lib/experimental_agents/graph_agents";
+// import { bypassAgent } from "graphai/lib/experimental_agents/test_agents";
+// import { streamMockAgent, echoAgent } from "graphai/lib/experimental_agents/test_agents";
+// import { functionAgent } from "graphai/lib/experimental_agents/function_agent";
+import * as agents from "graphai/lib/experimental_agents/vanilla";
+import { getAgentInfo } from "graphai/lib/utils/test_utils";
 
 import { sleepTestAgent, httpAgent, slashGPTFuncitons2TextAgent } from "@/utils/agents";
 import { generateGraph } from "@/utils/graph";
@@ -107,7 +109,12 @@ export default defineComponent({
     const run = async () => {
       const graphai = new GraphAI(
         selectedGraph.value,
-        { pushAgent, popAgent, sleepTestAgent, httpAgent, slashGPTFuncitons2TextAgent, mapAgent, bypassAgent, streamMockAgent, echoAgent, functionAgent },
+        {
+          ...agents,
+          sleepTestAgent: getAgentInfo(sleepTestAgent),
+          httpAgent: getAgentInfo(httpAgent),
+          slashGPTFuncitons2TextAgent: getAgentInfo(slashGPTFuncitons2TextAgent),
+        },
         { agentFilters },
       );
       graphai.onLogCallback = async ({ nodeId, state, inputs, result, errorMessage }) => {
