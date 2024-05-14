@@ -26,8 +26,10 @@ import { defineComponent, ref } from "vue";
 
 import { GraphAI } from "graphai";
 import { pushAgent, popAgent } from "graphai/lib/experimental_agents/array_agents";
+import { getAgentInfo } from "graphai/lib/utils/test_utils";
 
 import { sleepTestAgent, httpAgent } from "@/utils/agents";
+
 import { generateGraph } from "@/utils/graph";
 
 import { useCytoscope } from "@/composables/cytoscope";
@@ -50,7 +52,7 @@ export default defineComponent({
     const logs = ref<unknown[]>([]);
 
     const run = async () => {
-      const graphai = new GraphAI(selectedGraph.value, { pushAgent, popAgent, sleepTestAgent, httpAgent });
+      const graphai = new GraphAI(selectedGraph.value, { pushAgent, popAgent, sleepTestAgent: getAgentInfo(sleepTestAgent), httpAgent: getAgentInfo(httpAgent) });
       graphai.onLogCallback = async ({ nodeId, state, inputs, result, errorMessage }) => {
         logs.value.push({ nodeId, state, inputs, result, errorMessage });
         updateCytoscope(nodeId, state);
