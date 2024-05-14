@@ -1,9 +1,11 @@
 import express from "express";
 import cors from "cors";
 
+import { AgentFunctionInfo } from "graphai/lib/type";
 // import { GraphAI, AgentFunction } from "graphai";
-import { defaultTestAgents } from "../graphai/agents/agents";
-import { agentDocs } from "../graphai/agents/agentDocs";
+// import { defaultTestAgents } from "../graphai/agents/agents";
+// import { agentDocs } from "../graphai/agents/agentDocs";
+import * as agents from "graphai/lib/experimental_agents";
 
 const hostName = "https://graphai-demo.web.app";
 
@@ -15,12 +17,12 @@ const agentDispatcher = async (req: express.Request, res: express.Response) => {
   const { params } = req;
   const { agentId } = params;
   const { nodeId, retry, params: agentParams, inputs } = req.body;
-  const agent = defaultTestAgents[agentId];
+  const agent = (agents as any)[agentId] as AgentFunctionInfo;
   if (agent === undefined) {
     res.status(404).send("Not found");
     return;
   }
-  const result = await agent({
+  const result = await agent.agent({
     params: agentParams,
     inputs,
     debugInfo: {
@@ -28,13 +30,14 @@ const agentDispatcher = async (req: express.Request, res: express.Response) => {
       retry,
       verbose: false,
     },
-    agents: defaultTestAgents,
+    agents,
+    filterParams: {},
   });
   res.json(result);
 };
 
 const agentsList = async (req: express.Request, res: express.Response) => {
-  const agents = Object.keys(defaultTestAgents).map((agent) => {
+  const list = Object.keys(agents).map((agent) => {
     return {
       agentId: agent,
       url: hostName + "/api/agents/" + agent,
@@ -44,9 +47,10 @@ const agentsList = async (req: express.Request, res: express.Response) => {
       repository: "https://github.com/snakajima/graphai/",
     };
   });
-  res.json({ agents });
+  res.json({ agents: list });
 };
 
+/*
 const agentDocsReq = async (req: express.Request, res: express.Response) => {
   const { params } = req;
   const { agentId } = params;
@@ -55,7 +59,7 @@ const agentDocsReq = async (req: express.Request, res: express.Response) => {
   }
   return res.json({});
 };
-
+*/
 export const app = express();
 
 const allowedOrigins = ["http://localhost:8080", hostName];
@@ -68,6 +72,6 @@ app.use(express.json());
 app.use(cors(options));
 app.post("/api/agents/:agentId", agentDispatcher);
 
-app.get("/api/agents/:agentId/docs", agentDocsReq);
+// app.get("/api/agents/:agentId/docs", agentDocsReq);
 app.get("/api/agents", agentsList);
 app.get("/api/hello", hello_response);
