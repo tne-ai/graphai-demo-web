@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 
-import { AgentFunctionInfo } from "graphai/lib/type";
+import { AgentFunctionInfoDictonary } from "graphai/lib/type";
 // import { GraphAI, AgentFunction } from "graphai";
 // import { defaultTestAgents } from "../graphai/agents/agents";
 // import { agentDocs } from "../graphai/agents/agentDocs";
@@ -17,7 +17,7 @@ const agentDispatcher = async (req: express.Request, res: express.Response) => {
   const { params } = req;
   const { agentId } = params;
   const { nodeId, retry, params: agentParams, inputs } = req.body;
-  const agent = (agents as any)[agentId] as AgentFunctionInfo;
+  const agent = (agents as AgentFunctionInfoDictonary)[agentId];
   if (agent === undefined) {
     res.status(404).send("Not found");
     return;
