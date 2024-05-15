@@ -107,7 +107,7 @@ export default defineComponent({
       const graphai = new GraphAI(
         selectedGraph.value,
         {
-          ...agents as any,
+          ...agents,
           sleepTestAgent: getAgentInfo(sleepTestAgent),
           httpAgent: getAgentInfo(httpAgent),
           slashGPTFuncitons2TextAgent: getAgentInfo(slashGPTFuncitons2TextAgent),
