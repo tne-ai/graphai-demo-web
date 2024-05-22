@@ -53,7 +53,7 @@ import { defineComponent, ref, computed } from "vue";
 
 import { GraphAI } from "graphai";
 import * as agents from "graphai/lib/experimental_agents/vanilla";
-import { getAgentInfo } from "graphai/lib/utils/test_utils";
+import { agentInfoWrapper } from "graphai/lib/utils/utils";
 
 import { sleepTestAgent, httpAgent, slashGPTFuncitons2TextAgent } from "@/utils/agents";
 import { generateGraph } from "@/utils/graph";
@@ -108,9 +108,9 @@ export default defineComponent({
         selectedGraph.value,
         {
           ...agents,
-          sleepTestAgent: getAgentInfo(sleepTestAgent),
-          httpAgent: getAgentInfo(httpAgent),
-          slashGPTFuncitons2TextAgent: getAgentInfo(slashGPTFuncitons2TextAgent),
+          sleepTestAgent: agentInfoWrapper(sleepTestAgent),
+          httpAgent: agentInfoWrapper(httpAgent),
+          slashGPTFuncitons2TextAgent: agentInfoWrapper(slashGPTFuncitons2TextAgent),
         },
         { agentFilters },
       );

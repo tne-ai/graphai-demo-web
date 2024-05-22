@@ -23,7 +23,7 @@ module.exports = {
     "vue/multi-word-component-names": "off",
     "vue/no-textarea-mustache": "off",
     "sonarjs/cognitive-complexity": "error",
-    "sonarjs/no-duplicate-string": "warn",
+    "sonarjs/no-duplicate-string": "off",
     "sonarjs/elseif-without-else": "error",
     "sonarjs/max-switch-cases": "error",
     "sonarjs/no-all-duplicated-branches": "error",

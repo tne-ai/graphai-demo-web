@@ -26,7 +26,7 @@ import { defineComponent, ref } from "vue";
 
 import { GraphAI } from "graphai";
 import { pushAgent, popAgent } from "graphai/lib/experimental_agents/array_agents";
-import { getAgentInfo } from "graphai/lib/utils/test_utils";
+import { agentInfoWrapper } from "graphai/lib/utils/utils";
 
 import { sleepTestAgent, httpAgent } from "@/utils/agents";
 
@@ -55,8 +55,8 @@ export default defineComponent({
       const graphai = new GraphAI(selectedGraph.value, {
         pushAgent,
         popAgent,
-        sleepTestAgent: getAgentInfo(sleepTestAgent),
-        httpAgent: getAgentInfo(httpAgent),
+        sleepTestAgent: agentInfoWrapper(sleepTestAgent),
+        httpAgent: agentInfoWrapper(httpAgent),
       });
       graphai.onLogCallback = async ({ nodeId, state, inputs, result, errorMessage }) => {
         logs.value.push({ nodeId, state, inputs, result, errorMessage });

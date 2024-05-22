@@ -21,9 +21,8 @@ app.use(express.json());
 app.use(cors(options));
 app.post("/api/agents/:agentId", agentDispatcher(agentDictionary));
 
-// app.get("/api/agents/:agentId/docs", agentDocsReq);
-app.get("/api/agents", agentsList(agentDictionary, hostName, "/agents"));
-app.get("/api/agents/:agentId", agentDoc(agentDictionary, hostName, "/agents"));
+app.get("/api/agents", agentsList(agentDictionary, hostName, "/api/agents"));
+app.get("/api/agents/:agentId", agentDoc(agentDictionary, hostName, "/api/agents"));
 
 
 
