@@ -2089,10 +2089,6 @@ graphai@^0.4.4:
   resolved "https://registry.yarnpkg.com/graphai/-/graphai-0.4.4.tgz#7508ebb73a03dc1a2e459743df444ca8d721058a"
   integrity sha512-XfW1uApPpAuCEo8fD6xJi20Ed95hEJ4VO1CxRTfUQezBKTvbil46RE8adjHkDWd+lDip3FBxswKo0+aeEawlFw==
 
-"graphai@https://github.com/receptron/graphai.git":
-  version "0.4.3"
-  resolved "https://github.com/receptron/graphai.git#292e37200099b043f14807615f18d59033a0f16f"
-
 graphemer@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/graphemer/-/graphemer-1.4.0.tgz#fb2f1d55e0e3a1849aeffc90c4fa0dd53a0e66c6"

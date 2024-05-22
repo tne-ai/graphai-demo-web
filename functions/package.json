@@ -20,7 +20,6 @@
     "express": "^4.18.2",
     "firebase-admin": "^12.0.0",
     "firebase-functions": "^4.8.1",
-    "graphai": "https://github.com/receptron/graphai.git",
     "groq-sdk": "^0.3.3",
     "slashgpt": "^0.0.8",
     "tiktoken": "^1.0.14",
