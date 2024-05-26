@@ -5,7 +5,6 @@ import { AgentFunctionContext } from "graphai";
 import { randomInt } from "./graph";
 import { streamAgentFilterGenerator } from "@graphai/agent_filters";
 
-
 export const useStreamData = () => {
   const streamData: Ref<Record<string, string>> = ref({});
 
@@ -15,7 +14,7 @@ export const useStreamData = () => {
   };
 
   const streamAgentFilter = streamAgentFilterGenerator<string>(outSideFunciton);
-  
+
   return {
     streamData,
     streamAgentFilter,
