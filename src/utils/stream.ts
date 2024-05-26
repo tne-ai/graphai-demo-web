@@ -1,22 +1,21 @@
 import { GraphData } from "graphai";
 
 import { ref, Ref } from "vue";
-import { AgentFilterFunction } from "graphai/lib/type";
+import { AgentFunctionContext } from "graphai";
 import { randomInt } from "./graph";
+import { streamAgentFilterGenerator } from "@graphai/agent_filters";
+
 
 export const useStreamData = () => {
   const streamData: Ref<Record<string, string>> = ref({});
 
-  const outSideFunciton = (nodeId: string, token: string) => {
+  const outSideFunciton = (context: AgentFunctionContext, token: string) => {
+    const nodeId = context.debugInfo.nodeId;
     streamData.value[nodeId] = (streamData.value[nodeId] || "") + token;
   };
-  const streamAgentFilter: AgentFilterFunction = async (context, next) => {
-    context.filterParams.streamTokenCallback = (token: string) => {
-      outSideFunciton(context.debugInfo.nodeId, token);
-    };
-    return next(context);
-  };
 
+  const streamAgentFilter = streamAgentFilterGenerator<string>(outSideFunciton);
+  
   return {
     streamData,
     streamAgentFilter,
