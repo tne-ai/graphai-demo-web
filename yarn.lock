@@ -564,6 +564,11 @@
   resolved "https://registry.yarnpkg.com/@firebase/webchannel-wrapper/-/webchannel-wrapper-0.10.5.tgz#cd9897680d0a2f1bce8d8c23a590e5874f4617c5"
   integrity sha512-eSkJsnhBWv5kCTSU1tSUVl9mpFu+5NXXunZc83le8GMjMlsWwQArSc7cJJ4yl+aDFY0NGLi0AjZWMn1axOrkRg==
 
+"@graphai/vanilla@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@graphai/vanilla/-/vanilla-0.0.1.tgz#d6d2bf2bca3033fd65b36dbfed30fe7b15531c6a"
+  integrity sha512-A0vQeaq9kr1cI4rELDSfFqxVBVsVHsvmpUq/tBbAl4HH0bt7SkwlFcvOdE8bLWGcWV/l29bLAU/VXffZPzzPTA==
+
 "@grpc/grpc-js@~1.9.0":
   version "1.9.13"
   resolved "https://registry.yarnpkg.com/@grpc/grpc-js/-/grpc-js-1.9.13.tgz#ad9b7dbb6089c462469653c809996f13e46aa1cd"
@@ -1911,10 +1916,10 @@ graceful-fs@^4.1.6, graceful-fs@^4.2.0:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.11.tgz#4183e4e8bf08bb6e05bbb2f7d2e0c8f712ca40e3"
   integrity sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==
 
-graphai@^0.4.4:
-  version "0.4.4"
-  resolved "https://registry.yarnpkg.com/graphai/-/graphai-0.4.4.tgz#7508ebb73a03dc1a2e459743df444ca8d721058a"
-  integrity sha512-XfW1uApPpAuCEo8fD6xJi20Ed95hEJ4VO1CxRTfUQezBKTvbil46RE8adjHkDWd+lDip3FBxswKo0+aeEawlFw==
+graphai@^0.4.5:
+  version "0.4.5"
+  resolved "https://registry.yarnpkg.com/graphai/-/graphai-0.4.5.tgz#caeb8c2376aea726136c4c71c0e62229c0344753"
+  integrity sha512-j3Np7Ht2UcSsJCMtS9so0gDFDW5nHWKQ0mRKyp6x6HM8e2FubtwPVEG6Jbcl9FLnopM06TO+jTeK/IM6QCqc6A==
 
 graphemer@^1.4.0:
   version "1.4.0"

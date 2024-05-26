@@ -52,7 +52,7 @@
 import { defineComponent, ref, computed } from "vue";
 
 import { GraphAI } from "graphai";
-import * as agents from "graphai/lib/experimental_agents/vanilla";
+import * as agents from "@graphai/vanilla";
 import { agentInfoWrapper } from "graphai/lib/utils/utils";
 
 import { sleepTestAgent, httpAgent, slashGPTFuncitons2TextAgent } from "@/utils/agents";

@@ -25,7 +25,7 @@
 import { defineComponent, ref } from "vue";
 
 import { GraphAI } from "graphai";
-import { pushAgent, popAgent } from "graphai/lib/experimental_agents/array_agents";
+import { pushAgent, popAgent } from "@graphai/vanilla";
 import { agentInfoWrapper } from "graphai/lib/utils/utils";
 
 import { sleepTestAgent, httpAgent } from "@/utils/agents";
