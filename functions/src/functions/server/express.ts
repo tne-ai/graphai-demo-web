@@ -4,7 +4,7 @@ import cors from "cors";
 import { AgentFunctionInfoDictionary } from "graphai/lib/type";
 import { agentDispatcher, agentsList, agentDoc } from "@receptron/graphai_express";
 
-import * as agents from "graphai/lib/experimental_agents";
+import * as agents from "@graphai/agents";
 
 const hostName = "https://graphai-demo.web.app";
 const agentDictionary: AgentFunctionInfoDictionary = agents;
