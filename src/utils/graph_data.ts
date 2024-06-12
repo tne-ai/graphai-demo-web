@@ -2,7 +2,7 @@ import { GraphData } from "graphai";
 import { randomInt } from "./graph";
 
 export const graph_data: GraphData = {
-  version: 0.3,
+  version: 0.5,
   loop: {
     while: ":source",
   },
@@ -45,18 +45,18 @@ export const graph_data: GraphData = {
       inputs: [":sleeper3"],
     },
     popper: {
-      inputs: [":sleeper4"],
+      inputs: {array: ":sleeper4"},
       agent: "popAgent", // returns { array, item }
     },
     reducer: {
       agent: "pushAgent",
-      inputs: [":result", ":popper.item"],
+      inputs: {array: ":result", item: ":popper.item"},
     },
   },
 };
 
 export const graph_data2: GraphData = {
-  version: 0.3,
+  version: 0.5,
   nodes: {
     node1: {
       value: { message: "Hello World" },
@@ -109,7 +109,7 @@ export const graph_data2: GraphData = {
 };
 
 export const graph_data_http = {
-  version: 0.3,
+  version: 0.5,
   nodes: {
     echo: {
       agent: "httpAgent",
@@ -203,16 +203,13 @@ export const graph_data_co2 = {
     },
     mapNode: {
       agent: "mapAgent",
-      inputs: [":function2prompt0.$0", ":function2prompt0.$1", ":function2prompt0.$2", ":function2prompt0.$3", ":function2prompt0.$4", ":function2prompt0.$5"],
+      inputs: {rows: ":function2prompt0" },
       params: {
         injectionTo: ["memory"],
       },
       isResult: true,
       graph: {
         nodes: {
-          memory: {
-            value: {},
-          },
           slashGPTAgent0: {
             agent: "httpAgent",
             params: {
@@ -221,7 +218,7 @@ export const graph_data_co2 = {
                 prompt: "ユーザの問い合わせにある文章の専門家です。専門家として、ユーザのアイデアに対して実現可能なシナリオを100文字で書いてください。",
               },
             },
-            inputs: [":memory"],
+            inputs: [":row"],
           },
           bypassAgent: {
             agent: "bypassAgent",

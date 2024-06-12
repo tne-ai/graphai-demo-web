@@ -103,7 +103,8 @@ const cytoscapeFromGraph = (graph_data: GraphData) => {
       tmp.map[nodeId] = cyNode;
       if ("inputs" in node) {
         // computed node
-        (node.inputs ?? []).forEach((input: string) => {
+        const inputs = Array.isArray(node.inputs) ? node.inputs : Object.values(node.inputs || {});
+        (inputs ?? []).forEach((input: string) => {
           const { source, label } = parseInput(input);
           tmp.edges.push({
             data: {

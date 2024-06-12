@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 
-import { AgentFunctionInfoDictionary } from "graphai/lib/type";
+import { AgentFunctionInfoDictionary } from "graphai";
 import { agentDispatcher, agentsList, agentDoc } from "@receptron/graphai_express";
 
 import * as agents from "@graphai/agents";
