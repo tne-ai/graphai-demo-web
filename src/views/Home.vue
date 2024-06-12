@@ -62,7 +62,7 @@ import { graph_data_morning } from "@/utils/morning";
 
 import { useStreamData, useGraphData } from "@/utils/stream";
 
-import { useCytoscope } from "@/composables/cytoscope";
+import { useCytoscope } from "@receptron/graphai_vue_cytoscope";
 
 export default defineComponent({
   name: "HomePage",

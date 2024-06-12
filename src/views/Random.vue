@@ -32,7 +32,7 @@ import { sleepTestAgent, httpAgent } from "@/utils/agents";
 
 import { generateGraph } from "@/utils/graph";
 
-import { useCytoscope } from "@/composables/cytoscope";
+import { useCytoscope } from "@receptron/graphai_vue_cytoscope";
 
 // const layouts = ["grid", "cose", "random", "circle", "concentric", "fcose", "breadthfirst"];
 
