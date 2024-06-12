@@ -757,10 +757,10 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==
 
-"@receptron/graphai_vue_cytoscope@^0.0.2":
+"@receptron/graphai_vue_cytoscape@^0.0.2":
   version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@receptron/graphai_vue_cytoscope/-/graphai_vue_cytoscope-0.0.2.tgz#fd81fcdac0bc07e5458b822b1a3b80e6a0ad64ce"
-  integrity sha512-pFaiYejAvzy0hRS3ce0wSr7fstrDxr84zORN0RfLahlszbV1mVRqz6gYLsywqu5UZTvaI6lyKCVhs4u9n0SYMQ==
+  resolved "https://registry.yarnpkg.com/@receptron/graphai_vue_cytoscape/-/graphai_vue_cytoscape-0.0.2.tgz#ea3e9c24582aa31cf09a9e8ef6600ad353589768"
+  integrity sha512-ozWuLXf0rftUW0aG8wjTvS5j9q6i57e3hwTXZdRN4jlB+6qCkw+MwdoitRubP3iS22pWOC9Q3Tp3cIJBT3jV+w==
   dependencies:
     cytoscape "^3.29.2"
     cytoscape-klay "^3.1.4"

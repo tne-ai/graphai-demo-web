@@ -3,7 +3,7 @@
     <div class="items-center justify-center">
       <div>
         <div class="w-10/12 h-96 bg-white rounded-md mt-4 mx-auto border-2">
-          <div ref="cytoscopeRef" class="w-full h-full" />
+          <div ref="cytoscapeRef" class="w-full h-full" />
         </div>
       </div>
       <div class="mt-2">
@@ -62,7 +62,7 @@ import { graph_data_morning } from "@/utils/morning";
 
 import { useStreamData, useGraphData } from "@/utils/stream";
 
-import { useCytoscope } from "@receptron/graphai_vue_cytoscope";
+import { useCytoscape } from "@receptron/graphai_vue_cytoscape";
 
 export default defineComponent({
   name: "HomePage",
@@ -89,7 +89,7 @@ export default defineComponent({
       return graphDataSet[selectedGraphIndex.value].name;
     });
 
-    const { updateCytoscope, cytoscopeRef, resetCytoscope } = useCytoscope(selectedGraph);
+    const { updateCytoscape, cytoscapeRef, resetCytoscape } = useCytoscape(selectedGraph);
 
     const { streamData, streamAgentFilter } = useStreamData();
 
@@ -116,7 +116,7 @@ export default defineComponent({
       );
       graphai.onLogCallback = async ({ nodeId, state, inputs, result, errorMessage }) => {
         logs.value.push({ nodeId, state, inputs, result, errorMessage });
-        updateCytoscope(nodeId, state);
+        updateCytoscape(nodeId, state);
         console.log(nodeId, state);
       };
       const results = await graphai.run();
@@ -124,7 +124,7 @@ export default defineComponent({
     };
     const logClear = () => {
       logs.value = [];
-      resetCytoscope();
+      resetCytoscape();
     };
 
     return {
@@ -132,7 +132,7 @@ export default defineComponent({
       logs,
       logClear,
       graphaiResponse,
-      cytoscopeRef,
+      cytoscapeRef,
       selectedGraphIndex,
       selectedGraphName,
       selectedGraph,
