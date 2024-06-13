@@ -5,9 +5,7 @@ import NotFound from "@/components/NotFound.vue";
 
 import Home from "@/views/Home.vue";
 import Random from "@/views/Random.vue";
-import Account from "@/views/Account.vue";
 import About from "@/views/About.vue";
-import MyPage from "@/views/MyPage.vue";
 
 const routeChildren: Array<RouteRecordRaw> = [
   {
@@ -21,14 +19,6 @@ const routeChildren: Array<RouteRecordRaw> = [
   {
     path: "random",
     component: Random,
-  },
-  {
-    path: "account",
-    component: Account,
-  },
-  {
-    path: "mypage",
-    component: MyPage,
   },
 ];
 

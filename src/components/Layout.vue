@@ -26,19 +26,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, onMounted, ref } from "vue";
-
-import { auth } from "@/utils/firebase";
-import { User } from "firebase/auth";
+import { defineComponent, ref } from "vue";
 
 import { useI18nParam } from "@/i18n/utils";
-import { useStore } from "@/store/index";
 
 import Languages from "@/components/Languages.vue";
 import MenuList from "@/components/MenuList.vue";
-interface UserData {
-  user: User | null;
-}
 
 export default defineComponent({
   name: "AppLayout",
@@ -47,31 +40,14 @@ export default defineComponent({
     MenuList,
   },
   async setup() {
-    const store = useStore();
-    const user = reactive<UserData>({ user: null });
-
     const menu = ref(false);
 
     useI18nParam();
-
-    onMounted(() => {
-      auth.onAuthStateChanged((fbuser) => {
-        if (fbuser) {
-          console.log("authStateChanged:");
-          user.user = fbuser;
-          store.setUser(fbuser);
-        } else {
-          store.setUser(null);
-        }
-      });
-    });
 
     const toggleMenu = () => {
       menu.value = !menu.value;
     };
     return {
-      user,
-
       menu,
       toggleMenu,
     };

@@ -45,12 +45,12 @@ export const graph_data: GraphData = {
       inputs: [":sleeper3"],
     },
     popper: {
-      inputs: {array: ":sleeper4"},
+      inputs: { array: ":sleeper4" },
       agent: "popAgent", // returns { array, item }
     },
     reducer: {
       agent: "pushAgent",
-      inputs: {array: ":result", item: ":popper.item"},
+      inputs: { array: ":result", item: ":popper.item" },
     },
   },
 };
@@ -203,7 +203,7 @@ export const graph_data_co2 = {
     },
     mapNode: {
       agent: "mapAgent",
-      inputs: {rows: ":function2prompt0" },
+      inputs: { rows: ":function2prompt0" },
       params: {
         injectionTo: ["memory"],
       },
