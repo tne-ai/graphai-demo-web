@@ -26,13 +26,14 @@ import { defineComponent, ref } from "vue";
 
 import { GraphAI } from "graphai";
 import { pushAgent, popAgent } from "@graphai/vanilla";
-import { agentInfoWrapper } from "graphai/lib/utils/utils";
+import { agentInfoWrapper } from "graphai";
 
 import { sleepTestAgent, httpAgent } from "@/utils/agents";
 
 import { generateGraph } from "@/utils/graph";
 
-import { useCytoscape } from "@receptron/graphai_vue_cytoscape";
+// import { useCytoscape } from "@receptron/graphai_vue_cytoscape";
+import { useCytoscape } from "../utils/cytoscape";
 
 // const layouts = ["grid", "cose", "random", "circle", "concentric", "fcose", "breadthfirst"];
 
