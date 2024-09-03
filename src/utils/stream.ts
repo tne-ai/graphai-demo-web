@@ -8,7 +8,7 @@ export const useStreamData = () => {
   const streamData: Ref<Record<string, string>> = ref({});
 
   const outSideFunciton = (context: AgentFunctionContext, token: string) => {
-    const nodeId = context.debugInfo.nodeId;
+    const { nodeId } = context.debugInfo;
     streamData.value[nodeId] = (streamData.value[nodeId] || "") + token;
   };
 

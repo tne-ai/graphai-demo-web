@@ -4,7 +4,7 @@ import { useRoute } from "vue-router";
 
 export const i18nUtils = (app: App) => {
   app.config.globalProperties.localizedUrl = (path: string) => {
-    const lang = app.config.globalProperties.$route.params.lang;
+    const { lang } = app.config.globalProperties.$route.params;
     if (lang) {
       return `/${lang}` + path;
     }

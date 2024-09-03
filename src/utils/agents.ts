@@ -24,13 +24,14 @@ export const httpAgent: AgentFunction = async ({ inputs, params }) => {
 };
 
 /* eslint @typescript-eslint/no-explicit-any: 0 */
+/* eslint require-await: 0 */
 export const slashGPTFuncitons2TextAgent: AgentFunction<{ function_data_key: string; result_key: number }, Record<string, string[]>, any[]> = async ({
   params,
   inputs,
 }) => {
   const message = inputs[0].find((mess) => mess.role === "function_result");
   if (!message) {
-    return;
+    return null;
   }
   const result = (message.function_data[params.function_data_key] || []).map((record: Record<string, string>) => {
     const { title, description } = record;
