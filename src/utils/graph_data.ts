@@ -260,10 +260,10 @@ const messages = [
   "Vietnamese: Xin chào. Đây là một bài kiểm tra phát sóng.",
 ];
 
-Array.from(messages.keys()).forEach((k) => {
-  const message = messages[k];
-  const inputs = k > 2 ? [":streamMockAgent" + (k - 3)] : [":echo"];
-  graph_data_stream["nodes"]["streamMockAgent" + k] = {
+Array.from(messages.keys()).forEach((key) => {
+  const message = messages[key];
+  const inputs = key > 2 ? [":streamMockAgent" + (key - 3)] : [":echo"];
+  graph_data_stream["nodes"]["streamMockAgent" + key] = {
     agent: "streamMockAgent",
     inputs,
     params: {

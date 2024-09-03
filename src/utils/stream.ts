@@ -91,17 +91,17 @@ export const useGraphData = () => {
     },
   };
 
-  Array.from(messages.keys()).forEach((k) => {
+  Array.from(messages.keys()).forEach((key) => {
     // const message = messages[k];
-    graphdata_any.nodes["source" + k] = {
+    graphdata_any.nodes["source" + key] = {
       agent: (message: string) => {
         return new WordStreamer(message);
       },
-      inputs: [":message.$" + k],
+      inputs: [":message.$" + key],
     };
-    graphdata_any.nodes["destination" + k] = {
-      agent: faucatGenerator("message" + k),
-      inputs: [":source" + k],
+    graphdata_any.nodes["destination" + key] = {
+      agent: faucatGenerator("message" + key),
+      inputs: [":source" + key],
     };
   });
 

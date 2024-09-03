@@ -16,7 +16,7 @@ export default defineComponent({
   components: {
     MenuItem,
   },
-  setup(_, ctx) {
+  setup(__, ctx) {
     const handleClose = () => {
       ctx.emit(emitClose);
     };

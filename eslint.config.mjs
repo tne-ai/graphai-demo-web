@@ -106,10 +106,8 @@ export default [
       "require-await": "warn",
       "class-methods-use-this": "warn",
       "no-empty-function": "warn",
-      "id-length": "warn",
       "prefer-destructuring": "warn",
 
-      "no-duplicate-imports": "error",
       "no-await-in-loop": "warn",
       "no-plusplus": "warn",
       "object-shorthand": "warn",

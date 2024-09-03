@@ -15,8 +15,8 @@ export const generateGraph = (staticNode: number = 10, computedNode: number = 50
   const inputsNode: string[] = [];
   // const outputNode: Record<number, string> = {};
 
-  arrays(staticNode).forEach((__i, k) => {
-    const name = "static_" + k;
+  arrays(staticNode).forEach((__i, key) => {
+    const name = "static_" + key;
     inputsNode.push(name);
     nodes[name] = {
       value: name,

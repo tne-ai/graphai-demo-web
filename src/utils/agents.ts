@@ -28,12 +28,12 @@ export const slashGPTFuncitons2TextAgent: AgentFunction<{ function_data_key: str
   params,
   inputs,
 }) => {
-  const message = inputs[0].find((m) => m.role === "function_result");
+  const message = inputs[0].find((mess) => mess.role === "function_result");
   if (!message) {
     return;
   }
-  const result = (message.function_data[params.function_data_key] || []).map((r: Record<string, string>) => {
-    const { title, description } = r;
+  const result = (message.function_data[params.function_data_key] || []).map((record: Record<string, string>) => {
+    const { title, description } = record;
     return ["title:", title, "description:", description].join("\n");
   });
   // console.log(result)
