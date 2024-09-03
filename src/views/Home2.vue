@@ -9,6 +9,7 @@
       <div class="mt-2">
         <button class="text-white font-bold items-center rounded-full px-4 py-2 m-1 bg-sky-500 hover:bg-sky-700" @click="run">Run</button>
         <button class="text-white font-bold items-center rounded-full px-4 py-2 m-1 bg-sky-500 hover:bg-sky-700" @click="logClear">Clear</button>
+        <button class="text-white font-bold items-center rounded-full px-4 py-2 m-1 bg-sky-500 hover:bg-sky-700" @click="nextRun">Next</button>
       </div>
 
       <div>
@@ -49,9 +50,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, ref, computed, watch } from "vue";
 
-import { GraphAI } from "graphai";
+import { GraphAI, AgentFilterFunction, sleep } from "graphai";
 import * as agents from "@graphai/vanilla";
 import { agentInfoWrapper } from "graphai/lib/utils/utils";
 
@@ -94,12 +95,40 @@ export default defineComponent({
 
     const { streamData, streamAgentFilter } = useStreamData();
 
+    const eventQueue = [];
+    watch(selectedGraphIndex, () => {
+      eventQueue.splice(0);
+    });
+    const waitAction = async () => {
+      return new Promise((resolve) => {
+        const onClickHandler = () => {
+          resolve();
+        };
+        eventQueue.push(onClickHandler);
+      });
+    };
+
+    const awaitActionFilter: AgentFilterFunction = async (context, next) => {
+      const res = await next(context);
+      await waitAction();
+      return res;
+    };
     const agentFilters = [
       {
         name: "streamAgentFilter",
         agent: streamAgentFilter,
       },
+      {
+        name: "awaitActionFilter",
+        agent: awaitActionFilter,
+      },
     ];
+    const nextRun = () => {
+      if (eventQueue.length > 0) {
+        const event = eventQueue.shift();
+        event();
+      }
+    };
 
     const graphaiResponse = ref({});
     const logs = ref<unknown[]>([]);
@@ -125,11 +154,14 @@ export default defineComponent({
     };
     const logClear = () => {
       logs.value = [];
+      eventQueue.splice(0);
+
       resetCytoscape();
     };
 
     return {
       run,
+      nextRun,
       logs,
       logClear,
       graphaiResponse,
