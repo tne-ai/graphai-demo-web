@@ -72,7 +72,7 @@ const task_13_read_news_paper = async () => {
   await just_task("13 read news paper", 8);
 };
 
-const task_14_go_out = async () => {
+const task_14_go_out = () => {
   console.log("14 go out");
 };
 

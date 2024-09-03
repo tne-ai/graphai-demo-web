@@ -39,7 +39,7 @@ export default defineComponent({
     Languages,
     MenuList,
   },
-  async setup() {
+  setup() {
     const menu = ref(false);
 
     useI18nParam();

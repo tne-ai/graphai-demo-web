@@ -267,7 +267,7 @@ Array.from(messages.keys()).forEach((key) => {
     agent: "streamMockAgent",
     inputs,
     params: {
-      message: message,
+      message,
       sleep: randomInt(800),
     },
   };

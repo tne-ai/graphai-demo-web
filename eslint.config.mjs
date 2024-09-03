@@ -110,7 +110,6 @@ export default [
 
       "no-await-in-loop": "warn",
       "no-plusplus": "warn",
-      "object-shorthand": "warn",
       "dot-notation": "warn",
       "require-atomic-updates": "warn",
       "no-lonely-if": "warn",
