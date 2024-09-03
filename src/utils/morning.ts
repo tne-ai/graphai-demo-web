@@ -13,7 +13,7 @@ const cycle_task = async (name: string, time: number, count: number) => {
   console.log(`start task ${name}`);
   while (task_counter < count) {
     console.log(`task ${name} call`);
-    task_counter++;
+    task_counter = +1;
     if (task_counter < count) {
       await sleep(time * 1000);
     }

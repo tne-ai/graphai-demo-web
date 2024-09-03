@@ -52,7 +52,7 @@
 <script lang="ts">
 import { defineComponent, ref, computed, watch } from "vue";
 
-import { GraphAI, AgentFilterFunction, sleep } from "graphai";
+import { GraphAI, AgentFilterFunction } from "graphai";
 import * as agents from "@graphai/vanilla";
 import { agentInfoWrapper } from "graphai/lib/utils/utils";
 
@@ -99,7 +99,7 @@ export default defineComponent({
     watch(selectedGraphIndex, () => {
       eventQueue.splice(0);
     });
-    const waitAction = async () => {
+    const waitAction = () => {
       return new Promise((resolve) => {
         const onClickHandler = () => {
           resolve();

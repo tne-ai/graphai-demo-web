@@ -263,7 +263,7 @@ const messages = [
 Array.from(messages.keys()).forEach((key) => {
   const message = messages[key];
   const inputs = key > 2 ? [":streamMockAgent" + (key - 3)] : [":echo"];
-  graph_data_stream["nodes"]["streamMockAgent" + key] = {
+  graph_data_stream.nodes["streamMockAgent" + key] = {
     agent: "streamMockAgent",
     inputs,
     params: {

@@ -108,7 +108,7 @@ export default [
       "no-empty-function": "warn",
       "prefer-destructuring": "warn",
 
-      "no-await-in-loop": "warn",
+      "no-await-in-loop": "off",
       "no-plusplus": "warn",
       "dot-notation": "warn",
       "require-atomic-updates": "warn",
