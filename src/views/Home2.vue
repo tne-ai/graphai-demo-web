@@ -95,14 +95,14 @@ export default defineComponent({
 
     const { streamData, streamAgentFilter } = useStreamData();
 
-    const eventQueue = [];
+    const eventQueue: (() => void)[] = [];
     watch(selectedGraphIndex, () => {
       eventQueue.splice(0);
     });
     const waitAction = () => {
       return new Promise((resolve) => {
         const onClickHandler = () => {
-          resolve();
+          resolve(true);
         };
         eventQueue.push(onClickHandler);
       });
@@ -124,8 +124,8 @@ export default defineComponent({
       },
     ];
     const nextRun = () => {
-      if (eventQueue.length > 0) {
-        const event = eventQueue.shift();
+      const event = eventQueue.shift();
+      if (event) {
         event();
       }
     };
