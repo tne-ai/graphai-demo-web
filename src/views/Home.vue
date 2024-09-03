@@ -115,7 +115,7 @@ export default defineComponent({
         },
         { agentFilters },
       );
-      graphai.onLogCallback = async ({ nodeId, state, inputs, result, errorMessage }) => {
+      graphai.onLogCallback = ({ nodeId, state, inputs, result, errorMessage }) => {
         logs.value.push({ nodeId, state, inputs, result, errorMessage });
         updateCytoscape(nodeId, state);
         console.log(nodeId, state);

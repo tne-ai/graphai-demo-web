@@ -24,9 +24,8 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 
-import { GraphAI } from "graphai";
+import { GraphAI, agentInfoWrapper } from "graphai";
 import { pushAgent, popAgent } from "@graphai/vanilla";
-import { agentInfoWrapper } from "graphai";
 
 import { sleepTestAgent, httpAgent } from "@/utils/agents";
 
@@ -59,7 +58,7 @@ export default defineComponent({
         sleepTestAgent: agentInfoWrapper(sleepTestAgent),
         httpAgent: agentInfoWrapper(httpAgent),
       });
-      graphai.onLogCallback = async ({ nodeId, state, inputs, result, errorMessage }) => {
+      graphai.onLogCallback = ({ nodeId, state, inputs, result, errorMessage }) => {
         logs.value.push({ nodeId, state, inputs, result, errorMessage });
         updateCytoscape(nodeId, state);
         console.log(nodeId, state);

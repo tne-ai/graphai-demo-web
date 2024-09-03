@@ -23,8 +23,8 @@ export const generateGraph = (staticNode: number = 10, computedNode: number = 50
     };
   });
 
-  arrays(computedNode).forEach((__i, k) => {
-    const name = "node_" + k;
+  arrays(computedNode).forEach((__i, key) => {
+    const name = "node_" + key;
 
     const inputs = arrays(randomInt(3) + 1).map(() => {
       const rand = randomInt2(inputsNode.length);
@@ -32,8 +32,8 @@ export const generateGraph = (staticNode: number = 10, computedNode: number = 50
     });
 
     // Ensure that all static nodes are used by other nodes
-    if (k < staticNode) {
-      inputs.push(":" + inputsNode[k]);
+    if (key < staticNode) {
+      inputs.push(":" + inputsNode[key]);
     }
 
     nodes[name] = {
