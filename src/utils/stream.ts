@@ -1,7 +1,6 @@
-import { GraphData } from "graphai";
+import { GraphData, AgentFunctionContext } from "graphai";
 
 import { ref, Ref } from "vue";
-import { AgentFunctionContext } from "graphai";
 import { randomInt } from "./graph";
 import { streamAgentFilterGenerator } from "@graphai/agent_filters";
 

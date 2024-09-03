@@ -109,7 +109,7 @@ export default [
       "id-length": "warn",
       "prefer-destructuring": "warn",
 
-      "no-duplicate-imports": "warn",
+      "no-duplicate-imports": "error",
       "no-await-in-loop": "warn",
       "no-plusplus": "warn",
       "object-shorthand": "warn",
