@@ -228,10 +228,17 @@
   dependencies:
     ajv "^8.16.0"
 
-"@graphai/vanilla@^0.0.8":
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/@graphai/vanilla/-/vanilla-0.0.8.tgz#4817b2ab833370e0007de5a99b899a6e63d25185"
-  integrity sha512-5dDbPQj8sEkxdojbWLC64YbWmrZVYUwFMm1ghrACJ0+cpaZ0KdhP3hGZnnPMXxfZI4Ju3nYJyY+AmbmMNG3aog==
+"@graphai/agent_utils@0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@graphai/agent_utils/-/agent_utils-0.0.2.tgz#c04f9bcbb07a78710e63362ec84008b7153adab4"
+  integrity sha512-pAB45O/YQ/vQQoIRNtlgWGTVNn1f1DrpzRj7WzdsAtTOim7gkr6Mjp5QR9Ue+U/xVdgNRDRws6qLm1CYin/VWw==
+
+"@graphai/vanilla@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@graphai/vanilla/-/vanilla-0.1.0.tgz#8e6e7a58724d5b0a63c4d1969c5596c0811deaac"
+  integrity sha512-WdG6nUPiOp8AdJfGAvF8oqHuH4ptiYuumd+cVBRHaitRz9ztfbMDxH4ktMfdOVsmwOBS0mAANCmTuUo1L9BfBg==
+  dependencies:
+    "@graphai/agent_utils" "0.0.2"
 
 "@humanwhocodes/module-importer@^1.0.1":
   version "1.0.1"
