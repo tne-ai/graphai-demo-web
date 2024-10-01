@@ -52,7 +52,7 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 
-import { GraphAI, AgentFunction } from "graphai";
+import { GraphAI, AgentFunction, AgentFilterFunction, sleep } from "graphai";
 import * as agents from "@graphai/vanilla";
 import { agentInfoWrapper } from "graphai/lib/utils/utils";
 
@@ -102,7 +102,15 @@ export default defineComponent({
 
     const { streamData, streamAgentFilter } = useStreamData();
 
+    const demoAgentFilter: AgentFilterFunction = async (context, next) => {
+      await sleep(100);
+      return next(context);
+    };
     const agentFilters = [
+      {
+        name: "demoAgentFilter",
+        agent: demoAgentFilter,
+      },
       {
         name: "streamAgentFilter",
         agent: streamAgentFilter,

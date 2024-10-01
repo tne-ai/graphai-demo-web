@@ -160,7 +160,7 @@ export const useCytoscape = (selectedGraph: ComputedRef<GraphData> | Ref<GraphDa
 
   const updateCytoscape = async (nodeId: string, state: NodeState) => {
     if (state === NodeState.Completed || state === NodeState.Waiting) {
-      await sleep(100);
+      // await sleep(100);
     }
     const { elements } = cytoscapeData.value;
     elements.map[nodeId].data.color = colorMap[state];
