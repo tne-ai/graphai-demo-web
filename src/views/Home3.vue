@@ -12,6 +12,7 @@
             <div v-if="m.role === 'user'" class="mr-8">👱{{ m.content }}</div>
             <div class="ml-20" v-else>🤖{{ m.content }}</div>
           </div>
+          <div class="ml-20" v-if="isStreaming">🤖{{ streamData["llm"] }}</div>
         </div>
       </div>
       <div class="mt-2 hidden">
@@ -132,6 +133,7 @@ export default defineComponent({
     const graphaiResponse = ref({});
     const logs = ref<unknown[]>([]);
     const transitions = ref<unknown[]>([]);
+    const isStreaming = ref(false);
 
     const run = async () => {
       const graphai = new GraphAI(
@@ -154,14 +156,24 @@ export default defineComponent({
         console.log(nodeId, state, result);
         if (state === "completed" && result) {
           if (nodeId === "reducer") {
+            isStreaming.value = false;
             messages.value = [...(result as { role: string; content: string }[])];
           }
           if (nodeId === "userMessage") {
             messages.value.push(result as { role: string; content: string });
           }
         }
-        if (state === "queued" && nodeId === "llm") {
-          resetStreamData("llm");
+        if (nodeId === "llm") {
+          if (state === "queued") {
+            resetStreamData("llm");
+          }
+          if (state === "executing") {
+            console.log("HOGE");
+            isStreaming.value = true;
+          }
+          // if (state === "completed") {
+          // isStreaming.value = false;
+          // }
         }
       };
       const results = await graphai.run();
@@ -185,6 +197,7 @@ export default defineComponent({
       cytoscapeRef,
       selectedGraph,
       streamData,
+      isStreaming,
 
       submit,
       userInput,
