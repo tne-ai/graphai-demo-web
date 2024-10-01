@@ -17,7 +17,7 @@ export const useStreamData = () => {
       streamData.value[nodeId] = "";
     }
   };
-  
+
   const streamAgentFilter = streamAgentFilterGenerator<string>(outSideFunciton);
 
   return {

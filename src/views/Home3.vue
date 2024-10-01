@@ -144,7 +144,7 @@ export default defineComponent({
         }
         if (state === "queued") {
           if (nodeId === "llm") {
-            resetStreamData("llm")
+            resetStreamData("llm");
           }
         }
       };
