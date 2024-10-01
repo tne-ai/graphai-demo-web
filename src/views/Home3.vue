@@ -42,16 +42,16 @@
       </div>
 
       <div class="mt-2 hidden">Graph Data</div>
-      <div class="w-10/12 m-auto font-mono">
+      <div class="w-10/12 m-auto font-mono hidden">
         <textarea class="border-2 p-2 rounded-md w-full" rows="20">{{ selectedGraph }}</textarea>
       </div>
-      <div>Result</div>
-      <div class="w-10/12 m-auto">
+      <div class="hidden">Result</div>
+      <div class="w-10/12 m-auto hidden">
         <textarea class="border-2 p-2 w-full" rows="20">{{ graphaiResponse }}</textarea>
       </div>
-      <div>Log</div>
+      <div class="w-10/12 m-auto text-left">Transitions</div>
       <div class="w-10/12 m-auto">
-        <textarea class="border-2 p-2 w-full" rows="20">{{ logs }}</textarea>
+        <textarea class="border-2 p-2 w-full" rows="20">{{ transitions.join('\n') }}</textarea>
       </div>
     </div>
   </div>
@@ -126,7 +126,8 @@ export default defineComponent({
     ];
     const messages = ref<{ role: string; content: string }[]>([]);
     const graphaiResponse = ref({});
-    const logs = ref<unknown[]>([]);
+    const logs = ref<any[]>([]);
+    const transitions = ref<unknown[]>([]);
 
     const run = async () => {
       const graphai = new GraphAI(
@@ -139,6 +140,11 @@ export default defineComponent({
         { agentFilters },
       );
       graphai.onLogCallback = ({ nodeId, state, inputs, result, errorMessage }) => {
+        if (logs.value.length > 0 && logs.value[logs.value.length-1].nodeId == nodeId) {
+          transitions.value[transitions.value.length-1] += " → " + state;
+        } else {
+          transitions.value.push(nodeId + ": " + state); 
+        }
         logs.value.push({ nodeId, state, inputs, result, errorMessage });
         updateCytoscape(nodeId, state);
         console.log(nodeId, state, result);
@@ -159,6 +165,7 @@ export default defineComponent({
     };
     const logClear = () => {
       logs.value = [];
+      transitions.value = [];
 
       resetCytoscape();
     };
@@ -167,7 +174,7 @@ export default defineComponent({
 
     return {
       run,
-      logs,
+      transitions,
       logClear,
       graphaiResponse,
       cytoscapeRef,
