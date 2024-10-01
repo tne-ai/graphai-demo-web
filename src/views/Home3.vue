@@ -53,7 +53,7 @@
       <div class="w-10/12 m-auto">
         <textarea class="border-2 p-2 w-full" rows="20">{{ graphaiResponse }}</textarea>
       </div>
-      <div class="w-10/12 m-auto text-left">Logs</div>
+      <div>Logs</div>
       <div class="w-10/12 m-auto">
         <textarea class="border-2 p-2 w-full" rows="20">{{ logs }}</textarea>
       </div>
