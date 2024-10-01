@@ -7,10 +7,10 @@
         </div>
       </div>
       <div class="mt-2">
-        <div class="w-10/12 m-auto">
+        <div class="w-10/12 m-auto text-left">
           <div v-for="(m, k) in messages" :key="k">
-            <div v-if="m.role === 'user'" class="text-left">👱{{ m.content }}</div>
-            <div class="text-right" v-else>🤖{{ m.content }}</div>
+            <div v-if="m.role === 'user'" class="mr-8">👱{{ m.content }}</div>
+            <div class="ml-20" v-else>🤖{{ m.content }}</div>
           </div>
         </div>
       </div>
