@@ -130,7 +130,7 @@ export default defineComponent({
     ];
     const messages = ref<{ role: string; content: string }[]>([]);
     const graphaiResponse = ref({});
-    const logs = ref<any[]>([]);
+    const logs = ref<unknown[]>([]);
     const transitions = ref<unknown[]>([]);
 
     const run = async () => {
@@ -144,7 +144,7 @@ export default defineComponent({
         { agentFilters },
       );
       graphai.onLogCallback = ({ nodeId, state, inputs, result, errorMessage }) => {
-        if (logs.value.length > 0 && logs.value[logs.value.length - 1].nodeId == nodeId) {
+        if (logs.value.length > 0 && (logs.value[logs.value.length - 1] as { nodeId: string }).nodeId === nodeId) {
           transitions.value[transitions.value.length - 1] += " → " + state;
         } else {
           transitions.value.push(nodeId + ": " + state);
