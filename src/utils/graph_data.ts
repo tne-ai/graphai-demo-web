@@ -343,6 +343,7 @@ export const graphChat = {
       params: {
         forWeb: true,
         apiKey: import.meta.env.VITE_OPEN_API_KEY,
+        stream: true,
       },
       inputs: {
         messages: ":appender",

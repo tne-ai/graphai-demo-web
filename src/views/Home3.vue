@@ -6,6 +6,7 @@
           <div ref="cytoscapeRef" class="w-full h-full" />
         </div>
       </div>
+      {{ messages }}
       <div class="mt-2">
         <button class="text-white font-bold items-center rounded-full px-4 py-2 m-1 bg-sky-500 hover:bg-sky-700" @click="run">Run</button>
         <button class="text-white font-bold items-center rounded-full px-4 py-2 m-1 bg-sky-500 hover:bg-sky-700" @click="logClear">Clear</button>
@@ -18,7 +19,7 @@
       <div>
         <div>streamData</div>
         <div class="w-10/12 m-auto">
-          <textarea class="border-2 p-2 w-full" rows="20">{{ streamData }}</textarea>
+          <textarea class="border-2 p-2 w-full" rows="10">{{ streamData }}</textarea>
         </div>
       </div>
 
@@ -90,7 +91,7 @@ export default defineComponent({
       console.log(result);
       return result as string;
     }
-
+    
     // const { updateCytoscape, cytoscapeRef, resetCytoscape } = useCytoscape(selectedGraph);
 
     const { streamData, streamAgentFilter } = useStreamData();
@@ -101,7 +102,7 @@ export default defineComponent({
         agent: streamAgentFilter,
       },
     ];
-
+    const messages = ref<unknown[]>([]);
     const graphaiResponse = ref({});
     const logs = ref<unknown[]>([]);
 
@@ -122,6 +123,9 @@ export default defineComponent({
         logs.value.push({ nodeId, state, inputs, result, errorMessage });
         // updateCytoscape(nodeId, state);
         console.log(nodeId, state, result);
+        if (nodeId === "reducer" && state === "completed") {
+          messages.value = result;
+        }
       };
       const results = await graphai.run();
       graphaiResponse.value = results;
@@ -143,6 +147,7 @@ export default defineComponent({
 
       submit,
       userInput,
+      messages
     };
   },
 });
