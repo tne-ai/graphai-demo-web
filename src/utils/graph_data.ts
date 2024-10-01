@@ -366,8 +366,8 @@ export const graphChat = {
       params: {
         template: {
           role: "assistant",
-          content: "${text}"
-        }
+          content: "${text}",
+        },
       },
       inputs: {
         text: ":llm.text",
