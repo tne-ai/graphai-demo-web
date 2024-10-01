@@ -303,12 +303,14 @@ export const graphChat = {
           },
         ],
       },
-      inputs: [
-        {
-          dummy: 1,
-        },
-        ":userInput",
-      ],
+      inputs: {
+        array: [
+          {
+            dummy: 1,
+          },
+          ":userInput",
+        ],
+      },
     },
     userMessage: {
       agent: "propertyFilterAgent",

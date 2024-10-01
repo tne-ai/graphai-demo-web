@@ -5,6 +5,7 @@ import NotFound from "@/components/NotFound.vue";
 
 import Home from "@/views/Home.vue";
 import Home2 from "@/views/Home2.vue";
+import Home3 from "@/views/Home3.vue";
 import Random from "@/views/Random.vue";
 import About from "@/views/About.vue";
 
@@ -16,6 +17,10 @@ const routeChildren: Array<RouteRecordRaw> = [
   {
     path: "test",
     component: Home2,
+  },
+  {
+    path: "chat",
+    component: Home3,
   },
   {
     path: "about",
