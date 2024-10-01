@@ -20,16 +20,18 @@
       </div>
 
       <div>
-        <div class="w-10/12 m-auto">
+        <div class="w-10/12 m-auto my-4">
           <div v-if="inputPromise.length > 0" class="font-bold text-red-600 hidden">Write message to bot!!</div>
-          <input v-model="userInput" @keyup.enter="submit" class="border-2 p-2 w-full" :disabled="inputPromise.length == 0" />
+          <div class="flex">
+            <input v-model="userInput" @keyup.enter="submit" class="border-2 p-2 rounded-md w-full" :disabled="inputPromise.length == 0" />
           <button
-            class="text-white font-bold items-center rounded-full px-4 py-2 m-1 hover:bg-sky-700"
+            class="text-white font-bold items-center rounded-md px-4 py-2 ml-1 hover:bg-sky-700"
             :class="inputPromise.length == 0 ? 'bg-sky-200' : 'bg-sky-500'"
             @click="submit"
           >
-            Submit Message
+            Submit
           </button>
+          </div>
         </div>
       </div>
       <div class="hidden">
@@ -41,7 +43,7 @@
 
       <div class="mt-2 hidden">Graph Data</div>
       <div class="w-10/12 m-auto font-mono">
-        <textarea class="border-2 p-2 w-full" rows="20">{{ selectedGraph }}</textarea>
+        <textarea class="border-2 p-2 rounded-md w-full" rows="20">{{ selectedGraph }}</textarea>
       </div>
       <div>Result</div>
       <div class="w-10/12 m-auto">
