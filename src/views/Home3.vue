@@ -23,14 +23,14 @@
         <div class="w-10/12 m-auto my-4">
           <div v-if="inputPromise.length > 0" class="font-bold text-red-600 hidden">Write message to bot!!</div>
           <div class="flex">
-            <input v-model="userInput" @keyup.enter="submit" class="border-2 p-2 rounded-md w-full" :disabled="inputPromise.length == 0" />
-          <button
-            class="text-white font-bold items-center rounded-md px-4 py-2 ml-1 hover:bg-sky-700"
-            :class="inputPromise.length == 0 ? 'bg-sky-200' : 'bg-sky-500'"
-            @click="submit"
-          >
-            Submit
-          </button>
+            <input v-model="userInput" @keyup.enter="submit" class="border-2 p-2 rounded-md flex-1" :disabled="inputPromise.length == 0" />
+            <button
+              class="text-white font-bold items-center rounded-md px-4 py-2 ml-1 hover:bg-sky-700 flex-none"
+              :class="inputPromise.length == 0 ? 'bg-sky-200' : 'bg-sky-500'"
+              @click="submit"
+            >
+              Submit
+            </button>
           </div>
         </div>
       </div>
