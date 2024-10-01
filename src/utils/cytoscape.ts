@@ -80,9 +80,24 @@ const parseInput = (input: string) => {
   // WARNING: Assuming the first character is always ":"
   const ids = input.slice(1).split(".");
   const source = ids.shift() || "";
-  const label = ids.length ? ids.join(".") : undefined;
+  const label = ids.length ? ids.join(".") : null;
   return { source, label };
 };
+
+
+const parseInputs = (inputs: unknown): {source: string | null, label: string | null}[] => {
+  if (Array.isArray(inputs)) {
+    return inputs.map((input) => parseInputs(input)).flat(10);
+  }
+  if (inputs !== null && typeof inputs === 'object') {
+    return Object.values(inputs).map((input) => parseInputs(input)).flat(10);
+  }
+  if (inputs && typeof inputs === "string" && inputs.startsWith(':')) {
+    return [parseInput(inputs)];
+  }
+  return [{ source: null, label: null}];
+};
+
 
 const cytoscapeFromGraph = (graph_data: GraphData) => {
   const elements = Object.keys(graph_data.nodes || {}).reduce(
@@ -100,28 +115,31 @@ const cytoscapeFromGraph = (graph_data: GraphData) => {
       tmp.map[nodeId] = cyNode;
       if ("inputs" in node) {
         // computed node
-        const inputs = Array.isArray(node.inputs) ? node.inputs : Object.values(node.inputs || {});
-        (inputs ?? []).forEach((input: string) => {
-          const { source, label } = parseInput(input);
-          tmp.edges.push({
-            data: {
-              source,
-              target: nodeId,
-              label,
-            },
-          });
+        parseInputs(node.inputs).flat(10).forEach(({ source, label }) => {
+          if (source) {
+            tmp.edges.push({
+              data: {
+                source,
+                target: nodeId,
+                label,
+              },
+            });
+          }
         });
       }
       if ("update" in node && node.update) {
         // static node
-        const { source, label } = parseInput(node.update);
-        tmp.edges.push({
-          data: {
-            source,
-            target: nodeId,
-            isUpdate: true,
-            label,
-          },
+        parseInputs(node.update).flat(10).forEach(({ source, label }) => {
+          if (source) {
+            tmp.edges.push({
+              data: {
+                source,
+                target: nodeId,
+                isUpdate: true,
+                label,
+              },
+            });
+          }
         });
       }
       return tmp;
@@ -133,7 +151,6 @@ const cytoscapeFromGraph = (graph_data: GraphData) => {
 
 export const useCytoscape = (selectedGraph: ComputedRef<GraphData> | Ref<GraphData>) => {
   let cy: null | Core = null;
-  console.log(selectedGraph);
   const cytoscapeData = ref(cytoscapeFromGraph(selectedGraph.value ?? { nodes: {} }));
   const cytoscapeRef = ref();
 

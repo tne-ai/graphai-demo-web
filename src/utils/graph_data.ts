@@ -361,11 +361,23 @@ export const graphChat = {
         text: ":llm.text",
       },
     },
+    llmResponse: {
+      agent: "stringTemplateAgent",
+      params: {
+        template: {
+          role: "assistant",
+          content: "${text}"
+        }
+      },
+      inputs: {
+        text: ":llm.text",
+      },
+    },
     reducer: {
       agent: "pushAgent",
       inputs: {
         array: ":appender",
-        item: ":llm.choices.$0.message",
+        item: ":llmResponse",
       },
     },
   },

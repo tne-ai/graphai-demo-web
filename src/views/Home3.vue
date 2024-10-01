@@ -6,7 +6,11 @@
           <div ref="cytoscapeRef" class="w-full h-full" />
         </div>
       </div>
-      {{ messages }}
+      <div class="mt-2">
+        <div v-for="(m, k) in messages" :key="k">
+          {{ m }}
+        </div>
+      </div>
       <div class="mt-2">
         <button class="text-white font-bold items-center rounded-full px-4 py-2 m-1 bg-sky-500 hover:bg-sky-700" @click="run">Run</button>
         <button class="text-white font-bold items-center rounded-full px-4 py-2 m-1 bg-sky-500 hover:bg-sky-700" @click="logClear">Clear</button>
@@ -57,7 +61,7 @@ import { openAIAgent } from "@graphai/openai_agent";
 
 import { useStreamData } from "@/utils/stream";
 
-// import { useCytoscape } from "../utils/cytoscape";
+import { useCytoscape } from "../utils/cytoscape";
 
 
 export default defineComponent({
@@ -95,7 +99,7 @@ export default defineComponent({
       return result as string;
     }
     
-    // const { updateCytoscape, cytoscapeRef, resetCytoscape } = useCytoscape(selectedGraph);
+    const { updateCytoscape, cytoscapeRef, resetCytoscape } = useCytoscape(selectedGraph);
 
     const { streamData, streamAgentFilter } = useStreamData();
 
@@ -124,7 +128,7 @@ export default defineComponent({
       );
       graphai.onLogCallback = ({ nodeId, state, inputs, result, errorMessage }) => {
         logs.value.push({ nodeId, state, inputs, result, errorMessage });
-        // updateCytoscape(nodeId, state);
+        updateCytoscape(nodeId, state);
         console.log(nodeId, state, result);
         if (nodeId === "reducer" && state === "completed" && result) {
           messages.value = result as unknown[];
@@ -136,7 +140,7 @@ export default defineComponent({
     const logClear = () => {
       logs.value = [];
 
-      // resetCytoscape();
+      resetCytoscape();
     };
 
     return {
@@ -144,7 +148,7 @@ export default defineComponent({
       logs,
       logClear,
       graphaiResponse,
-      // cytoscapeRef,
+      cytoscapeRef,
       selectedGraph,
       streamData,
 
