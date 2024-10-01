@@ -21,9 +21,15 @@
 
       <div>
         <div class="w-10/12 m-auto">
-          <div v-if="inputPromise.length > 0">Write message to bot!!</div>
-          <input v-model="userInput" class="border-2 p-2 w-full" />
-          <button class="text-white font-bold items-center rounded-full px-4 py-2 m-1 bg-sky-500 hover:bg-sky-700" @click="submit">Submit Message</button>
+          <div v-if="inputPromise.length > 0" class="font-bold text-red-600">Write message to bot!!</div>
+          <input v-model="userInput" class="border-2 p-2 w-full" :disabled="inputPromise.length == 0" />
+          <button
+            class="text-white font-bold items-center rounded-full px-4 py-2 m-1 hover:bg-sky-700"
+            :class="inputPromise.length == 0 ? 'bg-sky-200' : 'bg-sky-500'"
+            @click="submit"
+          >
+            Submit Message
+          </button>
         </div>
       </div>
       <div>
