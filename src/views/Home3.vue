@@ -13,8 +13,11 @@
       </div>
 
       <div>
-        <input v-model="userInput">
-        <button @click="submit">Hello</button>
+        <div class="w-10/12 m-auto">
+          <div v-if="inputPromise.length > 0">Write message to bot!!</div>
+          <input v-model="userInput"  class="border-2 p-2 w-full" >
+          <button class="text-white font-bold items-center rounded-full px-4 py-2 m-1 bg-sky-500 hover:bg-sky-700" @click="submit">Hello</button>
+        </div>
       </div>
       <div>
         <div>streamData</div>
@@ -67,10 +70,10 @@ export default defineComponent({
       return graphChat;
     });
 
-    const inputPromise: ((message: string) => void)[] = [];
+    const inputPromise = ref<((message: string) => void)[]>([]);
     const submit = () => {
-      if (inputPromise.length > 0) {
-        const task = inputPromise.shift();
+      if (inputPromise.value.length > 0) {
+        const task = inputPromise.value.shift();
         if (task) {
           task(userInput.value);
           userInput.value = "";
@@ -82,7 +85,7 @@ export default defineComponent({
         const task = (message: string) => {
           resolved(message);
         };
-        inputPromise.push(task)
+        inputPromise.value.push(task)
       })
     };
     
@@ -123,8 +126,8 @@ export default defineComponent({
         logs.value.push({ nodeId, state, inputs, result, errorMessage });
         // updateCytoscape(nodeId, state);
         console.log(nodeId, state, result);
-        if (nodeId === "reducer" && state === "completed") {
-          messages.value = result;
+        if (nodeId === "reducer" && state === "completed" && result) {
+          messages.value = result as unknown[];
         }
       };
       const results = await graphai.run();
@@ -147,7 +150,8 @@ export default defineComponent({
 
       submit,
       userInput,
-      messages
+      messages,
+      inputPromise,
     };
   },
 });
