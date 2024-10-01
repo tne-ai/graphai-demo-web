@@ -66,12 +66,14 @@ export default defineComponent({
       return graphChat;
     });
 
-    const inputPromise = [];
+    const inputPromise: ((message: string) => void)[] = [];
     const submit = () => {
       if (inputPromise.length > 0) {
         const task = inputPromise.shift();
-        task(userInput.value);
-        userInput.value = "";
+        if (task) {
+          task(userInput.value);
+          userInput.value = "";
+        }
       }
     };
     const textPromise = () => {
@@ -83,8 +85,10 @@ export default defineComponent({
       })
     };
     
-    const textInputAgent: AgentFunction = (__context) => {
-      return textPromise();
+    const textInputAgent: AgentFunction = async (__context) => {
+      const result = await textPromise();
+      console.log(result);
+      return result as string;
     }
 
     // const { updateCytoscape, cytoscapeRef, resetCytoscape } = useCytoscape(selectedGraph);

@@ -322,12 +322,14 @@ export const graphChat = {
           },
         ],
       },
-      inputs: [
-        {
-          role: "user",
-        },
-        ":userInput",
-      ],
+      inputs: {
+        array: [
+          {
+            role: "user",
+          },
+          ":userInput",
+        ],
+      },
     },
     appender: {
       agent: "pushAgent",
@@ -338,6 +340,10 @@ export const graphChat = {
     },
     llm: {
       agent: "openAIAgent",
+      params: {
+        forWeb: true,
+        apiKey: import.meta.env.VITE_OPEN_API_KEY,
+      },
       inputs: {
         messages: ":appender",
       },
