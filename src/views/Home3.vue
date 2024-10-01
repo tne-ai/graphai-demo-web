@@ -34,24 +34,28 @@
           </div>
         </div>
       </div>
-      <div class="hidden">
+      <div class="w-10/12 m-auto text-left">Transitions</div>
+      <div class="w-10/12 m-auto">
+        <textarea class="border-2 p-2 w-full" rows="20">{{ transitions.join("\n") }}</textarea>
+      </div>
+      <div>
         <div>streamData</div>
         <div class="w-10/12 m-auto">
           <textarea class="border-2 p-2 w-full" rows="10">{{ streamData }}</textarea>
         </div>
       </div>
 
-      <div class="mt-2 hidden">Graph Data</div>
-      <div class="w-10/12 m-auto font-mono hidden">
+      <div class="mt-2">Graph Data</div>
+      <div class="w-10/12 m-auto font-mono">
         <textarea class="border-2 p-2 rounded-md w-full" rows="20">{{ selectedGraph }}</textarea>
       </div>
-      <div class="hidden">Result</div>
-      <div class="w-10/12 m-auto hidden">
+      <div>Result</div>
+      <div class="w-10/12 m-auto">
         <textarea class="border-2 p-2 w-full" rows="20">{{ graphaiResponse }}</textarea>
       </div>
-      <div class="w-10/12 m-auto text-left">Transitions</div>
+      <div class="w-10/12 m-auto text-left">Logs</div>
       <div class="w-10/12 m-auto">
-        <textarea class="border-2 p-2 w-full" rows="20">{{ transitions.join('\n') }}</textarea>
+        <textarea class="border-2 p-2 w-full" rows="20">{{ logs }}</textarea>
       </div>
     </div>
   </div>
@@ -140,10 +144,10 @@ export default defineComponent({
         { agentFilters },
       );
       graphai.onLogCallback = ({ nodeId, state, inputs, result, errorMessage }) => {
-        if (logs.value.length > 0 && logs.value[logs.value.length-1].nodeId == nodeId) {
-          transitions.value[transitions.value.length-1] += " → " + state;
+        if (logs.value.length > 0 && logs.value[logs.value.length - 1].nodeId == nodeId) {
+          transitions.value[transitions.value.length - 1] += " → " + state;
         } else {
-          transitions.value.push(nodeId + ": " + state); 
+          transitions.value.push(nodeId + ": " + state);
         }
         logs.value.push({ nodeId, state, inputs, result, errorMessage });
         updateCytoscape(nodeId, state);
@@ -174,6 +178,7 @@ export default defineComponent({
 
     return {
       run,
+      logs,
       transitions,
       logClear,
       graphaiResponse,
