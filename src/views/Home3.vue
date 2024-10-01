@@ -2,46 +2,48 @@
   <div class="home">
     <div class="items-center justify-center">
       <div>
-        <div class="w-10/12 h-96 bg-white rounded-md mt-4 mx-auto border-2">
+        <div class="w-10/12 h-60 bg-white rounded-md mt-4 p-2 mx-auto border-2">
           <div ref="cytoscapeRef" class="w-full h-full" />
         </div>
       </div>
       <div class="mt-2">
-        <div class="w-10/12 m-auto">
+        <div class="w-10/12 m-auto text-left">
           <div v-for="(m, k) in messages" :key="k">
-            <div v-if="m.role === 'user'" class="text-left">👱{{ m.content }}</div>
-            <div class="text-right" v-else>🤖{{ m.content }}</div>
+            <div v-if="m.role === 'user'" class="mr-8">👱{{ m.content }}</div>
+            <div class="ml-20" v-else>🤖{{ m.content }}</div>
           </div>
         </div>
       </div>
-      <div class="mt-2">
+      <div class="mt-2 hidden">
         <button class="text-white font-bold items-center rounded-full px-4 py-2 m-1 bg-sky-500 hover:bg-sky-700" @click="run">Run</button>
         <button class="text-white font-bold items-center rounded-full px-4 py-2 m-1 bg-sky-500 hover:bg-sky-700" @click="logClear">Clear</button>
       </div>
 
       <div>
-        <div class="w-10/12 m-auto">
-          <div v-if="inputPromise.length > 0" class="font-bold text-red-600">Write message to bot!!</div>
-          <input v-model="userInput" class="border-2 p-2 w-full" :disabled="inputPromise.length == 0" />
-          <button
-            class="text-white font-bold items-center rounded-full px-4 py-2 m-1 hover:bg-sky-700"
-            :class="inputPromise.length == 0 ? 'bg-sky-200' : 'bg-sky-500'"
-            @click="submit"
-          >
-            Submit Message
-          </button>
+        <div class="w-10/12 m-auto my-4">
+          <div v-if="inputPromise.length > 0" class="font-bold text-red-600 hidden">Write message to bot!!</div>
+          <div class="flex">
+            <input v-model="userInput" @keyup.enter="submit" class="border-2 p-2 rounded-md flex-1" :disabled="inputPromise.length == 0" />
+            <button
+              class="text-white font-bold items-center rounded-md px-4 py-2 ml-1 hover:bg-sky-700 flex-none"
+              :class="inputPromise.length == 0 ? 'bg-sky-200' : 'bg-sky-500'"
+              @click="submit"
+            >
+              Submit
+            </button>
+          </div>
         </div>
       </div>
-      <div>
+      <div class="hidden">
         <div>streamData</div>
         <div class="w-10/12 m-auto">
           <textarea class="border-2 p-2 w-full" rows="10">{{ streamData }}</textarea>
         </div>
       </div>
 
-      <div class="mt-2">Graph Data</div>
-      <div class="w-10/12 m-auto">
-        <textarea class="border-2 p-2 w-full" rows="20">{{ selectedGraph }}</textarea>
+      <div class="mt-2 hidden">Graph Data</div>
+      <div class="w-10/12 m-auto font-mono">
+        <textarea class="border-2 p-2 rounded-md w-full" rows="20">{{ selectedGraph }}</textarea>
       </div>
       <div>Result</div>
       <div class="w-10/12 m-auto">
@@ -109,7 +111,7 @@ export default defineComponent({
     const { streamData, streamAgentFilter, resetStreamData } = useStreamData();
 
     const demoAgentFilter: AgentFilterFunction = async (context, next) => {
-      await sleep(100);
+      await sleep(250);
       return next(context);
     };
     const agentFilters = [
@@ -160,6 +162,8 @@ export default defineComponent({
 
       resetCytoscape();
     };
+
+    run();
 
     return {
       run,
