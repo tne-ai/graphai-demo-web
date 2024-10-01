@@ -109,7 +109,7 @@ export default defineComponent({
     const { streamData, streamAgentFilter, resetStreamData } = useStreamData();
 
     const demoAgentFilter: AgentFilterFunction = async (context, next) => {
-      await sleep(100);
+      await sleep(250);
       return next(context);
     };
     const agentFilters = [
