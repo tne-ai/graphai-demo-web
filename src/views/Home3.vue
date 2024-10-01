@@ -142,10 +142,8 @@ export default defineComponent({
             messages.value.push(result as { role: string; content: string });
           }
         }
-        if (state === "queued") {
-          if (nodeId === "llm") {
-            resetStreamData("llm");
-          }
+        if (state === "queued" && nodeId === "llm") {
+          resetStreamData("llm");
         }
       };
       const results = await graphai.run();
