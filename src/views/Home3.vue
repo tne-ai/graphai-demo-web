@@ -100,7 +100,7 @@ export default defineComponent({
 
     const { updateCytoscape, cytoscapeRef, resetCytoscape } = useCytoscape(selectedGraph);
 
-    const { streamData, streamAgentFilter } = useStreamData();
+    const { streamData, streamAgentFilter, resetStreamData } = useStreamData();
 
     const demoAgentFilter: AgentFilterFunction = async (context, next) => {
       await sleep(100);
@@ -140,6 +140,11 @@ export default defineComponent({
           }
           if (nodeId === "userMessage") {
             messages.value.push(result as { role: string; content: string });
+          }
+        }
+        if (state === "queued") {
+          if (nodeId === "llm") {
+            resetStreamData("llm")
           }
         }
       };

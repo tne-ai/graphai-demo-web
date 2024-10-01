@@ -12,11 +12,18 @@ export const useStreamData = () => {
     streamData.value[nodeId] = (streamData.value[nodeId] || "") + token;
   };
 
+  const resetStreamData = (nodeId: string) => {
+    if (streamData.value[nodeId]) {
+      streamData.value[nodeId] = "";
+    }
+  };
+  
   const streamAgentFilter = streamAgentFilterGenerator<string>(outSideFunciton);
 
   return {
     streamData,
     streamAgentFilter,
+    resetStreamData,
   };
 };
 
