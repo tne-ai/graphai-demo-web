@@ -32,15 +32,15 @@
           </button>
         </div>
       </div>
-      <div>
+      <div class="hidden">
         <div>streamData</div>
         <div class="w-10/12 m-auto">
           <textarea class="border-2 p-2 w-full" rows="10">{{ streamData }}</textarea>
         </div>
       </div>
 
-      <div class="mt-2">Graph Data</div>
-      <div class="w-10/12 m-auto">
+      <div class="mt-2 hidden">Graph Data</div>
+      <div class="w-10/12 m-auto font-mono">
         <textarea class="border-2 p-2 w-full" rows="20">{{ selectedGraph }}</textarea>
       </div>
       <div>Result</div>
