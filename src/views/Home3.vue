@@ -7,8 +7,15 @@
         </div>
       </div>
       <div class="mt-2">
+        <div class="w-10/12 m-auto">
         <div v-for="(m, k) in messages" :key="k">
-          {{ m }}
+          <div v-if="m.role === 'user'" class="text-left">
+            👱{{ m.content }}
+          </div>
+          <div class="text-right" v-else>
+            🤖{{ m.content }}
+          </div>
+        </div>
         </div>
       </div>
       <div class="mt-2">
@@ -20,7 +27,7 @@
         <div class="w-10/12 m-auto">
           <div v-if="inputPromise.length > 0">Write message to bot!!</div>
           <input v-model="userInput"  class="border-2 p-2 w-full" >
-          <button class="text-white font-bold items-center rounded-full px-4 py-2 m-1 bg-sky-500 hover:bg-sky-700" @click="submit">Hello</button>
+          <button class="text-white font-bold items-center rounded-full px-4 py-2 m-1 bg-sky-500 hover:bg-sky-700" @click="submit">Submit Message</button>
         </div>
       </div>
       <div>
@@ -55,7 +62,6 @@ import { GraphAI, AgentFunction } from "graphai";
 import * as agents from "@graphai/vanilla";
 import { agentInfoWrapper } from "graphai/lib/utils/utils";
 
-import { sleepTestAgent, httpAgent, slashGPTFuncitons2TextAgent } from "@/utils/agents";
 import { graphChat } from "@/utils/graph_data";
 import { openAIAgent } from "@graphai/openai_agent";
 
@@ -109,7 +115,7 @@ export default defineComponent({
         agent: streamAgentFilter,
       },
     ];
-    const messages = ref<unknown[]>([]);
+    const messages = ref<{role: string, content: string}[]>([]);
     const graphaiResponse = ref({});
     const logs = ref<unknown[]>([]);
 
@@ -119,9 +125,6 @@ export default defineComponent({
         {
           ...agents,
           openAIAgent,
-          sleepTestAgent: agentInfoWrapper(sleepTestAgent),
-          httpAgent: agentInfoWrapper(httpAgent),
-          slashGPTFuncitons2TextAgent: agentInfoWrapper(slashGPTFuncitons2TextAgent),
           textInputAgent: agentInfoWrapper(textInputAgent),
         },
         { agentFilters },
@@ -131,7 +134,7 @@ export default defineComponent({
         updateCytoscape(nodeId, state);
         console.log(nodeId, state, result);
         if (nodeId === "reducer" && state === "completed" && result) {
-          messages.value = result as unknown[];
+          messages.value = result as {role: string, content: string}[];
         }
       };
       const results = await graphai.run();
