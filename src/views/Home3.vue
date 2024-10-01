@@ -34,14 +34,18 @@
           </div>
         </div>
       </div>
-      <div class="hidden">
+      <div class="w-10/12 m-auto text-left">Transitions</div>
+      <div class="w-10/12 m-auto">
+        <textarea class="border-2 p-2 w-full" rows="20">{{ transitions.join("\n") }}</textarea>
+      </div>
+      <div>
         <div>streamData</div>
         <div class="w-10/12 m-auto">
           <textarea class="border-2 p-2 w-full" rows="10">{{ streamData }}</textarea>
         </div>
       </div>
 
-      <div class="mt-2 hidden">Graph Data</div>
+      <div class="mt-2">Graph Data</div>
       <div class="w-10/12 m-auto font-mono">
         <textarea class="border-2 p-2 rounded-md w-full" rows="20">{{ selectedGraph }}</textarea>
       </div>
@@ -49,7 +53,7 @@
       <div class="w-10/12 m-auto">
         <textarea class="border-2 p-2 w-full" rows="20">{{ graphaiResponse }}</textarea>
       </div>
-      <div>Log</div>
+      <div>Logs</div>
       <div class="w-10/12 m-auto">
         <textarea class="border-2 p-2 w-full" rows="20">{{ logs }}</textarea>
       </div>
@@ -127,6 +131,7 @@ export default defineComponent({
     const messages = ref<{ role: string; content: string }[]>([]);
     const graphaiResponse = ref({});
     const logs = ref<unknown[]>([]);
+    const transitions = ref<unknown[]>([]);
 
     const run = async () => {
       const graphai = new GraphAI(
@@ -139,6 +144,11 @@ export default defineComponent({
         { agentFilters },
       );
       graphai.onLogCallback = ({ nodeId, state, inputs, result, errorMessage }) => {
+        if (logs.value.length > 0 && (logs.value[logs.value.length - 1] as { nodeId: string }).nodeId === nodeId) {
+          transitions.value[transitions.value.length - 1] += " → " + state;
+        } else {
+          transitions.value.push(nodeId + ": " + state);
+        }
         logs.value.push({ nodeId, state, inputs, result, errorMessage });
         updateCytoscape(nodeId, state);
         console.log(nodeId, state, result);
@@ -159,6 +169,7 @@ export default defineComponent({
     };
     const logClear = () => {
       logs.value = [];
+      transitions.value = [];
 
       resetCytoscape();
     };
@@ -168,6 +179,7 @@ export default defineComponent({
     return {
       run,
       logs,
+      transitions,
       logClear,
       graphaiResponse,
       cytoscapeRef,
