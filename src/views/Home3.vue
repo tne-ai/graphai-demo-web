@@ -2,7 +2,7 @@
   <div class="home">
     <div class="items-center justify-center">
       <div>
-        <div class="w-10/12 h-96 bg-white rounded-md mt-4 mx-auto border-2">
+        <div class="w-10/12 h-60 bg-white rounded-md mt-4 p-2 mx-auto border-2">
           <div ref="cytoscapeRef" class="w-full h-full" />
         </div>
       </div>
@@ -14,14 +14,14 @@
           </div>
         </div>
       </div>
-      <div class="mt-2">
+      <div class="mt-2 hidden">
         <button class="text-white font-bold items-center rounded-full px-4 py-2 m-1 bg-sky-500 hover:bg-sky-700" @click="run">Run</button>
         <button class="text-white font-bold items-center rounded-full px-4 py-2 m-1 bg-sky-500 hover:bg-sky-700" @click="logClear">Clear</button>
       </div>
 
       <div>
         <div class="w-10/12 m-auto">
-          <div v-if="inputPromise.length > 0" class="font-bold text-red-600">Write message to bot!!</div>
+          <div v-if="inputPromise.length > 0" class="font-bold text-red-600 hidden">Write message to bot!!</div>
           <input v-model="userInput" class="border-2 p-2 w-full" :disabled="inputPromise.length == 0" />
           <button
             class="text-white font-bold items-center rounded-full px-4 py-2 m-1 hover:bg-sky-700"
@@ -160,6 +160,8 @@ export default defineComponent({
 
       resetCytoscape();
     };
+
+    run();
 
     return {
       run,
