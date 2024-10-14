@@ -157,6 +157,7 @@ export const useCytoscape = (selectedGraph: ComputedRef<GraphData> | Ref<GraphDa
   let cy: null | Core = null;
   const cytoscapeData = ref(cytoscapeFromGraph(selectedGraph.value ?? { nodes: {} }));
   const cytoscapeRef = ref();
+  const zoomingEnabled = ref(true);
 
   const updateCytoscape = async (nodeId: string, state: NodeState) => {
     if (state === NodeState.Completed || state === NodeState.Waiting) {
@@ -290,6 +291,10 @@ export const useCytoscape = (selectedGraph: ComputedRef<GraphData> | Ref<GraphDa
     }
   };
 
+  watch(zoomingEnabled, (v) => {
+    cy.zoomingEnabled(v);
+  });
+
   return {
     cytoscapeRef,
     updateCytoscape,
@@ -297,5 +302,7 @@ export const useCytoscape = (selectedGraph: ComputedRef<GraphData> | Ref<GraphDa
 
     layoutCytoscape,
     loadLayout,
+
+    zoomingEnabled,
   };
 };
