@@ -1,7 +1,7 @@
 import { Ref, ref, onMounted, watch, ComputedRef } from "vue";
 import { GraphData, NodeState, NodeData, sleep } from "graphai";
 
-import cytoscape, { Core, NodeSingular, NodeDefinition, EdgeDefinition, EdgeSingular } from "cytoscape";
+import cytoscape, { Core, NodeSingular, NodeDefinition, EdgeDefinition, EdgeSingular, Position } from "cytoscape";
 import klay from "cytoscape-klay";
 
 cytoscape.use(klay as unknown as cytoscape.Ext);
@@ -265,34 +265,37 @@ export const useCytoscape = (selectedGraph: ComputedRef<GraphData> | Ref<GraphDa
   });
 
   const layoutCytoscape = (key: string) => {
-    // const hoge = cy.layout();
-    console.log(key);
-    // console.log("AA", hoge);
-    const positions = cy.nodes().map((node) => {
-      return {
-        id: node.id(),
-        position: node.position(),
-      };
-    });
-    console.log(JSON.stringify(positions));
-    localStorage.setItem("layoutData-" + key, JSON.stringify(positions));
+    if (cy) {
+      const positions = cy.nodes().map((node) => {
+        return {
+          id: node.id(),
+          position: node.position(),
+        };
+      });
+      console.log(JSON.stringify(positions));
+      localStorage.setItem("layoutData-" + key, JSON.stringify(positions));
+    }
   };
 
   const loadLayout = (key: string) => {
     const savedLayoutData = localStorage.getItem("layoutData-" + key);
     if (savedLayoutData) {
       const positions = JSON.parse(savedLayoutData);
-      positions.forEach((data) => {
-        const node = cy.getElementById(data.id);
-        if (node) {
-          node.position(data.position);
+      positions.forEach((data: { id: string; position: Position }) => {
+        if (cy) {
+          const node = cy.getElementById(data.id);
+          if (node) {
+            node.position(data.position);
+          }
         }
       });
     }
   };
 
-  watch(zoomingEnabled, (v) => {
-    cy.zoomingEnabled(v);
+  watch(zoomingEnabled, (value) => {
+    if (cy) {
+      cy.zoomingEnabled(value);
+    }
   });
 
   return {
