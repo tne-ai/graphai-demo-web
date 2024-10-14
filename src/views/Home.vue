@@ -9,6 +9,8 @@
       <div class="mt-2">
         <button class="text-white font-bold items-center rounded-full px-4 py-2 m-1 bg-sky-500 hover:bg-sky-700" @click="run">Run</button>
         <button class="text-white font-bold items-center rounded-full px-4 py-2 m-1 bg-sky-500 hover:bg-sky-700" @click="logClear">Clear</button>
+        <button class="text-white font-bold items-center rounded-full px-4 py-2 m-1 bg-sky-500 hover:bg-sky-700" @click="saveLayoutCytoscape">Save</button>
+        <button class="text-white font-bold items-center rounded-full px-4 py-2 m-1 bg-sky-500 hover:bg-sky-700" @click="loadLayoutCytoscape">Load</button>
       </div>
 
       <div>
@@ -90,7 +92,7 @@ export default defineComponent({
       return graphDataSet[selectedGraphIndex.value].name;
     });
 
-    const { updateCytoscape, cytoscapeRef, resetCytoscape } = useCytoscape(selectedGraph);
+    const { updateCytoscape, cytoscapeRef, resetCytoscape, layoutCytoscape, loadLayout } = useCytoscape(selectedGraph);
 
     const { streamData, streamAgentFilter } = useStreamData();
 
@@ -128,6 +130,12 @@ export default defineComponent({
       resetCytoscape();
     };
 
+    const saveLayoutCytoscape = () => {
+      layoutCytoscape(selectedGraphName.value);
+    };
+    const loadLayoutCytoscape = () => {
+      loadLayout(selectedGraphName.value);
+    };
     return {
       run,
       logs,
@@ -140,6 +148,8 @@ export default defineComponent({
       graphDataSet,
       streamData,
       words,
+      saveLayoutCytoscape,
+      loadLayoutCytoscape,
     };
   },
 });

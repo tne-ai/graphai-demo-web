@@ -263,9 +263,39 @@ export const useCytoscape = (selectedGraph: ComputedRef<GraphData> | Ref<GraphDa
     updateGraphData();
   });
 
+  const layoutCytoscape = (key: string) => {
+    // const hoge = cy.layout();
+    console.log(key);
+    // console.log("AA", hoge);
+    const positions = cy.nodes().map((node) => {
+      return {
+        id: node.id(),
+        position: node.position(),
+      };
+    });
+    console.log(JSON.stringify(positions));
+    localStorage.setItem("layoutData-" + key, JSON.stringify(positions));
+  };
+
+  const loadLayout = (key: string) => {
+    const savedLayoutData = localStorage.getItem("layoutData-" + key);
+    if (savedLayoutData) {
+      const positions = JSON.parse(savedLayoutData);
+      positions.forEach((data) => {
+        const node = cy.getElementById(data.id);
+        if (node) {
+          node.position(data.position);
+        }
+      });
+    }
+  };
+
   return {
     cytoscapeRef,
     updateCytoscape,
     resetCytoscape,
+
+    layoutCytoscape,
+    loadLayout,
   };
 };
