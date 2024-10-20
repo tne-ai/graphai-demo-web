@@ -30,10 +30,11 @@
           <textarea class="border-2 p-2 w-full" rows="20">{{ streamData }}</textarea>
         </div>
       </div>
+
       <div v-if="selectedGraphName === 'stream2'">
         <div>streamData</div>
         <div class="w-10/12 m-auto">
-          <textarea class="border-2 p-2 w-full" rows="20">{{ Object.values(words).map((a) => a.join(" ")) }}</textarea>
+          <textarea class="border-2 p-2 w-full" rows="20">{{ streamData }}</textarea>
         </div>
       </div>
 
@@ -61,11 +62,9 @@ import * as agents from "@graphai/vanilla";
 import { agentInfoWrapper } from "graphai/lib/utils/utils";
 
 import { sleepTestAgent, httpAgent, slashGPTFuncitons2TextAgent } from "@/utils/agents";
-import { generateGraph } from "@/utils/graph";
-import { graph_data, graph_data2, graph_data_co2, graph_data_http, graph_data_stream } from "@/utils/graph_data";
-import { graph_data_morning } from "@/utils/morning";
+import { graph_data_stream, graph_data_stream2 } from "@/utils/graph_data";
 
-import { useStreamData, useGraphData } from "@/utils/stream";
+import { useStreamData } from "@/utils/stream";
 
 // import { useCytoscape } from "@receptron/graphai_vue_cytoscape";
 import { useCytoscape } from "../utils/cytoscape";
@@ -74,17 +73,9 @@ export default defineComponent({
   name: "HomePage",
   components: {},
   setup() {
-    const { graphdata_any, words } = useGraphData();
-    const graph_random = generateGraph();
     const graphDataSet = [
       { name: "stream", data: graph_data_stream },
-      { name: "sample2", data: graph_data2 },
-      { name: "sample", data: graph_data },
-      { name: "random", data: graph_random },
-      { name: "http", data: graph_data_http },
-      { name: "co2", data: graph_data_co2 },
-      { name: "stream", data: graph_data_stream },
-      { name: "morning", data: graph_data_morning },
+      { name: "stream2", data: graph_data_stream2},
     ];
 
     const selectedGraphIndex = ref(0);
@@ -154,7 +145,6 @@ export default defineComponent({
       selectedGraph,
       graphDataSet,
       streamData,
-      words,
       saveLayoutCytoscape,
       loadLayoutCytoscape,
       toggleZoom,

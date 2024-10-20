@@ -63,7 +63,7 @@ import { agentInfoWrapper } from "graphai/lib/utils/utils";
 
 import { sleepTestAgent, httpAgent, slashGPTFuncitons2TextAgent } from "@/utils/agents";
 import { generateGraph } from "@/utils/graph";
-import { graph_data, graph_data2, graph_data_co2, graph_data_http, graph_data_stream } from "@/utils/graph_data";
+import { graph_data_stream, graph_data_stream2 } from "@/utils/graph_data";
 import { graph_data_morning } from "@/utils/morning";
 
 import { useStreamData, useGraphData } from "@/utils/stream";
@@ -75,16 +75,12 @@ export default defineComponent({
   name: "HomePage",
   components: {},
   setup() {
-    const { graphdata_any, words } = useGraphData();
+    const { words } = useGraphData();
     const graph_random = generateGraph();
     const graphDataSet = [
-      { name: "sample2", data: graph_data2 },
-      { name: "sample", data: graph_data },
+      { name: "stream2", data: graph_data_stream2},
       { name: "random", data: graph_random },
-      { name: "http", data: graph_data_http },
-      { name: "co2", data: graph_data_co2 },
       { name: "stream", data: graph_data_stream },
-      { name: "stream2", data: graphdata_any },
       { name: "morning", data: graph_data_morning },
     ];
 
