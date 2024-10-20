@@ -24,14 +24,14 @@
         </select>
       </div>
 
-      <div v-if="selectedGraphName === 'stream'">
+      <div v-if="selectedGraphName === 'jury'">
         <div>streamData</div>
         <div class="w-10/12 m-auto">
           <textarea class="border-2 p-2 w-full" rows="20">{{ streamData }}</textarea>
         </div>
       </div>
 
-      <div v-if="selectedGraphName === 'stream2'">
+      <div v-if="selectedGraphName === 'insight_edge'">
         <div>streamData</div>
         <div class="w-10/12 m-auto">
           <textarea class="border-2 p-2 w-full" rows="20">{{ streamData }}</textarea>
@@ -74,8 +74,8 @@ export default defineComponent({
   components: {},
   setup() {
     const graphDataSet = [
-      { name: "stream", data: graph_data_stream },
-      { name: "stream2", data: graph_data_stream2},
+      { name: "jury", data: graph_data_stream2},
+      { name: "insight_edge", data: graph_data_stream },
     ];
 
     const selectedGraphIndex = ref(0);
