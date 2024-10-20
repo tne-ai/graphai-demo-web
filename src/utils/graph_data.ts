@@ -234,44 +234,38 @@ export const graph_data_co2 = {
 export const graph_data_stream: GraphData = {
   version: 0.5,
   nodes: {
-    echo: {
+    user_query: {
       agent: "echoAgent",
       params: {
         message: "hello",
       },
     },
+    generate_code: {
+      agent: "streamMockAgent",
+      inputs: { array: [":user_query"] },
+      params: {
+        message: "session = TNE(uid=UID, bucket_name=BUCKET, project=PROJECT, version=VERSION)\n\ndf = session.get_object(\"shopping_list_with_periods_cleaned.csv\")\n\ndf['Discount'] = (df['standard_selling_price'] - df['aur']) * df['sales']\n\ntotal_discount_value = df['Discount'].sum()\n\nresult = pd.DataFrame({\n'Total Discount Value': [total_discount_value]\n})\n\nreturn result\n",
+        sleep: randomInt(10),
+      },
+    },
+    execute_code: {
+      agent: "streamMockAgent",
+      inputs: { array: [":generate_code"] },
+      params: {
+        message: "\"   Total Discount Value\n\n  0          2.080744e+06\n,",
+        sleep: .1
+      }
+    },
+    chat_response: {
+      agent: "streamMockAgent",
+      inputs: { array: [":execute_code"] },
+      params: {
+        message: "The total discount value of crossbody bags over the period is £2,080,744",
+        sleep: randomInt(50)
+      }
+    },
   },
 };
-
-const messages = [
-  "French: Bonjour. Ceci est un test de diffusion en continu.",
-  "German: Hallo. Dies ist ein Streaming-Test.",
-  "Italian: Ciao. Questo è un test di streaming.",
-  "Portuguese: Olá. Este é um teste de streaming.",
-  "Chinese (Simplified): 你好。这是一个流媒体测试。",
-  "Japanese: こんにちは。これはストリーミングのテストです。",
-  "Korean: 안녕하세요. 이것은 스트리밍 테스트입니다.",
-  "Hindi: नमस्ते। यह एक स्ट्रीमिंग परीक्षण है।",
-  "Dutch: Hallo. Dit is een streamingtest.",
-  "Greek: Γεια σας. Αυτό είναι ένα τεστ ροής.",
-  "Swedish: Hej. Det här är ett streamingtest.",
-  "Turkish: Merhaba. Bu bir akış testidir.",
-  "Polish: Cześć. To test przesyłania strumieniowego.",
-  "Vietnamese: Xin chào. Đây là một bài kiểm tra phát sóng.",
-];
-
-Array.from(messages.keys()).forEach((key) => {
-  const message = messages[key];
-  const inputs = key > 2 ? { text: ":streamMockAgent" + (key - 3) } : { text: ":echo" };
-  graph_data_stream.nodes["streamMockAgent" + key] = {
-    agent: "streamMockAgent",
-    inputs,
-    params: {
-      message,
-      sleep: randomInt(800),
-    },
-  };
-});
 
 export const graphChat = {
   version: 0.5,

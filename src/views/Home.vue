@@ -77,13 +77,13 @@ export default defineComponent({
     const { graphdata_any, words } = useGraphData();
     const graph_random = generateGraph();
     const graphDataSet = [
+      { name: "stream", data: graph_data_stream },
       { name: "sample2", data: graph_data2 },
       { name: "sample", data: graph_data },
       { name: "random", data: graph_random },
       { name: "http", data: graph_data_http },
       { name: "co2", data: graph_data_co2 },
       { name: "stream", data: graph_data_stream },
-      { name: "stream2", data: graphdata_any },
       { name: "morning", data: graph_data_morning },
     ];
 
