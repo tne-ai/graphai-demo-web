@@ -24,6 +24,10 @@
     "to-json-schema": "^0.2.5",
     "ts-json-schema-generator": "^2.1.0"
   },
+  "resolutions": {
+    "cookie": ">=0.7.0",
+    "brace-expansion": ">=2.0.2"
+  },
   "devDependencies": {
     "@types/to-json-schema": "^0.2.4",
     "@typescript-eslint/eslint-plugin": "^7.3.1",
